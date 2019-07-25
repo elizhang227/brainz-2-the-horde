@@ -15,6 +15,9 @@ class LandingPage extends Component {
                     <a href='/games'>Games</a>
                 </nav>
                 <h1>LANDING PAGE</h1>
+                <img src='../images/home-page.png' />
+                {/* <img className= "homePage" src="../images/home-page.png" />
+                <a className='start' href="/games" ><img src="/images/start.gif"/></a> */}
             </div>
         )
     }
