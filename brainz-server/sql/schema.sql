@@ -1,20 +1,23 @@
-CREATE DATABASE brainzv2;
+-- CREATE DATABASE brainzv2;
 
-CREATE TABLE users(
-    id SERIAL PRIMARY KEY, 
+CREATE TABLE users
+(
+    id SERIAL PRIMARY KEY,
     f_name varchar(100),
     l_name varchar(100),
     email varchar(500),
     password varchar(500)
 );
 
-CREATE TABLE game_modes(
-    id SERIAL PRIMARY KEY, 
+CREATE TABLE game_modes
+(
+    id SERIAL PRIMARY KEY,
     difficulty varchar(50),
     mode varchar(50)
 );
 
-CREATE TABLE scores(
+CREATE TABLE scores
+(
     id SERIAL PRIMARY KEY,
     accuracy FLOAT,
     points INT,
@@ -22,7 +25,8 @@ CREATE TABLE scores(
     game_mode_id INT REFERENCES game_modes(id)
 );
 
-CREATE TABLE kills(
+CREATE TABLE kills
+(
     id SERIAL PRIMARY KEY,
     kill_count INT,
     user_id INT REFERENCES users(id)
