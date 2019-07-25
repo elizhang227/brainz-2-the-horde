@@ -6,7 +6,9 @@ import logo from './images/brainz-logo-1.png';
 
 import KillCount from './components/killCount';
 import LandingPage from './components/landingPage';
-
+import Login from './components/login';
+import Register from './components/register';
+import Logout from './components/logout';
 
 class App extends Component {
   state = {
@@ -34,8 +36,8 @@ class App extends Component {
     return (
       <Router>
         <Nav className="navbar shadow-lg navbar-expand-lg navbar-light">
-          <Link className="navbar-brand text-white" to="/">
-            <img className="navLogo" src={logo} alt='Go Hybrid Logo' />
+          <Link className="navbar-brand" to="/">
+            <img className="navLogo" src={logo} alt='Brainz Logo' />
           </Link>
           <Button className="navbar-toggler bg-light" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon bg-alert"></span>
@@ -44,7 +46,7 @@ class App extends Component {
           <div className="collapse navbar-collapse" id="navbarColor03">
             <Nav className="navbar-nav mr-auto">
               <Nav.Item className="nav-item active ">
-                <Link className="nav-link text-white" to="/">Home<span className="sr-only"></span></Link>
+                <Link className="nav-link" to="/">Home<span className="sr-only"></span></Link>
               </Nav.Item>
             </Nav>
           </div>
@@ -52,20 +54,20 @@ class App extends Component {
           <div className="navbar-collapse collapse" id="navbarColor03" >
             {isLoggedIn === true ?
               <Nav className="navbar-nav ml-auto">
+                {/* <Nav.Item className="nav-item">
+                  <Link className="nav-link" to="/users">Your Comparisons</Link>
+                </Nav.Item> */}
                 <Nav.Item className="nav-item">
-                  <Link className="nav-link text-white" to="/users">Your Comparisons</Link>
-                </Nav.Item>
-                <Nav.Item className="nav-item">
-                  <Link className="nav-link text-white" to="/users/logout">Logout</Link>
+                  <Link className="nav-link" to="/users/logout">Logout</Link>
                 </Nav.Item>
               </Nav>
               :
               <Nav className="navbar-nav ml-auto">
                 <Nav.Item className="nav-item">
-                  <Link className="nav-link text-white" to="/users/login">Login</Link>
+                  <Link className="nav-link" to="/users/login">Login</Link>
                 </Nav.Item>
                 <Nav.Item className="nav-item my-2 my-lg-0">
-                  <Link className="nav-link text-white" to="/users/register">Register</Link>
+                  <Link className="nav-link" to="/users/register">Register</Link>
                 </Nav.Item>
               </Nav>
             }
@@ -73,6 +75,13 @@ class App extends Component {
         </Nav>
         <Route path='/' exact component={LandingPage} />
         <Route path='/scores' exact component={KillCount} />
+        <Route path='/users/login' exact render={(props) => <Login {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+        <Route path='/users/Register' exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+        <Route path='/users/Logout' exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+
+        {/* <Route path='/users/:login_or_register?' render={(props) => <UsersPage {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+        <Route path='/compare/:year/:make/:model?' render={(props) => <CompareModels {...props} user={this.state} />} /> */}
+
         {/* <Route path='/users/:login_or_register?' component={} /> */}
       </Router>
     )
