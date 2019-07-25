@@ -1,5 +1,9 @@
 CREATE DATABASE brainzv2;
 
+drop table scores;
+drop table game_modes;
+drop table users;
+
 CREATE TABLE users(
     id SERIAL PRIMARY KEY, 
     f_name varchar(100),
@@ -10,20 +14,13 @@ CREATE TABLE users(
 
 CREATE TABLE game_modes(
     id SERIAL PRIMARY KEY, 
-    difficulty varchar(50),
-    mode varchar(50)
+    difficulty varchar(50)
 );
 
 CREATE TABLE scores(
     id SERIAL PRIMARY KEY,
-    accuracy FLOAT,
-    points INT,
+    wave INT,
+    kills INT,
     user_id INT REFERENCES users(id),
     game_mode_id INT REFERENCES game_modes(id)
-);
-
-CREATE TABLE kills(
-    id SERIAL PRIMARY KEY,
-    kill_count INT,
-    user_id INT REFERENCES users(id)
 );

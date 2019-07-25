@@ -1,13 +1,13 @@
 const express = require('express'),
     router = express.Router(),
-    KillCountModel = require('../models/killCount');
+    ScoresModel = require('../models/scores');
 
 router.get('/', async (req, res, next) => {
     res.send('welcome yurrrrr').status(200)
 })
 
 router.get('/all', async (req, res, next) => {
-    const allKills = await KillCountModel.getAllKills();
+    const allKills = await ScoresModel.getAllScores();
     console.log('candidates', allKills)
     res.json(allKills).status(200);
 });
