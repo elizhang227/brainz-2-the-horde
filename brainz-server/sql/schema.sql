@@ -1,8 +1,4 @@
-CREATE DATABASE brainzv2;
-
-drop table scores;
-drop table game_modes;
-drop table users;
+-- CREATE DATABASE brainzv2;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY, 
@@ -17,7 +13,8 @@ CREATE TABLE game_modes(
     difficulty varchar(50)
 );
 
-CREATE TABLE scores(
+CREATE TABLE scores
+(
     id SERIAL PRIMARY KEY,
     wave INT,
     kills INT,
