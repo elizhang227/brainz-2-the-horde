@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "db:reset": "psql brainzv2 -f ./sql/schema.sql -U rjs && psql brainzv2 -f ./sql/seed.sql -U rjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
