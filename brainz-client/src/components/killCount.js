@@ -11,6 +11,7 @@ class KillCount extends Component {
         this.setState({
             kills: kills
         })
+        console.log('kills', kills)
     }
 
     loadData = async () => {
@@ -28,7 +29,7 @@ class KillCount extends Component {
                 <ul>
                     {kills.map((kill, index) => 
                         <li key={`kill${index}`}>
-                            {kill.kill_count}
+                            Player: {kill.user_id} Waves: {kill.wave} Kills: {kill.kills}
                         </li>
                     )}
                 </ul>

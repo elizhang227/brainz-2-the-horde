@@ -9,6 +9,7 @@ import LandingPage from './components/landingPage';
 import Login from './components/login';
 import Register from './components/register';
 import Logout from './components/logout';
+import GameMode from './components/gameMode';
 
 class App extends Component {
   state = {
@@ -78,11 +79,9 @@ class App extends Component {
         <Route path='/users/login' exact render={(props) => <Login {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/users/Register' exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/users/Logout' exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+        <Route path='/scores' component={KillCount} />
+        <Route path='/game' component={GameMode} />
 
-        {/* <Route path='/users/:login_or_register?' render={(props) => <UsersPage {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
-        <Route path='/compare/:year/:make/:model?' render={(props) => <CompareModels {...props} user={this.state} />} /> */}
-
-        {/* <Route path='/users/:login_or_register?' component={} /> */}
       </Router>
     )
   }

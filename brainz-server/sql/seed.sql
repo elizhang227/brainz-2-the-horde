@@ -4,22 +4,13 @@ VALUES
     ('Anonymous Zombie', 'Rob', 'zombie@horde', '1');
 
 INSERT INTO game_modes
-    (difficulty,mode)
+    (difficulty)
 VALUES
-    ('easy','regular'),
-    ('medium','regular'),
-    ('hard','regular'),
-    ('apocalypse','regular'),
-    ('easy','flick'),
-    ('medium','flick'),
-    ('hard','flick');
+    ('easy'),
+    ('medium'),
+    ('hard');
 
 INSERT INTO scores
-    (accuracy, points, user_id, game_mode_id)
+    (wave, kills, user_id, game_mode_id)
 VALUES
-    (90.3, 100, 1,1);
-
-INSERT INTO kills
-    (kill_count, user_id)
-VALUES
-    (0,1);
+    (5, 69, 1, 1);
