@@ -56,7 +56,7 @@ class Login extends Component {
         const { login, errorCode } = this.state;
         return (
             <Card className="loginSignUpContainer mt-5">
-                < Card.Header as="h5" > Login</Card.Header >
+                <Card.Header as="h5">Login</Card.Header>
                 <Card.Body>
                     <Form>
                         <Form.Group controlId="formBasicEmail">

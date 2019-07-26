@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 class KillCount extends Component {
     state = {
@@ -27,7 +27,7 @@ class KillCount extends Component {
             <div>
                 <h1>Kill Score</h1>
                 <ul>
-                    {kills.map((kill, index) => 
+                    {kills.map((kill, index) =>
                         <li key={`kill${index}`}>
                             Player: {kill.user_id} Waves: {kill.wave} Kills: {kill.kills}
                         </li>
@@ -36,7 +36,6 @@ class KillCount extends Component {
             </div>
         )
     }
-
 }
 
 export default KillCount;
