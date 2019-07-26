@@ -11,6 +11,8 @@ import Register from './components/register';
 import Logout from './components/logout';
 import GameMode from './components/gameMode';
 
+import './App.css';
+
 class App extends Component {
   state = {
     isLoggedIn: false,
@@ -36,9 +38,9 @@ class App extends Component {
 
     return (
       <Router>
-        <Nav className="navbar shadow-lg navbar-expand-lg navbar-light">
+        <Nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link className="navbar-brand" to="/">
-            <img className="navLogo" src={logo} alt='Brainz Logo' />
+            <img className="logo" src={logo} alt='Brainz Logo' />
           </Link>
           <Button className="navbar-toggler bg-light" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon bg-alert"></span>
@@ -81,7 +83,6 @@ class App extends Component {
         <Route path='/users/Register' exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/users/Logout' exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/game' component={GameMode} />
-
       </Router>
     )
   }
