@@ -115,6 +115,8 @@
             // Set world bounds
             this.physics.world.setBounds(0, 0, 800, 600);
 
+            const ourWorld = this.physics.world;
+            console.log(ourWorld)
             // Add 2 groups for Bullet objects
             playerBullets = this.physics.add.group({
                 classType: Bullet,
@@ -134,12 +136,15 @@
             enemyProperties = [];
 
             for (var i = 0; i < 8; i++) {
+                const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
+                const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
+
                 enemyProperties.push({
                     key: 'player_handgun',
                     repeat: 0,
                     setXY: {
-                        x: 50 * i,
-                        y: 12,
+                        x: randomX,
+                        y: randomY,
                         stepX: 70
                     }
                 });
@@ -341,17 +346,29 @@
                 reticle.y = player.y - 0;
         }
 
+        function moveEnemy(zombie, hero) {
+            // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
+            // console.log(`hero: x-${hero.x} y=${hero.y}`)
+            zombie.x < hero.x ? zombie.x++ : zombie.x > hero.x ? zombie.x-- : '';
+            zombie.y < hero.y ? zombie.y++ : zombie.y > hero.y ? zombie.y-- : '';
+
+        }
+
         function update(time, delta) {
             // Rotates player to face towards reticle
             player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
             // Rotates enemy to face towards player
             enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
+            moveEnemy(enemy, player)
 
+            enemies.children.entries.forEach(e => {
+                e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
+                moveEnemy(e, player)
+            })
             //Make reticle move with player
             // reticle.body.velocity.x = player.body.velocity.x;
             // reticle.body.velocity.y = player.body.velocity.y;
-
             // Constrain velocity of player
             constrainVelocity(player, 500);
 
