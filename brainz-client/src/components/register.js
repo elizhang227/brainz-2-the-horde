@@ -19,7 +19,6 @@ class Register extends Component {
 
     createUser = async (e) => {
         const url = "http://localhost:3000/users/register",
-            { first_name, last_name, email, password } = this.state,
             formCheck = document.getElementById('registerForm').checkValidity();
 
         if (!!formCheck) {
@@ -55,7 +54,7 @@ class Register extends Component {
         const { createdAccount, errorCode } = this.state;
         return (
             <Card className="loginSignUpContainer mt-5" >
-                <Card.Header as="h5"> Register</Card.Header>
+                <Card.Header as="h5">Register as a Zombie Killer</Card.Header>
                 <Card.Body>
                     <Form id="registerForm">
                         <Form.Group controlId="formFirstName">
@@ -75,11 +74,11 @@ class Register extends Component {
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" autoComplete="on" name="password" className="form-control" placeholder="Password" onChange={(e) => this.handlePassword(e)} required />
                         </Form.Group>
-                        <Button type="submit" variant={'danger'} onClick={(e) => this.createUser(e)}>Submit</Button>
+                        <Button className="mb-3" type="submit" variant={'danger'} onClick={(e) => this.createUser(e)}>Submit</Button>
                     </Form>
                     {errorCode === 3 ?
                         <Alert className="alert alert-dismissible alert-danger users-alert">
-                            <strong>We already have that account, please use another email.</strong> If you have access this account try logging in <Link to="/users/login">here.</Link>
+                            <strong>Oh $h%+!</strong> This user is already fighting the undead.
                         </Alert>
                         : (errorCode === 4 || errorCode === 6)
                             ?
@@ -87,9 +86,9 @@ class Register extends Component {
                                 <strong>Uh Oh, we are currently having issues.</strong> Please send let us know you have the following <b>Error Code: {errorCode}</b>
                             </Alert>
                             : ``}
-                    <p className="mt-4">Already have an account? <Link to="/users/login"><b>Login Here</b></Link></p>
+                    <p className="mt-4">Already have an account? <Link to="/login"><b>Login Here</b></Link></p>
                     {(!!createdAccount) ? <Redirect to={{
-                        pathname: '/users/login',
+                        pathname: '/login',
                         errorCode
                     }} /> : ''}
                 </Card.Body>

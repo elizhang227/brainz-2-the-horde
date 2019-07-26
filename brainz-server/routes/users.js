@@ -3,11 +3,25 @@ const express = require("express"),
   bcrypt = require('bcryptjs'),
   SALT_ROUNDS = 10,
   UsersModel = require("../models/users");
-router.post("/", async (req, res, next) => {
-  // const { user_id } = req.body;
-  // console.log(req.body)
-  // const comparisons = await ComparisonsModel.getAllComparisons(parseInt(user_id));
 
+router.post("/", async (req, res, next) => {
+  const { id } = req.body,
+    userInfo = await UsersModel.checkUserByID(id);
+
+  const welcome = [`Fear ${userInfo.f_name}, The Zombie Slayer.`,
+  `Bow Down to ${userInfo.f_name}.`,
+  `${userInfo.f_name} The killer of a million zombies.`,
+  `Oh F*$@ It's ${userInfo.f_name}.`,
+  `Oh man it's ${userInfo.f_name} again.`,
+  `Hey ${userInfo.f_name} don't forget to double tap.`,
+  `${userInfo.f_name} is training to be the next star of Zombieland.`,
+  `World War Z's got nothing on ${userInfo.f_name}.`,
+  `Fear the Walking Dead? ${userInfo.f_name} definitely does not.`,
+  `If ${userInfo.f_name} was on the walking dead, there wouldn't be any zombies left.`,
+  `What has the Zombiepocalypse got on ${userInfo.f_name}?`,
+  `Hey ${userInfo.f_name}, how would you kill a zombie with toilet paper?`];
+
+  res.json({ loginMessage: welcome[Math.floor(Math.random() * welcome.length - 1) + 1] })
 })
 
 router.post("/login", async (req, res, next) => {

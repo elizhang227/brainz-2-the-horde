@@ -92,10 +92,10 @@ class Login extends Component {
                                         <strong>You've successfully created a new account!</strong> Please login with your newly created credentials.
                                     </Alert> : ''}
                     <p className="mt-4">
-                        No Account? <Link to="/users/register"><b>Register</b></Link>
+                        No Account? <Link to="/register"><b>Register</b></Link>
                     </p>
                 </Card.Body>
-                {(!!login) ? <Redirect to="/users" /> : ""}
+                {(!!login) ? <Redirect to="/profile" /> : ""}
             </Card >
         )
     }
