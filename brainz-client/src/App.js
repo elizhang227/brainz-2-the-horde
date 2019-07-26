@@ -57,9 +57,6 @@ class App extends Component {
           <div className="navbar-collapse collapse" id="navbarColor03" >
             {isLoggedIn === true ?
               <Nav className="navbar-nav ml-auto">
-                {/* <Nav.Item className="nav-item">
-                  <Link className="nav-link" to="/users">Your Comparisons</Link>
-                </Nav.Item> */}
                 <Nav.Item className="nav-item">
                   <Link className="nav-link" to="/users/logout">Logout</Link>
                 </Nav.Item>

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Card, Button, Form, Alert } from "react-bootstrap";
 
+import '../App.css';
+
 class Login extends Component {
     state = {
         email: "",
@@ -53,8 +55,8 @@ class Login extends Component {
     render() {
         const { login, errorCode } = this.state;
         return (
-            <Card variant={"dark"} className="usersCard">
-                <Card.Header as="h5">Login</Card.Header>
+            <Card className="loginSignUpContainer mt-5">
+                < Card.Header as="h5" > Login</Card.Header >
                 <Card.Body>
                     <Form>
                         <Form.Group controlId="formBasicEmail">
@@ -65,24 +67,24 @@ class Login extends Component {
                             <Form.Label>Password</Form.Label>
                             <Form.Control autoComplete="on" type="password" onChange={(e) => this.handlePassword(e)} placeholder="Password" />
                         </Form.Group>
-                        <Button variant="primary" onClick={(e) => this.login()}>
+                        <Button className="mb-3" variant="danger" onClick={(e) => this.login()}>
                             Sign In
                         </Button>
                     </Form>
                     {errorCode === 1 ?
                         <Alert className="alert alert-dismissible alert-danger users-alert">
-                            <strong>Sorry, we couldn't find you.</strong> Try typing in your username and password again.
+                            <strong>Oh $h%+!</strong> <b>User not registered</b> , please register.
                         </Alert>
                         :
                         errorCode === 2
                             ?
                             <Alert className="alert alert-dismissible alert-danger users-alert">
-                                <strong>You've entered in the wrong password.</strong> Please try typing in your password again.
+                                <strong>Oh $h%+!</strong> <b>Invalid Password</b> , use your brainZ and try submitting again.
                             </Alert>
                             : errorCode === 3
                                 ?
                                 <Alert className="alert alert-dismissible alert-danger users-alert">
-                                    <strong>Uh Oh, we are currently having issues.</strong> Please send let us know you have the following <b>Error Code: {errorCode}</b>
+                                    <strong>A zombie has taken a chunk of our brain.</strong> Please send let us know you have the following <b>Error Code: {errorCode}</b>
                                 </Alert>
                                 : errorCode === 5
                                     ?
@@ -90,11 +92,11 @@ class Login extends Component {
                                         <strong>You've successfully created a new account!</strong> Please login with your newly created credentials.
                                     </Alert> : ''}
                     <p className="mt-4">
-                        No Account? <Link to="/users/register">Register</Link>
+                        No Account? <Link to="/users/register"><b>Register</b></Link>
                     </p>
                 </Card.Body>
                 {(!!login) ? <Redirect to="/users" /> : ""}
-            </Card>
+            </Card >
         )
     }
 }
