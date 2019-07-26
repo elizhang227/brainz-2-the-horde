@@ -186,6 +186,10 @@ input[type="radio"][value="apocalypse"]:checked {
   margin: 10px 0 20px 0;
 }
 
+.gameDifficultySelection input[type="radio"] {
+  visibility: hidden;
+}
+
 .apocalypse-btn {
   opacity: 0;
 }

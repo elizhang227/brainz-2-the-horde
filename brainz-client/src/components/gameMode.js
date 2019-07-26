@@ -13,7 +13,7 @@ class GameMode extends Component {
                 <Form action='/games' method='POST' className='gamesSelectionForm'>
                     <h5>Choose Your Difficulty:</h5>
 
-                    <Form.Group className="gameDifficultySelection btn-group-toggle" data-toggle="buttons">
+                    <Form.Group className="gameDifficultySelection btn-group-toggle" data-toggle="buttons" >
                         <Form.Label className="btn btn-secondary btn-lg btn-block">
                             <Form.Control type="radio" name="difficulty" value="easy" />
                             Easy
