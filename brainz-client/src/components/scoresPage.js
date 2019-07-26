@@ -29,7 +29,7 @@ class Scores extends Component {
         //console.log('this is response', response)
         return (
         <div>
-            <p>f00k dis</p>
+            <h2>f00k dis</h2>
             {(response !== false) ? 
             <ul>
             {response.map((data, index) => {
