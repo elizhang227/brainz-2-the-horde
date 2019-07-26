@@ -22,6 +22,19 @@ class Users {
         }
     }
 
+    static async checkUserByID(id) {
+        try {
+            const response = db.one(`
+                SELECT *
+                FROM users 
+                WHERE id = $1
+            `, [id]);
+            return response;
+        } catch (err) {
+            return err.message;
+        }
+    }
+
     async addUser(hashPW) {
         try {
             const response = await db.result(`
