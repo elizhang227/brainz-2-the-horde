@@ -25,9 +25,9 @@ app.set('port', port);
 var server = http.createServer(app);
 const io = socketIo(server);
 
-const getInfoFromDatabase = async () => {
+const getHighScoresFromDatabase = async () => {
   try {
-      const res = await ScoresModel.getAllScores();
+      const res = await ScoresModel.getHighScores();
       return res;
   } catch (err) {
       return err.message
@@ -38,7 +38,7 @@ io.on('connection', async (socket) => {
   console.log('initial connection established');
   let test;
   setInterval(async () => {
-      test = await getInfoFromDatabase();
+      test = await getHighScoresFromDatabase();
       socket.emit('test', test);
   }, 5000)
 
