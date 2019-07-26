@@ -4,7 +4,7 @@ import { Nav, Button, Container } from 'react-bootstrap';
 
 import logo from './images/brainz-logo-1.png';
 
-import KillCount from './components/killCount';
+import Scores from './components/scoresPage';
 import LandingPage from './components/landingPage';
 import Login from './components/login';
 import Register from './components/register';
@@ -76,12 +76,12 @@ class App extends Component {
             }
           </div>
         </Nav>
+        
         <Route path='/' exact component={LandingPage} />
-        <Route path='/scores' exact component={KillCount} />
+        <Route path='/scores' exact component={Scores} />
         <Route path='/users/login' exact render={(props) => <Login {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/users/Register' exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
         <Route path='/users/Logout' exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
-        <Route path='/scores' component={KillCount} />
         <Route path='/game' component={GameMode} />
       </Router>
     )
