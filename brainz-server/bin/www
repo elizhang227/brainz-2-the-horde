@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('brainz-server:server');
 var http = require('http');
+const socketIo = require('socket.io');
+const ScoresModel = require('../models/scores');
 
 /**
  * Get port from environment and store in Express.
@@ -17,9 +19,34 @@ app.set('port', port);
 
 /**
  * Create HTTP server.
+ * Open Socket IO port
  */
 
 var server = http.createServer(app);
+const io = socketIo(server);
+
+const getInfoFromDatabase = async () => {
+  try {
+      const res = await ScoresModel.getAllScores();
+      return res;
+  } catch (err) {
+      return err.message
+  }
+}
+
+io.on('connection', async (socket) => {
+  console.log('initial connection established');
+  let test;
+  setInterval(async () => {
+      test = await getInfoFromDatabase();
+      socket.emit('test', test);
+  }, 5000)
+
+// socket.on('test', () => {
+//   console.log('socket is on', data)
+//   this code is to get the stuff from the front end react side that you want to pass back to server
+// }) 
+})
 
 /**
  * Listen on provided port, on all network interfaces.
