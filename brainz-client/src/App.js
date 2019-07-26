@@ -4,7 +4,7 @@ import { Nav, Button } from "react-bootstrap";
 
 import logo from "./images/brainz-logo-1.png";
 
-import KillCount from "./components/killCount";
+import Scores from "./components/scoresPage";
 import LandingPage from "./components/landingPage";
 import Login from "./components/login";
 import Register from "./components/register";
@@ -89,7 +89,7 @@ class App extends Component {
           <Route path="/register" exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/logout" exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/profile" exact render={(props) => <Profile {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
-          <Route path="/scores" component={KillCount} />
+          <Route path="/scores" component={Scores} />
           <Route path="/play" component={GameMode} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
