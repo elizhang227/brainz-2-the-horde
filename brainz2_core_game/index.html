@@ -123,8 +123,6 @@
                 runChildUpdate: true
             });
 
-
-
             // Add background player, enemy, reticle, healthpoint sprites
             var background = this.add.image(400, 300, 'background');
             enemy = this.physics.add.group({
@@ -143,8 +141,7 @@
             hp2 = this.add.image(-300, -250, 'target').setScrollFactor(0.5, 0.5);
             hp3 = this.add.image(-250, -250, 'target').setScrollFactor(0.5, 0.5);
 
-            // Set image/sprite properties
-
+            // Set image/sprite propertie
             player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
             reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
 
@@ -152,11 +149,7 @@
             hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
 
-
-
             enemy.setVelocityY(Phaser.Math.Between(50, 200));
-
-
 
             // Set sprite variables
             player.health = 3;

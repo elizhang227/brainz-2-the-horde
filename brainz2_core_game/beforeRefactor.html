@@ -132,7 +132,7 @@
             var background = this.add.image(400, 300, 'background');
             player = this.physics.add.sprite(400, 300, 'player_handgun');
             enemy = this.physics.add.sprite(50, 50, 'player_handgun');
-            console.log('enemy: ', enemy);
+
             enemyProperties = [];
 
             for (var i = 0; i < 8; i++) {
@@ -157,7 +157,6 @@
             hp3 = this.add.image(-250, -250, 'target').setScrollFactor(0.5, 0.5);
 
             // Set image/sprite properties
-
             player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
             enemy.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true);
 
@@ -165,6 +164,10 @@
             hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
+
+            enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
+            moveEnemy(enemy, player)
+            this.physics.add.collider(enemy, player, test);
 
             // Set sprite variables
             player.health = 3;
@@ -175,8 +178,6 @@
                 e.health = 1;
                 return e
             })
-
-            console.log(enemies.children.entries[0])
 
             // Set camera properties
             moveKeys = this.input.keyboard.addKeys({
@@ -253,6 +254,11 @@
                 reticle.y = pointer.position.y;
                 //}
             }, this);
+        }
+
+        function test(bodyA, bodyB) {
+            console.log()
+            bodyA.tint = 0xff0000;
         }
 
         function enemyHitCallback(enemyHit, bulletHit) {
@@ -349,8 +355,10 @@
         function moveEnemy(zombie, hero) {
             // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
             // console.log(`hero: x-${hero.x} y=${hero.y}`)
-            zombie.x < hero.x ? zombie.x++ : zombie.x > hero.x ? zombie.x-- : '';
-            zombie.y < hero.y ? zombie.y++ : zombie.y > hero.y ? zombie.y-- : '';
+            zombie.x < hero.x ? zombie.setVelocityX(100) : zombie.x > hero.x ? zombie.setVelocityX(-100) : zombie.x ===
+                hero.x ? zombie.setAccelerationX(0) : '';
+            zombie.y < hero.y ? zombie.setVelocityY(100) : zombie.y > hero.y ? zombie.setVelocityY(-100) : zombie.y ===
+                hero.y ? zombie.setAccelerationY(0) : '';
 
         }
 
@@ -362,10 +370,12 @@
             enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
             moveEnemy(enemy, player)
 
-            enemies.children.entries.forEach(e => {
-                e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-                moveEnemy(e, player)
-            })
+            // enemies.children.entries.forEach(e => {
+            //     e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
+            //     moveEnemy(e, player)
+            // })
+
+
             //Make reticle move with player
             // reticle.body.velocity.x = player.body.velocity.x;
             // reticle.body.velocity.y = player.body.velocity.y;
