@@ -3,12 +3,16 @@ import io from 'socket.io-client';
 
 class Scores extends Component {
     state = {
-        endpoint: 'http://192.168.86.205:3000',
+        endpoint: '10.150.41.155:3000',
         response: false,
         initial: false
     }
 
-    componentDidMount = () => {
+    componentDidMount = async() => {
+        // Load the scores initially before the setInterval is called in socket
+        const initialScores = await this.loadInitialScores();
+        this.setState({ response: initialScores });
+
         const { endpoint } = this.state;
         const socket = io(endpoint);
         socket.on('test', data => {
@@ -29,6 +33,13 @@ class Scores extends Component {
                 console.log('still the same')
             }
         })
+    }
+
+    loadInitialScores = async () => {
+        const url = `http://10.150.41.155:3000/scores`;
+        const response = await fetch(url);
+        const data = response.json();
+        return data;
     }
 
     render() {
