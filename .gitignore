@@ -1,26 +1,9 @@
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@elizhang227 
-0
-0 1 elizhang227/budget-app
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
-budget-app/.gitignore
-@elizhang227 elizhang227 first commit for budget app
-2340122 on Jun 12
-99 lines (99 sloc)  2.24 KB
-    
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 # Created by https://www.gitignore.io/api/macos,visualstudiocode,node
 # Edit at https://www.gitignore.io/?templates=macos,visualstudiocode,node
 ### macOS ###
 # General
+conn.js
 .DS_Store
 .AppleDouble
 .LSOverride
