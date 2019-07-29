@@ -9,15 +9,15 @@
     <!-- Stylesheet Link -->
 
 </head>
-<ul>
-    <li>Kills:<span id="kills"></span></li>
-    <li>Wave:<span id="Wave"></span></li>
-    <li>Life:<span id="Life"></span></li>
-</ul>
 
 <body>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.18.1/dist/phaser.min.js"></script>
     <script>
+        var enemyCount = 2;
+        let kills = 0;
+        var wave = 1;
+        var life = 3;
+
         var Bullet = new Phaser.Class({
             Extends: Phaser.GameObjects.Image,
             initialize:
@@ -81,6 +81,9 @@
                             playerBullets: null,
                             enemyBullets: null,
                             time: 0,
+                            waveText: '',
+                            killText: '',
+                            lifeText: '',
                         }
                     });
                 },
@@ -122,14 +125,14 @@
                     onWorldBounds: true,
                 });
 
-                for (var i = 0; i < 10; i++) {
+                for (var i = 0; i < enemyCount; i++) {
                     const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
                     const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
                     enemies.create(randomX, randomY, 'player_handgun');
 
                 }
 
-                console.log(enemies)
+                // console.log(enemies)
                 // enemy = this.physics.add.sprite(300, 600, 'player_handgun');
 
                 // enemy.setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
@@ -145,7 +148,7 @@
                 player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800,
                     800);
                 reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
-                enemies.getChildren().forEach(e => e.setOrigin(0.5, 0.5).setDisplaySize(30, 30)
+                enemies.getChildren().forEach(e => e.setOrigin(0.5, 0.5).setDisplaySize(100, 100)
                     .setCollideWorldBounds(true))
 
 
@@ -156,7 +159,22 @@
 
                 enemies.getChildren().forEach(e => {
                     e.health = 1;
-                })
+                });
+
+                waveText = this.add.text(10, 10, '', {
+                    font: '16px Arial',
+                    fill: '#000000'
+                });
+
+                killsText = this.add.text(300, 10, '', {
+                    font: '16px Arial',
+                    fill: '#000000'
+                });
+
+                lifeText = this.add.text(700, 10, '', {
+                    font: '16px Arial',
+                    fill: '#000000'
+                });
 
                 // Set camera properties
                 moveKeys = this.input.keyboard.addKeys({
@@ -205,7 +223,7 @@
 
                     // Get bullet from bullets group
                     var bullet = playerBullets.get().setActive(true).setVisible(true);
-                    console.log(bullet.setOrigin(0.5, 0.5))
+                    //console.log(bullet.setOrigin(0.5, 0.5))
 
                     if (bullet) {
                         bullet.fire(player, reticle);
@@ -231,155 +249,34 @@
                     // Rotates enemy to face towards player
                     e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
                     //this.physics.add.collider(enemies, enemies, null, enemyOnEnemy, moveEnemy(e, player))
+                    this.physics.world.collide(player, e, null, function () {
+                        gotCaught();
+                    }, this);
 
-                    this.physics.world.collide(player, e);
                     this.physics.moveToObject(e, player)
                 });
 
                 this.physics.add.collider(enemies, enemies)
+
                 if (enemies.getChildren().length === 0) {
+                    enemyCount = Math.round(enemyCount * 1.5);
+                    wave++;
                     this.scene.restart();
                 }
                 constrainVelocity(player, 500);
+
+                // Display Texts
+                waveText.setText(`Wave: ${wave}`);
+                killsText.setText(`Kills: ${kills}`);
+                lifeText.setText(`Life: ${life}`);
             }
         });
-        // function preload() {
-        //     // Load in images and sprites
-        //     this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png', {
-        //         frameWidth: 66,
-        //         frameHeight: 60
-        //     }); // Made by tokkatrain: https://tokkatrain.itch.io/top-down-basic-set
-        //     this.load.image('bullet', 'assets/bullet.png');
-        //     this.load.image('target', 'assets/red_crosshair.png');
-        //     this.load.image('background', 'assets/skies/underwater1.png');
 
-        // }
+        // END OF SCENE
 
-        // function create() {
-        //     // Set world bounds
-        //     this.physics.world.setBounds(0, 0, 800, 600);
-        //     const ourWorld = this.physics.world;
-
-        //     // Add 2 groups for Bullet objects
-        //     playerBullets = this.physics.add.group({
-        //         classType: Bullet,
-        //         runChildUpdate: true
-        //     });
-
-        //     enemyBullets = this.physics.add.group({
-        //         classType: Bullet,
-        //         runChildUpdate: true
-        //     });
-
-        //     // Add background player, enemy, reticle, healthpoint sprites
-        //     var background = this.add.image(400, 300, 'background');
-        //     player = this.physics.add.sprite(400, 300, 'player_handgun');
-
-        //     enemies = this.physics.add.group({
-        //         collideWorldBounds: true,
-        //         setCollideWorldBounds: true,
-        //         onWorldBounds: true,
-        //     });
-
-        //     for (var i = 0; i < 10; i++) {
-        //         const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
-        //         const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
-        //         enemies.create(randomX, randomY, 'player_handgun');
-
-        //     }
-
-        //     console.log(enemies)
-        //     // enemy = this.physics.add.sprite(300, 600, 'player_handgun');
-
-        //     // enemy.setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
-
-
-        //     reticle = this.physics.add.sprite(800, 700, 'target');
-        //     // hp1 = this.add.image(-350, -250, 'target').setScrollFactor(0.5, 0.5);
-        //     // hp2 = this.add.image(-300, -250, 'target').setScrollFactor(0.5, 0.5);
-        //     // hp3 = this.add.image(-250, -250, 'target').setScrollFactor(0.5, 0.5);
-
-        //     // Set image/sprite propertiessd
-        //     background.setOrigin(0.5, 0.5).setDisplaySize(800, 600);
-        //     player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
-        //     reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
-        //     enemies.getChildren().forEach(e => e.setOrigin(0.5, 0.5).setDisplaySize(30, 30)
-        //         .setCollideWorldBounds(true))
-
-
-        //     player.body.immovable = true;
-
-        //     // Set sprite variables
-        //     player.health = 3;
-
-        //     enemies.getChildren().forEach(e => {
-        //         e.health = 1;
-        //     })
-
-        //     // Set camera properties
-        //     moveKeys = this.input.keyboard.addKeys({
-        //         'up': Phaser.Input.Keyboard.KeyCodes.W,
-        //         'down': Phaser.Input.Keyboard.KeyCodes.S,
-        //         'left': Phaser.Input.Keyboard.KeyCodes.A,
-        //         'right': Phaser.Input.Keyboard.KeyCodes.D
-        //     });
-
-        //     // Enables movement of player with WASD keys
-        //     this.input.keyboard.on('keydown_W', function (event) {
-        //         player.setAccelerationY(-800);
-        //     });
-        //     this.input.keyboard.on('keydown_S', function (event) {
-        //         player.setAccelerationY(800);
-        //     });
-        //     this.input.keyboard.on('keydown_A', function (event) {
-        //         player.setAccelerationX(-800);
-        //     });
-        //     this.input.keyboard.on('keydown_D', function (event) {
-        //         player.setAccelerationX(800);
-        //     });
-
-        //     // Stops player acceleration on uppress of WASD keys
-        //     this.input.keyboard.on('keyup_W', function (event) {
-        //         if (moveKeys['down'].isUp)
-        //             player.setAccelerationY(0);
-        //     });
-        //     this.input.keyboard.on('keyup_S', function (event) {
-        //         if (moveKeys['up'].isUp)
-        //             player.setAccelerationY(0);
-        //     });
-        //     this.input.keyboard.on('keyup_A', function (event) {
-        //         if (moveKeys['right'].isUp)
-        //             player.setAccelerationX(0);
-        //     });
-        //     this.input.keyboard.on('keyup_D', function (event) {
-        //         if (moveKeys['left'].isUp)
-        //             player.setAccelerationX(0);
-        //     });
-
-        //     // Fires bullet from player on left click of mouse
-        //     this.input.on('pointerdown', function (pointer, time, lastFired) {
-        //         if (player.active === false)
-        //             return;
-
-        //         // Get bullet from bullets group
-        //         var bullet = playerBullets.get().setActive(true).setVisible(true);
-        //         console.log(bullet.setOrigin(0.5, 0.5))
-
-        //         if (bullet) {
-        //             bullet.fire(player, reticle);
-        //             // this.physics.add.collider(enemyBullets, enemies);
-        //             // enemies.getChildren().forEach(e => this.physics.add.collider(e, bullet,
-        //             //     enemyHitCallback));
-        //             this.physics.add.collider(enemies.getChildren(), bullet, enemyHitCallback);
-        //         }
-        //     }, this);
-
-        //     // Move reticle 
-        //     this.input.on('pointermove', function (pointer) {
-        //         reticle.x = pointer.position.x;
-        //         reticle.y = pointer.position.y;
-        //     }, this);
-        // }
+        function gotCaught() {
+            life--;
+        }
 
         function enemyHitCallback(enemyHit, bulletHit) {
             // Reduce health of enemy
@@ -388,6 +285,7 @@
 
                 // Kill enemy if health <= 0
                 if (enemyHit.health <= 0) {
+                    kills++;
                     enemyHit.destroy();
                 }
 
@@ -471,49 +369,6 @@
             else if (distY < -600)
                 reticle.y = player.y - 0;
         }
-
-        // function moveEnemy(zombie, hero) {
-
-        //     // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
-        //     // console.log(`hero: x-${hero.x} y=${hero.y}`)
-        //     console.log(zombie)
-        //     if (zombie.x < hero.x) {
-        //         zombie.setVelocityX(100)
-        //     } else if (zombie.x > hero.x) {
-        //         zombie.setVelocityX(-100)
-        //     } else if (zombie.x === hero.x) {
-        //         console.log('same')
-        //     }
-        //     if (zombie.y < hero.y) {
-        //         zombie.setVelocityY(100)
-        //     } else if (zombie.y > hero.y) {
-        //         zombie.setVelocityY(-100)
-        //     } else if (zombie.y === hero.y) {
-        //         console.log('same')
-        //     }
-        // }
-
-        function enemyOnEnemy() {
-            //dconsole.log('yes')
-        }
-
-        // function update(time, delta) {
-        //     // Rotates player to face towards reticle
-        //     player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
-
-        //     enemies.getChildren().forEach(e => {
-        //         // Rotates enemy to face towards player
-        //         e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-        //         //this.physics.add.collider(enemies, enemies, null, enemyOnEnemy, moveEnemy(e, player))
-
-        //         this.physics.world.collide(player, e);
-        //         this.physics.moveToObject(e, player)
-        //     });
-
-        //     this.physics.add.collider(enemies, enemies)
-
-        //     constrainVelocity(player, 500);
-        // }
 
         var config = {
             type: Phaser.AUTO,
