@@ -11,9 +11,6 @@
 </head>
 
 <body>
-
-
-
     <script src="//cdn.jsdelivr.net/npm/phaser@3.18.1/dist/phaser.min.js"></script>
     <script>
         var config = {
@@ -49,9 +46,7 @@
         var game = new Phaser.Game(config);
 
         var Bullet = new Phaser.Class({
-
             Extends: Phaser.GameObjects.Image,
-
             initialize:
                 // Bullet Constructor
                 function Bullet(scene) {
@@ -92,7 +87,6 @@
                     this.setVisible(false);
                 }
             }
-
         });
 
         function preload() {
@@ -108,15 +102,13 @@
                 frameWidth: 66,
                 frameHeight: 60
             });
-
         }
 
         function create() {
             // Set world bounds
             this.physics.world.setBounds(0, 0, 800, 600);
-
             const ourWorld = this.physics.world;
-            console.log(ourWorld)
+
             // Add 2 groups for Bullet objects
             playerBullets = this.physics.add.group({
                 classType: Bullet,
@@ -138,7 +130,6 @@
             for (var i = 0; i < 8; i++) {
                 const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
                 const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
-
                 enemyProperties.push({
                     key: 'player_handgun',
                     repeat: 0,
@@ -149,6 +140,7 @@
                     }
                 });
             }
+
             enemies = this.physics.add.group(enemyProperties);
 
             reticle = this.physics.add.sprite(800, 700, 'target');
@@ -158,22 +150,41 @@
 
             // Set image/sprite properties
             player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
-            enemy.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true);
+            enemy.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true)
 
             reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
             hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp3.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
 
+            ///////////////////////
+            /// enemy collision ///
+            ///////////////////////
+
+            player.body.immovable = true;
+            // enemy.body.immovable = true;
+
             enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-            moveEnemy(enemy, player)
-            this.physics.add.collider(enemy, player, test);
+            this.physics.world.enable([enemy]);
+            this.physics.world.enable([player]);
+            // enemy.body.setVelocity(-100, 200).setBounce(1, 1).setCollideWorldBounds(true);
+            // player.body.setVelocity(100, 200).setBounce(1, 1).setCollideWorldBounds(true);
+
+            ///////////////
+            ///////////////
+            ///////////////
+
+            // moveEnemy(enemy, player)
+            // this.physics.add.collider(enemy, player, test);
+            // enemy.body.immovable = true;
+            // this.physics.collide(enemy, player, test, null, this);
 
             // Set sprite variables
             player.health = 3;
             enemy.health = 1;
             enemy.lastFired = 0;
             enemies.health = 1;
+
             enemies.children.entries.map(e => {
                 e.health = 1;
                 return e
@@ -235,17 +246,6 @@
                 }
             }, this);
 
-            // Pointer lock will only work after mousedown
-            // game.canvas.addEventListener('mousedown', function () {
-            //     game.input.mouse.requestPointerLock();
-            // });
-
-            // Exit pointer lock when Q or escape (by default) is pressed.
-            //this.input.keyboard.on('keydown_Q', function (event) {
-            // if (game.input.mouse.locked)
-            //     game.input.mouse.releasePointerLock();
-            //}, 0, this);
-
             // Move reticle upon locked pointer move
             this.input.on('pointermove', function (pointer) {
                 // console.log(pointer)
@@ -256,9 +256,10 @@
             }, this);
         }
 
-        function test(bodyA, bodyB) {
-            console.log()
-            bodyA.tint = 0xff0000;
+        function test(obj1, obj2) {
+            console.log('hit')
+            //this.stage.backgroundColor = '#992d2d';
+
         }
 
         function enemyHitCallback(enemyHit, bulletHit) {
@@ -353,13 +354,23 @@
         }
 
         function moveEnemy(zombie, hero) {
+
             // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
             // console.log(`hero: x-${hero.x} y=${hero.y}`)
-            zombie.x < hero.x ? zombie.setVelocityX(100) : zombie.x > hero.x ? zombie.setVelocityX(-100) : zombie.x ===
-                hero.x ? zombie.setAccelerationX(0) : '';
-            zombie.y < hero.y ? zombie.setVelocityY(100) : zombie.y > hero.y ? zombie.setVelocityY(-100) : zombie.y ===
-                hero.y ? zombie.setAccelerationY(0) : '';
-
+            if (zombie.x < hero.x) {
+                zombie.setVelocityX(100)
+            } else if (zombie.x > hero.x) {
+                zombie.setVelocityX(-100)
+            } else if (zombie.x === hero.x) {
+                console.log('same')
+            }
+            if (zombie.y < hero.y) {
+                zombie.setVelocityY(100)
+            } else if (zombie.y > hero.y) {
+                zombie.setVelocityY(-100)
+            } else if (zombie.y === hero.y) {
+                console.log('same')
+            }
         }
 
         function update(time, delta) {
@@ -369,25 +380,17 @@
             // Rotates enemy to face towards player
             enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
             moveEnemy(enemy, player)
+            // this.physics.collide(player, enemy, test, null, this);
+            this.physics.world.collide(player, enemy);
 
-            // enemies.children.entries.forEach(e => {
-            //     e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-            //     moveEnemy(e, player)
-            // })
+            // game.physics.arcade.collide(sprite1, sprite2, collisionHandler, null, this);
+            enemies.children.entries.forEach(e => {
+                e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
+                moveEnemy(e, player)
+                this.physics.world.collide(player, e);
+            })
 
-
-            //Make reticle move with player
-            // reticle.body.velocity.x = player.body.velocity.x;
-            // reticle.body.velocity.y = player.body.velocity.y;
-            // Constrain velocity of player
             constrainVelocity(player, 500);
-
-            // Constrain position of constrainReticle
-            // constrainReticle(reticle);
-
-            // Make enemy fire
-            //enemyFire(enemy, player, time, this);
-
         }
     </script>
 </body>
