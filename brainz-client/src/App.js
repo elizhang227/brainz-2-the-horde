@@ -53,7 +53,7 @@ class App extends Component {
                 <Link className="nav-link" to="/">Home<span className="sr-only"></span></Link>
               </Nav.Item>
               <Nav.Item className="nav-item active ">
-                <Link className="nav-link" to="/">High Scores<span className="sr-only"></span></Link>
+                <Link className="nav-link" to="/scores">High Scores<span className="sr-only"></span></Link>
               </Nav.Item>
               <Nav.Item className="nav-item active ">
                 <Link className="nav-link" to="/play">Play<span className="sr-only"></span></Link>

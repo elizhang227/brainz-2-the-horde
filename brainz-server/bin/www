@@ -34,19 +34,26 @@ const getHighScoresFromDatabase = async () => {
   }
 }
 
+let interval;
+
 io.on('connection', async (socket) => {
   console.log('initial connection established');
+
   let test;
-  setInterval(async () => {
-      test = await getHighScoresFromDatabase();
-      socket.emit('test', test);
+  interval = setInterval(async () => {
+    test = await getHighScoresFromDatabase();
+    socket.emit('test', test);
   }, 5000)
 
-// socket.on('test', () => {
-//   console.log('socket is on', data)
-//   this code is to get the stuff from the front end react side that you want to pass back to server
-// }) 
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+    clearInterval(interval);
+    socket.disconnect();
+  })
+
 })
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
