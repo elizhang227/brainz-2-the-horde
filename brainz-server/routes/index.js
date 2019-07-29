@@ -7,9 +7,15 @@ router.get('/', function(req, res, next) {
   res.send('test');
 });
 
-router.get('/scores', async (req, res, next) => {
-  const allScores = await ScoresModel.getHighScores();
-  res.json(allScores).status(200);
+router.get('/highscores', async (req, res, next) => {
+  const highScores = await ScoresModel.getHighScores();
+  res.json(highScores).status(200);
 })
+
+router.get('/recentscores', async (req, res, next) => {
+  const recentScores = await ScoresModel.getRecentScores();
+  res.json(recentScores).status(200);
+})
+
 
 module.exports = router;

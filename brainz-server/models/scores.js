@@ -12,22 +12,22 @@ class Scores{
             const response = await db.any(`
             SELECT wave, kills, user_id 
             FROM scores 
-            ORDER BY wave DESC`)
-            console.log(response)
+            ORDER BY wave DESC
+            LIMIT 10`)
+            //console.log(response)
             return response;
         } catch(err) {
             return err.message;
         }
     }
 
-    async checkKillCount(){
+    static async getRecentScores(){
         try{
-            const response = await db.one(
-                `
-                    SELECT kill_count FROM kills
-                    WHERE user_id = $1
-                `, [this.user_id]
-            );
+            const response = await db.any(`
+            SELECT wave, kills, user_id
+            FROM scores
+            ORDER BY timestamp DESC
+            limit 3`);
             return response;
         } catch(err) {
             return err.message;
