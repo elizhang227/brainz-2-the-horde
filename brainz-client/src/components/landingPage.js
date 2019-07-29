@@ -12,7 +12,7 @@ class LandingPage extends Component {
     render() {
         return (
             <section id="first" className="First">
-                <img className="homePage" src={HomePageMain} alt="Main Home page Image" />
+                <img className="homePage" src={HomePageMain} alt="" />
                 <Link className="start" to="/games" ><img src={StartGif} alt="Start Gif" /></Link>
             </section>
         )

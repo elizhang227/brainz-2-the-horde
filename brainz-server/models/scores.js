@@ -7,25 +7,15 @@ class Scores{
         this.user_id = user_id;
     }
 
-    static async getAllScores(){
+    static async getHighScores(){
         try{
-            const response = await db.any(`SELECT wave, kills, user_id FROM scores`)
+            const response = await db.any(`
+            SELECT wave, kills, user_id 
+            FROM scores 
+            ORDER BY wave DESC`)
             console.log(response)
             return response;
         } catch(err) {
-            return err.message;
-        }
-    }
-
-    static async createKills(id){
-        try{
-            await db.none(
-                `INSERT INTO kills
-                    (kill_count,user_id)
-                VALUES
-                    (0, $1)
-                `, [id]);
-        } catch (err) {
             return err.message;
         }
     }
@@ -44,20 +34,6 @@ class Scores{
         }
     }
 
-    async addKills(kills){
-        try{
-            const response = await db.one(
-                `
-                    UPDATE kills
-                    SET kill_count = $1
-                    WHERE user_id = $2
-                `, [kills, this.user_id]
-            )
-            return response;
-        } catch(err) {
-            return err.message;
-        }
-    }
 }
 
 module.exports = Scores;

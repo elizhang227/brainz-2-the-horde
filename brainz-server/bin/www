@@ -25,28 +25,35 @@ app.set('port', port);
 var server = http.createServer(app);
 const io = socketIo(server);
 
-const getInfoFromDatabase = async () => {
+const getHighScoresFromDatabase = async () => {
   try {
-      const res = await ScoresModel.getAllScores();
+      const res = await ScoresModel.getHighScores();
       return res;
   } catch (err) {
       return err.message
   }
 }
 
+let interval;
+
 io.on('connection', async (socket) => {
   console.log('initial connection established');
+
   let test;
-  setInterval(async () => {
-      test = await getInfoFromDatabase();
-      socket.emit('test', test);
+  interval = setInterval(async () => {
+    test = await getHighScoresFromDatabase();
+    socket.emit('test', test);
   }, 5000)
 
-// socket.on('test', () => {
-//   console.log('socket is on', data)
-//   this code is to get the stuff from the front end react side that you want to pass back to server
-// }) 
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+    clearInterval(interval);
+    socket.disconnect();
+  })
+
 })
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
