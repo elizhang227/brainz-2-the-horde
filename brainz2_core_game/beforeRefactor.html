@@ -33,6 +33,7 @@
                 update: update,
                 extend: {
                     player: null,
+                    enemies: null,
                     healthpoints: null,
                     reticle: null,
                     moveKeys: null,
@@ -50,7 +51,7 @@
             initialize:
                 // Bullet Constructor
                 function Bullet(scene) {
-                    Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+                    Phaser.GameObjects.Image.call(this, scene, 0, 0, '');
                     this.speed = 1;
                     this.born = 0;
                     this.direction = 0;
@@ -123,25 +124,20 @@
             // Add background player, enemy, reticle, healthpoint sprites
             var background = this.add.image(400, 300, 'background');
             player = this.physics.add.sprite(400, 300, 'player_handgun');
-            enemy = this.physics.add.sprite(50, 50, 'player_handgun');
 
             enemyProperties = [];
 
-            for (var i = 0; i < 8; i++) {
+            enemies = this.physics.add.group({
+                collideWorldBounds: true,
+                setCollideWorldBounds: true,
+                onWorldBounds: true
+            });
+
+            for (var i = 0; i < 10; i++) {
                 const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
                 const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
-                enemyProperties.push({
-                    key: 'player_handgun',
-                    repeat: 0,
-                    setXY: {
-                        x: randomX,
-                        y: randomY,
-                        stepX: 70
-                    }
-                });
+                enemies.create(randomX, randomY, '').setDisplaySize(20, 20);
             }
-
-            enemies = this.physics.add.group(enemyProperties);
 
             reticle = this.physics.add.sprite(800, 700, 'target');
             hp1 = this.add.image(-350, -250, 'target').setScrollFactor(0.5, 0.5);
@@ -150,8 +146,6 @@
 
             // Set image/sprite properties
             player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
-            enemy.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true)
-
             reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
             hp1.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
             hp2.setOrigin(0.5, 0.5).setDisplaySize(50, 50);
@@ -162,27 +156,15 @@
             ///////////////////////
 
             player.body.immovable = true;
-            // enemy.body.immovable = true;
-
-            enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-            this.physics.world.enable([enemy]);
             this.physics.world.enable([player]);
-            // enemy.body.setVelocity(-100, 200).setBounce(1, 1).setCollideWorldBounds(true);
-            // player.body.setVelocity(100, 200).setBounce(1, 1).setCollideWorldBounds(true);
+            // this.physics.world.enable([enemies]);
 
             ///////////////
             ///////////////
             ///////////////
-
-            // moveEnemy(enemy, player)
-            // this.physics.add.collider(enemy, player, test);
-            // enemy.body.immovable = true;
-            // this.physics.collide(enemy, player, test, null, this);
 
             // Set sprite variables
             player.health = 3;
-            enemy.health = 1;
-            enemy.lastFired = 0;
             enemies.health = 1;
 
             enemies.children.entries.map(e => {
@@ -241,25 +223,17 @@
                 if (bullet) {
                     bullet.fire(player, reticle);
                     // this.physics.add.collider(enemyBullets, enemies);
-                    enemies.children.entries.map(e => this.physics.add.collider(e, bullet, enemyHitCallback));
-                    this.physics.add.collider([enemy, enemies.children.entries], bullet, enemyHitCallback);
+                    enemies.children.entries.map(e => this.physics.add.collider(e, bullet,
+                        enemyHitCallback));
+                    this.physics.add.collider([enemies.children.entries], bullet, enemyHitCallback);
                 }
             }, this);
 
-            // Move reticle upon locked pointer move
+            // Move reticle 
             this.input.on('pointermove', function (pointer) {
-                // console.log(pointer)
-                //if (!!this.input.mouse.locked) {
                 reticle.x = pointer.position.x;
                 reticle.y = pointer.position.y;
-                //}
             }, this);
-        }
-
-        function test(obj1, obj2) {
-            console.log('hit')
-            //this.stage.backgroundColor = '#992d2d';
-
         }
 
         function enemyHitCallback(enemyHit, bulletHit) {
@@ -353,42 +327,45 @@
                 reticle.y = player.y - 0;
         }
 
-        function moveEnemy(zombie, hero) {
+        // function moveEnemy(zombie, hero) {
 
-            // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
-            // console.log(`hero: x-${hero.x} y=${hero.y}`)
-            if (zombie.x < hero.x) {
-                zombie.setVelocityX(100)
-            } else if (zombie.x > hero.x) {
-                zombie.setVelocityX(-100)
-            } else if (zombie.x === hero.x) {
-                console.log('same')
-            }
-            if (zombie.y < hero.y) {
-                zombie.setVelocityY(100)
-            } else if (zombie.y > hero.y) {
-                zombie.setVelocityY(-100)
-            } else if (zombie.y === hero.y) {
-                console.log('same')
-            }
+        //     // console.log(`zombie: x-${zombie.x} y=${zombie.y}`)
+        //     // console.log(`hero: x-${hero.x} y=${hero.y}`)
+        //     console.log(zombie)
+        //     if (zombie.x < hero.x) {
+        //         zombie.setVelocityX(100)
+        //     } else if (zombie.x > hero.x) {
+        //         zombie.setVelocityX(-100)
+        //     } else if (zombie.x === hero.x) {
+        //         console.log('same')
+        //     }
+        //     if (zombie.y < hero.y) {
+        //         zombie.setVelocityY(100)
+        //     } else if (zombie.y > hero.y) {
+        //         zombie.setVelocityY(-100)
+        //     } else if (zombie.y === hero.y) {
+        //         console.log('same')
+        //     }
+        // }
+
+        function enemyOnEnemy() {
+            //dconsole.log('yes')
         }
 
         function update(time, delta) {
             // Rotates player to face towards reticle
             player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
-            // Rotates enemy to face towards player
-            enemy.rotation = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-            moveEnemy(enemy, player)
-            // this.physics.collide(player, enemy, test, null, this);
-            this.physics.world.collide(player, enemy);
-
-            // game.physics.arcade.collide(sprite1, sprite2, collisionHandler, null, this);
-            enemies.children.entries.forEach(e => {
+            enemies.getChildren().forEach(e => {
+                // Rotates enemy to face towards player
                 e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-                moveEnemy(e, player)
+                //this.physics.add.collider(enemies, enemies, null, enemyOnEnemy, moveEnemy(e, player))
+
                 this.physics.world.collide(player, e);
-            })
+                this.physics.moveToObject(e, player)
+            });
+
+            this.physics.add.collider(enemies, enemies)
 
             constrainVelocity(player, 500);
         }
