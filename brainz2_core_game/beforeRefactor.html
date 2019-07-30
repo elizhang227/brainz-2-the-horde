@@ -103,6 +103,7 @@
             },
 
             create: function () {
+
                 // Set world bounds
                 this.physics.world.setBounds(0, 0, 800, 600);
                 const ourWorld = this.physics.world;
@@ -120,14 +121,12 @@
                     key: 'walk',
                     frames: walkAnim,
                     frameRate: 40,
-                    repeat: -1
                 });
 
                 this.anims.create({
                     key: 'attack',
                     frames: attackAnim,
                     frameRate: 12,
-                    repeat: 0
                 });
 
                 // Set Time
@@ -167,28 +166,23 @@
                 player.health = 3;
                 player.body.immovable = true;
                 enemies.getChildren().forEach(e => {
+                    e.attack = false;
                     e.health = 1;
                     e.invincibleTimer = 0;
-                    e.anims.play('walk', true)
+                    e.anims.play('walk', true);
+                    this.physics.add.collider(e, player, gotCaught, null, this);
+                    e.anims.play('walk', true);
+                    e.on('animationcomplete', () => { // if an animation ends play the idle animation
+                        e.anims.play('walk');
+                    });
                 });
 
                 //////////////////
                 // TEXT STYLING //
                 //////////////////
-                waveText = this.add.text(10, 10, '', {
-                    font: '16px Arial',
-                    fill: '#000000'
-                });
-
-                killsText = this.add.text(300, 10, '', {
-                    font: '16px Arial',
-                    fill: '#000000'
-                });
-
-                lifeText = this.add.text(700, 10, '', {
-                    font: '16px Arial',
-                    fill: '#000000'
-                });
+                waveText = this.add.text(10, 10, '', { font: '16px Arial', fill: '#000000' });
+                killsText = this.add.text(300, 10, '', { font: '16px Arial', fill: '#000000' });
+                lifeText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#000000' });
 
                 ////////////////////////////
                 // KEYBOARD FUNCTIONALITY //
@@ -258,27 +252,29 @@
                 enemies.getChildren().forEach(e => {
                     // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
                     e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-                    this.physics.add.collider(e, player, gotCaught, null, this.physics.moveToObject(e, player);
-);
-                this.physics.moveToObject(e, player);
-            });
+                    if (e.attack) {
+                        e.anims.play('attack', true);
+                        e.attack = false;
+                    }
+                    this.physics.moveToObject(e, player);
+                });
 
-        // Collider for our enemies - Stops them from stacking (somewhat)
-        this.physics.add.collider(enemies, enemies)
+                // Collider for our enemies - Stops them from stacking (somewhat)
+                this.physics.add.collider(enemies, enemies)
 
-        // Next wave
-        if (enemies.getChildren().length === 0) {
-            enemyCount = enemyCount * 1.25;
-            wave++;
-            this.scene.restart();
-        }
+                // Next wave
+                if (enemies.getChildren().length === 0) {
+                    enemyCount = enemyCount * 1.25;
+                    wave++;
+                    this.scene.restart();
+                }
 
-        constrainVelocity(player, 500);
+                constrainVelocity(player, 500);
 
-        // Display Texts
-        waveText.setText(`Wave: ${wave}`);
-        killsText.setText(`Kills: ${kills}`);
-        lifeText.setText(`Life: ${life}`);
+                // Display Texts
+                waveText.setText(`Wave: ${wave}`);
+                killsText.setText(`Kills: ${kills}`);
+                lifeText.setText(`Life: ${life}`);
             }
         });
 
@@ -286,7 +282,7 @@
 
         // Damage Callback
         function gotCaught(enemy, player) {
-            enemy.anims.play('attack', true);
+            enemy.attack = true;
 
             if (this.time.now > enemy.invincibleTimer) {
                 life--;
