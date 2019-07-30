@@ -15,7 +15,6 @@ class Profile extends Component {
 
     async componentDidMount() {
         const myScores = await this.loadMyScores();
-        console.log('componentdid mount scores', myScores)
         this.setState({ 
             myScores: myScores
         });
@@ -72,7 +71,6 @@ class Profile extends Component {
                     <MainContainer>
                         <h4 className="quotes">{this.state.loginMessage}</h4>
                         <h1 className="scoresHeader display-6">Your Scores:</h1>
-                        <p>test</p>
                         <ul>
                             {myScores.map((data, index) => {
                                 return (

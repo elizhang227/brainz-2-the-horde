@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+const moment = require('moment');
 
 class Scores extends Component {
     state = {
@@ -20,8 +21,6 @@ class Scores extends Component {
 
         const { endpoint } = this.state;
         const socket = io(endpoint);
-
-        console.log('this is props', this.props)
 
         socket.on('highScores', data => {
             if (this.state.onLoad === false) {
@@ -48,6 +47,8 @@ class Scores extends Component {
                 this.componentWillUnmount = () => {
                     console.log('this is test to see if it works')
                     socket.disconnect();
+                    // clears the interval set below
+                    clearInterval(interval)
                 }
             }
             console.log('this is data', data)
@@ -62,10 +63,25 @@ class Scores extends Component {
         })
 
         // sending back data to be stored in database
-        let foo = {'wave': 1, 'kills': 2, 'user_id': 3, 'game_mode_id': 1, 'timestamp': '09/15/2019, 11:18:25 am'}
-        socket.emit('testing', foo)
+        // writing loop to test if leaderboards update correctly
+        let foo;
+        let interval;
+        let counter = 0;
+        interval = setInterval(() => {
+            if (counter === 20) {
+                clearInterval(interval)
+                counter = 0;
+            } else {
+                const test = moment().format('L, h:mm:ss a');
+                console.log('moment', test)
+                foo = {'wave': counter, 'kills': 10+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
+                socket.emit('testing', foo)
+                counter++
+            }
+        }, 5000)
+        
+        // socket.emit('testing', foo)
 
-        //socket.emit('send-id', 'testtttt')
     }
 
     loadInitialHighScores = async () => {
@@ -84,7 +100,7 @@ class Scores extends Component {
 
     render() {
         const { highscores, recentscores } = this.state;
-        //console.log('this is response', response)
+
         return (
         <div>
             <h2>Top 10 Scores</h2>
