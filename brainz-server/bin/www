@@ -48,23 +48,9 @@ io.on('connection', async (socket) => {
     //console.log('data coming from front', data)
     const { wave, kills, user_id, game_mode_id, timestamp } = data;
     await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
-    
-    //console.log('destructure', name);
   })
 
-  // socket.on('send-id', async (data) => {
-  //   console.log('id right here boi', data)
-  //   const test = await ScoresModel.getMyScores(data);
-  //   console.log('test', test);
-  // })
 })
-
-// io.on('connect', async (data) => {
-//   console.log('come get ur data', data);
-//   console.log('test connection established');
-
-// })
-
 
 
 /**
