@@ -21,6 +21,8 @@ class Scores extends Component {
         const { endpoint } = this.state;
         const socket = io(endpoint);
 
+        console.log('this is props', this.props)
+
         socket.on('highScores', data => {
             if (this.state.onLoad === false) {
                 this.setState({ highscores: data })
@@ -34,9 +36,9 @@ class Scores extends Component {
                 this.setState({
                     highscores: data,
                 })
-                console.log('changed')
+                console.log('changed, put changing animation here')
             } else {
-                console.log('still the same')
+                console.log('still the same, do nothing')
             }
         })
 
@@ -53,11 +55,17 @@ class Scores extends Component {
                 this.setState({
                     recentscores: data,
                 })
-                console.log('changed')
+                //console.log('changed')
             } else {
-                console.log('still the same')
+                //console.log('still the same')
             }
         })
+
+        // sending back data to be stored in database
+        let foo = {'wave': 1, 'kills': 2, 'user_id': 3, 'game_mode_id': 1, 'timestamp': '09/15/2019, 11:18:25 am'}
+        socket.emit('testing', foo)
+
+        //socket.emit('send-id', 'testtttt')
     }
 
     loadInitialHighScores = async () => {
