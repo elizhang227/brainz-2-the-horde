@@ -13,12 +13,12 @@
 <body>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.18.1/dist/phaser.min.js"></script>
     <script>
-        var enemyCount = 2;
+        let enemyCount = 2;
         let kills = 0;
-        var wave = 1;
-        var life = 3;
+        let wave = 1;
+        let life = 3;
 
-        var Bullet = new Phaser.Class({
+        let Bullet = new Phaser.Class({
             Extends: Phaser.GameObjects.Image,
             initialize:
                 // Bullet Constructor
@@ -63,7 +63,7 @@
             }
         });
 
-        var SceneA = new Phaser.Class({
+        let SceneA = new Phaser.Class({
 
             Extends: Phaser.Scene,
 
@@ -79,22 +79,24 @@
                             reticle: null,
                             moveKeys: null,
                             playerBullets: null,
-                            enemyBullets: null,
                             time: 0,
                             waveText: '',
                             killText: '',
                             lifeText: '',
-                            timeEvent: 0
                         }
                     });
                 },
 
             preload: function () {
                 // Load in images and sprites
-                this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png', {
-                    frameWidth: 66,
-                    frameHeight: 60
-                }); // Made by tokkatrain: https://tokkatrain.itch.io/top-down-basic-set
+                this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png', { frameWidth: 66, frameHeight: 60 });
+                for (let i = 0; i <= 16; i++) {
+                    if (i <= 8) {
+                        this.load.image(`zombieAttack${i}`, `assets/animations/zombie/skeleton-attack_${i}.png`);
+                    }
+                    this.load.image(`zombie${i}`, `assets/animations/zombie/skeleton-move_${i}.png`);
+                }
+
                 this.load.image('bullet', 'assets/bullet.png');
                 this.load.image('target', 'assets/red_crosshair.png');
                 this.load.image('background', 'assets/skies/underwater1.png');
@@ -104,54 +106,75 @@
                 // Set world bounds
                 this.physics.world.setBounds(0, 0, 800, 600);
                 const ourWorld = this.physics.world;
+                let walkAnim = [],
+                    attackAnim = [];
 
-                // Add 2 groups for Bullet objects
-                playerBullets = this.physics.add.group({
-                    classType: Bullet,
-                    runChildUpdate: true
+                for (let i = 0; i <= 16; i++) {
+                    if (i <= 8) {
+                        attackAnim.push({ key: `zombieAttack${i}` });
+                    }
+                    walkAnim.push({ key: `zombie${i}` });
+                }
+
+                this.anims.create({
+                    key: 'walk',
+                    frames: walkAnim,
+                    frameRate: 40,
+                    repeat: -1
                 });
 
-                enemyBullets = this.physics.add.group({
-                    classType: Bullet,
-                    runChildUpdate: true
+                this.anims.create({
+                    key: 'attack',
+                    frames: attackAnim,
+                    frameRate: 12,
+                    repeat: 0
                 });
+
+                // Set Time
+                timedEvent = this.time.addEvent();
 
                 // Add background player, enemy, reticle, healthpoint sprites
-                var background = this.add.image(400, 300, 'background');
+                let background = this.add.image(400, 300, 'background');
                 player = this.physics.add.sprite(400, 300, 'player_handgun');
+                reticle = this.physics.add.sprite(800, 700, 'target');
 
+                // Add groups for enemies
                 enemies = this.physics.add.group({
                     collideWorldBounds: true,
                     setCollideWorldBounds: true,
                     onWorldBounds: true,
                 });
 
-                for (var i = 0; i < enemyCount; i++) {
+                // Add groups for Bullet objects
+                playerBullets = this.physics.add.group({
+                    classType: Bullet,
+                    runChildUpdate: true
+                });
+
+                // Creation of our enemy sprites
+                for (let i = 0; i < Math.round(enemyCount); i++) {
                     const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
                     const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
-                    enemies.create(randomX, randomY, 'player_handgun');
+                    enemies.create(randomX, randomY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(100, 100).setCollideWorldBounds(true);
                 }
 
-                reticle = this.physics.add.sprite(800, 700, 'target');
-
-                // Set image/sprite propertiessd
+                // Set image/sprite properties
                 background.setOrigin(0.5, 0.5).setDisplaySize(800, 600);
-                player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800,
-                    800);
+                player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
                 reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
-                enemies.getChildren().forEach(e => e.setOrigin(0.5, 0.5).setDisplaySize(100, 100)
-                    .setCollideWorldBounds(true))
 
-                player.body.immovable = true;
-
-                // Set sprite variables
+                // Set sprite letiables
                 player.health = 3;
-                timedEvent = this.time.addEvent();
+                player.body.immovable = true;
                 enemies.getChildren().forEach(e => {
                     e.health = 1;
                     e.invincibleTimer = 0;
+                    e.anims.play('walk', true)
                 });
 
+                //////////////////
+                // TEXT STYLING //
+                //////////////////
                 waveText = this.add.text(10, 10, '', {
                     font: '16px Arial',
                     fill: '#000000'
@@ -167,7 +190,9 @@
                     fill: '#000000'
                 });
 
-                // Set camera properties
+                ////////////////////////////
+                // KEYBOARD FUNCTIONALITY //
+                ////////////////////////////
                 moveKeys = this.input.keyboard.addKeys({
                     'up': Phaser.Input.Keyboard.KeyCodes.W,
                     'down': Phaser.Input.Keyboard.KeyCodes.S,
@@ -212,10 +237,10 @@
                     if (player.active === false) {
                         return;
                     } else {
-                        var bullet = playerBullets.get().setActive(true).setVisible(true);
+                        let bullet = playerBullets.get().setActive(true).setVisible(true);
 
                         bullet.fire(player, reticle);
-                        this.physics.add.collider(enemies.getChildren(), bullet, enemyHitCallback);
+                        this.physics.add.overlap(enemies.getChildren(), bullet, enemyHitCallback);
                     }
                 }, this);
 
@@ -231,40 +256,47 @@
                 player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
                 enemies.getChildren().forEach(e => {
-                    // Rotates enemy to face towards player
+                    // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
                     e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
+                    this.physics.add.collider(e, player, gotCaught, null, this.physics.moveToObject(e, player);
+);
+                this.physics.moveToObject(e, player);
+            });
 
-                    this.physics.add.collider(e, player, gotCaught, null, this);
-                    this.physics.moveToObject(e, player)
-                });
+        // Collider for our enemies - Stops them from stacking (somewhat)
+        this.physics.add.collider(enemies, enemies)
 
-                this.physics.add.collider(enemies, enemies)
+        // Next wave
+        if (enemies.getChildren().length === 0) {
+            enemyCount = enemyCount * 1.25;
+            wave++;
+            this.scene.restart();
+        }
 
-                if (enemies.getChildren().length === 0) {
-                    enemyCount = Math.round(enemyCount * 1.5);
-                    wave++;
-                    this.scene.restart();
-                }
-                constrainVelocity(player, 500);
+        constrainVelocity(player, 500);
 
-                // Display Texts
-                waveText.setText(`Wave: ${wave}`);
-                killsText.setText(`Kills: ${kills}`);
-                lifeText.setText(`Life: ${life}`);
+        // Display Texts
+        waveText.setText(`Wave: ${wave}`);
+        killsText.setText(`Kills: ${kills}`);
+        lifeText.setText(`Life: ${life}`);
             }
         });
 
         // END OF SCENE
 
+        // Damage Callback
         function gotCaught(enemy, player) {
+            enemy.anims.play('attack', true);
+
             if (this.time.now > enemy.invincibleTimer) {
                 life--;
                 enemy.invincibleTimer = this.time.now + 1000;
             }
         }
 
+        // Enemy gets shot call back
         function enemyHitCallback(enemyHit, bulletHit) {
-            // Reduce health of enemy
+            // Reduce health ofd enemy
             if (bulletHit.active === true && enemyHit.active === true) {
                 enemyHit.health = enemyHit.health - 1;
 
@@ -279,31 +311,12 @@
             }
         }
 
-        function enemyFire(enemy, player, time, gameObject) {
-            if (enemy.active === false) {
-                return;
-            }
-
-            if ((time - enemy.lastFired) > 1000) {
-                enemy.lastFired = time;
-
-                // Get bullet from bullets group
-                var bullet = enemyBullets.get().setActive(true).setVisible(true);
-
-                if (bullet) {
-                    bullet.fire(enemy, player);
-                    // Add collider between bullet and player
-                    gameObject.physics.add.collider(player, bullet, playerHitCallback);
-                }
-            }
-        }
-
         // Ensures sprite speed doesnt exceed maxVelocity while update is called
         function constrainVelocity(sprite, maxVelocity) {
             if (!sprite || !sprite.body)
                 return;
 
-            var angle, currVelocitySqr, vx, vy;
+            let angle, currVelocitySqr, vx, vy;
             vx = sprite.body.velocity.x;
             vy = sprite.body.velocity.y;
             currVelocitySqr = vx * vx + vy * vy;
@@ -319,8 +332,8 @@
 
         // Ensures reticle does not move offscreen
         function constrainReticle(reticle) {
-            var distX = reticle.x - player.x; // X distance between player & reticle
-            var distY = reticle.y - player.y; // Y distance between player & reticle
+            let distX = reticle.x - player.x; // X distance between player & reticle
+            let distY = reticle.y - player.y; // Y distance between player & reticle
 
             // Ensures reticle cannot be moved offscreen (player follow)
             if (distX > 800)
@@ -334,7 +347,7 @@
                 reticle.y = player.y - 0;
         }
 
-        var config = {
+        let config = {
             type: Phaser.AUTO,
             parent: 'phaser-example',
             width: 800,
@@ -351,7 +364,7 @@
             scene: [SceneA],
         };
 
-        var game = new Phaser.Game(config);
+        let game = new Phaser.Game(config);
     </script>
 </body>
 
