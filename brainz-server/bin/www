@@ -29,12 +29,11 @@ let interval;
 io.on('connection', async (socket) => {
   console.log('initial connection established');
 
-  let test;
   interval = setInterval(async () => {
-    test = await ScoresModel.getHighScores();
-    test2 = await ScoresModel.getRecentScores();
-    socket.emit('test', test);
-    socket.emit('test2', test2);
+    highScores = await ScoresModel.getHighScores();
+    recentScores = await ScoresModel.getRecentScores();
+    socket.emit('highScores', highScores);
+    socket.emit('recentScores', recentScores);
   }, 5000)
 
   socket.on('disconnect', () => {
@@ -43,7 +42,28 @@ io.on('connection', async (socket) => {
     socket.disconnect();
   })
 
+  // getting back data to be stored in database
+  // call ScoresModel.addScore() here
+  socket.on('testing', async (data) => {
+    //console.log('data coming from front', data)
+    const { wave, kills, user_id, game_mode_id, timestamp } = data;
+    await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
+    
+    //console.log('destructure', name);
+  })
+
+  // socket.on('send-id', async (data) => {
+  //   console.log('id right here boi', data)
+  //   const test = await ScoresModel.getMyScores(data);
+  //   console.log('test', test);
+  // })
 })
+
+// io.on('connect', async (data) => {
+//   console.log('come get ur data', data);
+//   console.log('test connection established');
+
+// })
 
 
 

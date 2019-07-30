@@ -34,6 +34,31 @@ class Scores{
         }
     }
 
+    static async addScore(wave, kills, user_id, game_mode_id, timestamp){
+        try {
+            const response = await db.one(`
+            INSERT INTO scores
+                (wave, kills, user_id, game_mode_id, timestamp)
+            VALUES
+                (${wave}, ${kills}, ${user_id}, ${game_mode_id}, '${timestamp}')
+            `);
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
+
+    static async getMyScores(id) {
+        try {
+            const response = await db.any(`
+            SELECT wave, kills
+            FROM scores
+            WHERE user_id = ${id}`);
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
 }
 
 module.exports = Scores;
