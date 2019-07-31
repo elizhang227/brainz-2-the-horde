@@ -27,7 +27,7 @@
                     gravity: {
                         y: 0
                     },
-                    debug: false
+                    debug: true
                 }
             },
             scene: {
@@ -112,6 +112,7 @@
         function create() {
             // Set world bounds
             this.physics.world.setBounds(0, 0, 800, 600);
+            const ourWorld = this.physics.world;
 
             // Add 2 groups for Bullet objects
             playerBullets = this.physics.add.group({
@@ -125,15 +126,12 @@
 
             // Add background player, enemy, reticle, healthpoint sprites
             var background = this.add.image(400, 300, 'background');
-            enemy = this.physics.add.group({
-                key: 'enemy',
-                repeat: 11,
-                setXY: {
-                    x: 12,
-                    y: 12,
-                    stepX: 70
-                }
-            });
+            enemy = this.physics.add.group();
+            for (var i = 0; i < 10; i++) {
+                const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
+                const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
+                enemy.create(randomX, randomY, 'player_handgun').setDisplaySize(30, 30).setCollideWorldBounds(true);
+            }
 
             player = this.physics.add.sprite(400, 300, 'player_handgun');
             reticle = this.physics.add.sprite(800, 700, 'target');
