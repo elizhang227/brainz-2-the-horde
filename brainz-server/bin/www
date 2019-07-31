@@ -44,7 +44,7 @@ io.on('connection', async (socket) => {
 
   // getting back data to be stored in database
   // call ScoresModel.addScore() here
-  socket.on('testing', async (data) => {
+  socket.on('game-results', async (data) => {
     //console.log('data coming from front', data)
     const { wave, kills, user_id, game_mode_id, timestamp } = data;
     await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)

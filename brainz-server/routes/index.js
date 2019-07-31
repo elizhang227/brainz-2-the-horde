@@ -18,7 +18,7 @@ router.get('/recentscores', async (req, res, next) => {
 })
 
 router.get('/my-scores/:id', async (req, res, next) => {
-  console.log('req param', req.params)
+  //console.log('req param', req.params)
   const myScores = await ScoresModel.getMyScores(req.params.id);
   res.json(myScores).status(200);
 })
