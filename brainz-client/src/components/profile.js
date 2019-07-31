@@ -6,9 +6,11 @@ import MainContainer from "../sharedComponents/mainContainer"
 
 import "../App.css";
 
+const ip = '10.150.41.155';
+
 class Profile extends Component {
     state = {
-        endpoint: '10.150.41.155:3000',
+        endpoint: `${ip}:3000`,
         loginMessage: "",
         myScores: []
     }
@@ -24,14 +26,14 @@ class Profile extends Component {
     }
 
     loadMyScores = async () => {
-        const url = `http://10.150.41.155:3000/my-scores/${this.props.user.id}`;
+        const url = `http://${ip}:3000/my-scores/${this.props.user.id}`;
         const response = await fetch(url);
         const data = response.json();
         return data;
     }
 
     getProfile = async () => {
-        const url = "http://localhost:3000/users/";
+        const url = `http://${ip}:3000/users/`;
         
         const { endpoint } = this.state;
         const socket = io(endpoint);

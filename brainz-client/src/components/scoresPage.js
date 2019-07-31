@@ -1,53 +1,13 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import styled from 'styled-components';
-const moment = require('moment');
+import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, StyledUl, ModeLi } from '../styled-components/scoresPageStyles';
+//const moment = require('moment');
 
-const StyledH1 = styled.h1`
-    font-family: 'MyWebFont', Fallback, sans-serif;
-    color: #FBAE18;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-`;
-
-const StyledLi = styled.li`
-    font-family: 'MyWebFont', Fallback, sans-serif;
-    list-style-type: none;
-    display: flex;
-    justify-content: center;
-`;
-
-const ModeLi = styled.li`
-    font-family: 'MyWebFont', Fallback, sans-serif;
-    list-style-type: none;
-    display: flex;
-    justify-content: flex-start;
-`;
-
-const StyledDiv = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
-const StyledUl = styled.ul`
-    padding-right: 25px;
-`;
-
-const StyledTitled = styled.p`
-    font-family: 'MyWebFont', Fallback, sans-serif;
-    margin-bottom: 8px;
-    color: #48ff10;
-    display: flex;
-
-`;
-
-// console.log(localIpUrl('public', 'ipv4'));
-// console.log(window)
+const ip = '10.150.41.155'
 
 class Scores extends Component {
     state = {
-        endpoint: '192.168.86.205:3000',
+        endpoint: `${ip}:3000`,
         highscores: false,
         recentscores: false,
         onLoad: false
@@ -128,14 +88,14 @@ class Scores extends Component {
     }
 
     loadInitialHighScores = async () => {
-        const url = `http://192.168.86.205:3000/highscores`;
+        const url = `http://${ip}:3000/highscores`;
         const response = await fetch(url);
         const data = response.json();
         return data;
     }
 
     loadInitialRecentScores = async () => {
-        const url = `http://192.168.86.205:3000/recentscores`;
+        const url = `http://${ip}:3000/recentscores`;
         const response = await fetch(url);
         const data = response.json();
         return data;
@@ -146,57 +106,79 @@ class Scores extends Component {
 
         return (
         <div>
-            <StyledH1>TOP TEN SCORES</StyledH1>
+            <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
             {(highscores !== false) ? 
             <StyledDiv>
                 <StyledUl>
                 <StyledTitled>RANK</StyledTitled>
                 {highscores.map((data, index) => {
-                    return (
-                        <StyledLi key={`data${index}`}>
-                            {index+1}
-                        </StyledLi>
-                    )
+                    if (index < 3) {
+                        return (
+                            <Top3Li key={`data${index}`}>
+                                {index+1}
+                            </Top3Li>
+                        )
+                    } else {
+                        return (
+                            <StyledLi key={`data${index}`}>
+                                {index+1}
+                            </StyledLi>
+                        )
+                    }
                 })}
                 </StyledUl>
                 <StyledUl>
                 <StyledTitled>USERID</StyledTitled>
                 {highscores.map((data, index) => {
-                    return (
-                        <StyledLi key={`data${index}`}>
-                            {data.user_id}
-                        </StyledLi>
-                    )
+                    if (index < 3) {
+                        return (
+                            <Top3Li key={`data${index}`}>
+                                {data.user_id}
+                            </Top3Li>
+                        )
+                    } else {
+                        return (
+                            <StyledLi key={`data${index}`}>
+                                {data.user_id}
+                            </StyledLi>
+                        )
+                    }
                 })}
                 </StyledUl>
                 <StyledUl>
                 <StyledTitled>WAVE</StyledTitled>
                 {highscores.map((data, index) => {
-                    return (
-                        <StyledLi key={`data${index}`}>
-                            {data.wave}
-                        </StyledLi>
-                    )
+                    if (index < 3) {
+                        return (
+                            <Top3Li key={`data${index}`}>
+                                {data.wave}
+                            </Top3Li>
+                        )
+                    } else {
+                        return (
+                            <StyledLi key={`data${index}`}>
+                                {data.wave}
+                            </StyledLi>
+                        )
+                    }
                 })}
                 </StyledUl>
                 <StyledUl>
                 <StyledTitled>KILLS</StyledTitled>
                 {highscores.map((data, index) => {
-                    return (
-                        <StyledLi key={`data${index}`}>
-                            {data.kills}
-                        </StyledLi>
-                    )
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>MODE</StyledTitled>
-                {highscores.map((data, index) => {
-                    return (
-                        <ModeLi key={`data${index}`}>
-                            {data.difficulty}
-                        </ModeLi>
-                    )
+                    if (index < 3) {
+                        return (
+                            <Top3Li key={`data${index}`}>
+                                {data.kills}
+                            </Top3Li>
+                        )
+                    } else {
+                        return (
+                            <StyledLi key={`data${index}`}>
+                                {data.kills}
+                            </StyledLi>
+                        )
+                    }
                 })}
                 </StyledUl>
             </StyledDiv>
@@ -204,7 +186,7 @@ class Scores extends Component {
             }
 
 
-            <StyledH1>Recent Games</StyledH1>
+            <RecentScoresH1 className='scoresHeader'>Recent Games</RecentScoresH1>
             {(recentscores !== false) ? 
             <StyledDiv>
                 <StyledUl>

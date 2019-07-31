@@ -211,7 +211,6 @@ input[type="radio"][value="apocalypse"]:checked {
 }
 
 .scoresHeader {
-  margin: 20px 0 10px;
   text-align: center;
   text-shadow: 0 4px 0 rgba(100, 100, 100, 1), 0 8px 3px rgba(0, 0, 0, 0.7);
 }
