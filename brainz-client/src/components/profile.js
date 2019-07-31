@@ -3,8 +3,8 @@ import { Redirect } from "react-router-dom";
 import io from 'socket.io-client';
 
 import MainContainer from "../sharedComponents/mainContainer"
-
 import "../App.css";
+import { StyledLi, StyledH1, StyledH4 } from '../styled-components/profilePageStyles';
 
 const ip = '10.150.41.155';
 
@@ -71,14 +71,14 @@ class Profile extends Component {
             case true:
                 return (
                     <MainContainer>
-                        <h4 className="quotes">{this.state.loginMessage}</h4>
-                        <h1 className="scoresHeader display-6">Your Scores:</h1>
+                        <StyledH4 className="quotes">{this.state.loginMessage}</StyledH4>
+                        <StyledH1 className="scoresHeader">Your Scores</StyledH1>
                         <ul>
                             {myScores.map((data, index) => {
                                 return (
-                                    <li key={`data${index}`}>
+                                    <StyledLi key={`data${index}`}>
                                         Wave: {data.wave} Kills: {data.kills}
-                                    </li>
+                                    </StyledLi>
                                 )
                             })}
                         </ul>

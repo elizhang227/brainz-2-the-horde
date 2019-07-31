@@ -87,6 +87,13 @@ class Scores extends Component {
 
     }
 
+    getElement() {
+        const element = document.getElementById('test');
+        element.classList.add('blinking');
+        console.log('this is element', element)
+        return element;
+    }
+
     loadInitialHighScores = async () => {
         const url = `http://${ip}:3000/highscores`;
         const response = await fetch(url);
@@ -128,18 +135,18 @@ class Scores extends Component {
                 })}
                 </StyledUl>
                 <StyledUl>
-                <StyledTitled>USERID</StyledTitled>
+                <StyledTitled>NAME</StyledTitled>
                 {highscores.map((data, index) => {
                     if (index < 3) {
                         return (
                             <Top3Li key={`data${index}`}>
-                                {data.user_id}
+                                {data.f_name}
                             </Top3Li>
                         )
                     } else {
                         return (
                             <StyledLi key={`data${index}`}>
-                                {data.user_id}
+                                {data.f_name.substring(0,3)}
                             </StyledLi>
                         )
                     }
@@ -190,11 +197,11 @@ class Scores extends Component {
             {(recentscores !== false) ? 
             <StyledDiv>
                 <StyledUl>
-                <StyledTitled>USERID</StyledTitled>
+                <StyledTitled>NAME</StyledTitled>
                 {recentscores.map((data, index) => {
                     return (
-                    <StyledLi key={`data${index}`}>
-                        {data.user_id}
+                    <StyledLi id='test' key={`data${index}`} onChange={(e) => this.getElement(e)}>
+                        {data.f_name.substring(0,3)}
                     </StyledLi>
                     )
                 })}
