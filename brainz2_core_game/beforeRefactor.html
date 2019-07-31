@@ -7,16 +7,26 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Stylesheet Link -->
-
+    <style>
+        #test canvas:hover {
+            cursor: none;
+        }
+    </style>
 </head>
 
 <body>
+    <div id='test'></div>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.18.1/dist/phaser.min.js"></script>
     <script>
+        const worldWidth = 1600;
+        const worldHeight = 1600;
+        const gameWidth = 800;
+        const gameHeight = 600;
         let enemyCount = 2;
         let kills = 0;
         let wave = 1;
         let life = 3;
+        let run = false;
 
         let Bullet = new Phaser.Class({
             Extends: Phaser.GameObjects.Image,
@@ -99,14 +109,16 @@
 
                 this.load.image('bullet', 'assets/bullet.png');
                 this.load.image('target', 'assets/red_crosshair.png');
-                this.load.image('background', 'assets/skies/underwater1.png');
+                this.load.image('background', 'assets/grass.png');
+                this.load.bitmapFont('arcadeTextSmall', 'assets/fonts/emu-small/font.png', 'assets/fonts/emu-small/font.xml');
+                this.load.bitmapFont('arcadeTextLarge', 'assets/fonts/emu-large/font.png', 'assets/fonts/emu-large/font.xml');
             },
 
             create: function () {
                 // Set world bounds
-                this.physics.world.setBounds(0, 0, 1600, 1600);
+                this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
                 const ourWorld = this.physics.world;
-                console.log(this.game)
+
                 let walkAnim = [],
                     attackAnim = [];
 
@@ -130,11 +142,12 @@
                 });
 
                 // Set Time
-                timedEvent = this.time.addEvent();
-
                 // Add background player, enemy, reticle, healthpoint sprites
-                let background = this.add.image(800, 800, 'background')
-                player = this.physics.add.sprite(800, 800, 'player_handgun');
+                // let background = this.add.group({ key: 'background', frameQuantity: 300 });
+
+                let background = this.add.tileSprite(worldWidth / 2, worldHeight / 2, worldWidth, worldHeight, 'background');
+
+                player = this.physics.add.sprite(worldWidth / 2, worldHeight / 2, 'player_handgun');
                 reticle = this.physics.add.sprite(0, 0, 'target');
 
                 // Add groups for enemies
@@ -150,153 +163,174 @@
                     runChildUpdate: true
                 });
 
-                // Creation of our enemy sprites
-                for (let i = 0; i < Math.round(enemyCount); i++) {
-                    let randX = Phaser.Math.Between(0, ourWorld.bounds.width)
-                    let randY;
-
-                    if ((randX >= 0 && randX <= (ourWorld.bounds.width - this.game.config.width) / 2) || (randX >= ourWorld.bounds.width - (this.game.config.width / 2) && randX <= ourWorld.bounds.width)) {
-                        randY = Phaser.Math.Between(0, ourWorld.bounds.height)
-                    } else {
-                        randomTopBottom = [
-                            Phaser.Math.Between(0, (ourWorld.bounds.height - this.game.config.height) / 2),
-                            Phaser.Math.Between(ourWorld.bounds.height - (this.game.config.height / 2), ourWorld.bounds.height)
-                        ];
-                        randY = randomTopBottom[Phaser.Math.Between(0, 1)]
-                    }
-
-                    enemies.create(randX, randY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
-                }
-
-                // Set image/sprite properties
-                background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1600);
+                // Set player and camera in the center in of the screen.
                 player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
-                reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
-
-                // Set sprite letiables
-                player.health = 3;
-                player.body.immovable = true;
-                enemies.getChildren().forEach(e => {
-                    e.attack = false;
-                    e.health = 1;
-                    e.invincibleTimer = 0;
-                    e.anims.play('walk', true);
-                    this.physics.add.collider(e, player, gotCaught, null, this);
-                    e.anims.play('walk', true);
-                    e.on('animationcomplete', () => { // if an animation ends play the idle animation
-                        e.anims.play('walk');
-                    });
-                });
-
                 this.cameras.main.startFollow(player);
 
                 //////////////////
                 // TEXT STYLING //
                 //////////////////
 
-                waveText = this.add.text(10, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
-                killsText = this.add.text(300, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
-                lifeText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
+                //let waveStartText = this.add.text(gameWidth / 2, gameHeight / 2, `Wave ${wave}`, { font: '16px Arial', fill: '#000000' }).setOrigin(0.5, 0.5).setScrollFactor(0);
 
-                ////////////////////////////
-                // KEYBOARD FUNCTIONALITY //
-                ////////////////////////////
-                moveKeys = this.input.keyboard.addKeys({
-                    'up': Phaser.Input.Keyboard.KeyCodes.W,
-                    'down': Phaser.Input.Keyboard.KeyCodes.S,
-                    'left': Phaser.Input.Keyboard.KeyCodes.A,
-                    'right': Phaser.Input.Keyboard.KeyCodes.D
-                });
+                let waveStartText = this.add.bitmapText(gameWidth / 2, gameHeight / 2, 'arcadeTextLarge', `Wave ${wave}`).setOrigin(0.5, 0.5).setScrollFactor(0);
+                waveText = this.add.bitmapText(10, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
+                killsText = this.add.bitmapText(300, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
+                lifeText = this.add.bitmapText(700, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
 
-                // Enables movement of player with WASD keys
-                this.input.keyboard.on('keydown_W', function (event) {
-                    player.setAccelerationY(-800);
-                });
-                this.input.keyboard.on('keydown_S', function (event) {
-                    player.setAccelerationY(800);
-                });
-                this.input.keyboard.on('keydown_A', function (event) {
-                    player.setAccelerationX(-800);
-                });
-                this.input.keyboard.on('keydown_D', function (event) {
-                    player.setAccelerationX(800);
-                });
+                let timedEvent = this.time.delayedCall(1000, () => {
+                    // Remove Wave Text
+                    waveStartText.setText('')
 
-                // Stops player acceleration on uppress of WASD keys
-                this.input.keyboard.on('keyup_W', function (event) {
-                    if (moveKeys['down'].isUp)
-                        player.setAccelerationY(0);
-                });
-                this.input.keyboard.on('keyup_S', function (event) {
-                    if (moveKeys['up'].isUp)
-                        player.setAccelerationY(0);
-                });
-                this.input.keyboard.on('keyup_A', function (event) {
-                    if (moveKeys['right'].isUp)
-                        player.setAccelerationX(0);
-                });
-                this.input.keyboard.on('keyup_D', function (event) {
-                    if (moveKeys['left'].isUp)
-                        player.setAccelerationX(0);
-                });
+                    // Creation of our enemy sprites
+                    for (let i = 0; i < Math.round(enemyCount); i++) {
+                        let randX = Phaser.Math.Between(0, ourWorld.bounds.width)
+                        let randY;
 
-                // Fires bullet from player on left click of mouse
-                this.input.on('pointerdown', function (pointer, time, lastFired) {
-                    if (player.active === false) {
-                        return;
-                    } else {
-                        let bullet = playerBullets.get().setActive(true).setVisible(true);
+                        if ((randX >= 0 && randX <= (ourWorld.bounds.width - this.game.config.width) / 2) || (randX >= ourWorld.bounds.width - (this.game.config.width / 2) && randX <= ourWorld.bounds.width)) {
+                            randY = Phaser.Math.Between(0, ourWorld.bounds.height)
+                        } else {
+                            randomTopBottom = [
+                                Phaser.Math.Between(0, (ourWorld.bounds.height - this.game.config.height) / 2),
+                                Phaser.Math.Between(ourWorld.bounds.height - (this.game.config.height / 2), ourWorld.bounds.height)
+                            ];
+                            randY = randomTopBottom[Phaser.Math.Between(0, 1)]
+                        }
 
-                        bullet.fire(player, reticle);
-                        this.physics.add.overlap(enemies.getChildren(), bullet, enemyHitCallback);
+                        enemies.create(randX, randY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
                     }
-                }, this);
 
-                // Move reticle 
-                this.input.on('pointermove', function (pointer) {
-                    reticle.x = pointer.worldX;
-                    reticle.y = pointer.worldY;
-                }, this);
+                    // Set Reticle properties
+                    reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
+
+                    // Set sprite letiables
+                    player.health = 3;
+                    player.body.immovable = true;
+                    enemies.getChildren().forEach(e => {
+                        e.attack = false;
+                        e.health = 1;
+                        e.invincibleTimer = 0;
+                        e.anims.play('walk', true);
+                        this.physics.add.collider(e, player, gotCaught, null, this);
+                        e.anims.play('walk', true);
+                        e.on('animationcomplete', () => { // if an animation ends play the idle animation
+                            e.anims.play('walk');
+                        });
+                    });
+
+                    ////////////////////////////
+                    // KEYBOARD FUNCTIONALITY //
+                    ////////////////////////////
+                    moveKeys = this.input.keyboard.addKeys({
+                        'up': Phaser.Input.Keyboard.KeyCodes.W,
+                        'down': Phaser.Input.Keyboard.KeyCodes.S,
+                        'left': Phaser.Input.Keyboard.KeyCodes.A,
+                        'right': Phaser.Input.Keyboard.KeyCodes.D
+                    });
+
+                    // Enables movement of player with WASD keys
+                    this.input.keyboard.on('keydown_W', function (event) {
+                        player.setAccelerationY(-800);
+                    });
+                    this.input.keyboard.on('keydown_S', function (event) {
+                        player.setAccelerationY(800);
+                    });
+                    this.input.keyboard.on('keydown_A', function (event) {
+                        player.setAccelerationX(-800);
+                    });
+                    this.input.keyboard.on('keydown_D', function (event) {
+                        player.setAccelerationX(800);
+                    });
+
+                    // Stops player acceleration on uppress of WASD keys
+                    this.input.keyboard.on('keyup_W', function (event) {
+                        if (moveKeys['down'].isUp)
+                            player.setAccelerationY(0);
+                    });
+                    this.input.keyboard.on('keyup_S', function (event) {
+                        if (moveKeys['up'].isUp)
+                            player.setAccelerationY(0);
+                    });
+                    this.input.keyboard.on('keyup_A', function (event) {
+                        if (moveKeys['right'].isUp)
+                            player.setAccelerationX(0);
+                    });
+                    this.input.keyboard.on('keyup_D', function (event) {
+                        if (moveKeys['left'].isUp)
+                            player.setAccelerationX(0);
+                    });
+
+                    // Fires bullet from player on left click of mouse
+                    this.input.on('pointerdown', function (pointer, time, lastFired) {
+                        if (player.active === false) {
+                            return;
+                        } else {
+                            let bullet = playerBullets.get().setActive(true).setVisible(true);
+
+                            bullet.fire(player, reticle);
+                            this.physics.add.overlap(enemies.getChildren(), bullet, enemyHitCallback);
+                        }
+                    }, this);
+
+                    // Move reticle 
+                    this.input.on('pointermove', function (pointer) {
+                        reticle.x = pointer.worldX;
+                        reticle.y = pointer.worldY;
+                    }, this);
+
+                    run = true
+                }, [], this);
             },
 
             update: function (time, delta) {
-                // Rotates player to face towards reticle
-                player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
-
-                // Reticle moves with player
-                reticle.body.velocity.x = player.body.velocity.x;
-                reticle.body.velocity.y = player.body.velocity.y;
-
-                enemies.getChildren().forEach(e => {
-                    // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
-                    e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
-                    if (e.attack) {
-                        e.anims.play('attack', true);
-                        e.attack = false;
-                    }
-                    this.physics.moveToObject(e, player);
-                });
-
-                // Collider for our enemies - Stops them from stacking (somewhat)
-                this.physics.add.collider(enemies, enemies)
-
-                // Next wave
-                if (enemies.getChildren().length === 0) {
-                    enemyCount = enemyCount * 1.25;
-                    wave++;
-                    this.scene.restart();
-                }
-
-                constrainVelocity(player, 500);
 
                 // Display Texts
                 waveText.setText(`Wave: ${wave}`);
                 killsText.setText(`Kills: ${kills}`);
                 lifeText.setText(`Life: ${life}`);
+
+                if (!!run) {
+                    // Rotates player to face towards reticle
+
+                    player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
+
+                    // Reticle moves with player
+                    reticle.body.velocity.x = player.body.velocity.x;
+                    reticle.body.velocity.y = player.body.velocity.y;
+
+                    enemies.getChildren().forEach(e => {
+                        // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
+                        e.rotation = Phaser.Math.Angle.Between(e.x, e.y, player.x, player.y)
+                        if (e.attack) {
+                            e.anims.play('attack', true);
+                            e.attack = false;
+                        }
+                        this.physics.moveToObject(e, player);
+                    });
+
+                    // Collider for our enemies - Stops them from stacking (somewhat)
+                    this.physics.add.collider(enemies, enemies)
+
+                    // Next wave
+                    if (enemies.getChildren().length === 0) {
+                        enemyCount = enemyCount * 1.25;
+                        wave++;
+                        run = false;
+                        this.scene.restart();
+                    }
+
+                    if (life <= 0) {
+                        console.log('end game')
+                    }
+
+                    constrainVelocity(player, 500);
+                }
             }
         });
 
-        // END OF SCENE
+        //////////////////
+        // END OF SCENE //
+        //////////////////
 
         // Damage Callback
         function gotCaught(enemy, player) {
@@ -363,16 +397,16 @@
 
         let config = {
             type: Phaser.AUTO,
-            parent: 'phaser-example',
-            width: 800,
-            height: 600,
+            parent: 'test',
+            width: gameWidth,
+            height: gameHeight,
             physics: {
                 default: 'arcade',
                 arcade: {
                     gravity: {
                         y: 0
                     },
-                    debug: true
+                    debug: false
                 }
             },
             scene: [SceneA],
