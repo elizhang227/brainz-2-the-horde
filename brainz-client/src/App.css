@@ -431,3 +431,8 @@ button:hover,
     font-size: 2rem;
   }
 }
+
+@font-face {
+  font-family: 'MyWebFont';
+  src: url('./Emulogic-zrEw.ttf');
+}

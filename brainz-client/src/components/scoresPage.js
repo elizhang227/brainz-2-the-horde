@@ -1,10 +1,53 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import styled from 'styled-components';
 const moment = require('moment');
+
+const StyledH1 = styled.h1`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    color: #FBAE18;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+`;
+
+const StyledLi = styled.li`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+`;
+
+const ModeLi = styled.li`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-start;
+`;
+
+const StyledDiv = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+const StyledUl = styled.ul`
+    padding-right: 25px;
+`;
+
+const StyledTitled = styled.p`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    margin-bottom: 8px;
+    color: #48ff10;
+    display: flex;
+
+`;
+
+// console.log(localIpUrl('public', 'ipv4'));
+// console.log(window)
 
 class Scores extends Component {
     state = {
-        endpoint: '10.150.41.155:3000',
+        endpoint: '192.168.86.205:3000',
         highscores: false,
         recentscores: false,
         onLoad: false
@@ -48,7 +91,7 @@ class Scores extends Component {
                     console.log('this is test to see if it works')
                     socket.disconnect();
                     // clears the interval set below
-                    clearInterval(interval)
+                    //clearInterval(interval)
                 }
             }
             console.log('this is data', data)
@@ -64,35 +107,35 @@ class Scores extends Component {
 
         // sending back data to be stored in database
         // writing loop to test if leaderboards update correctly
-        let foo;
-        let interval;
-        let counter = 0;
-        interval = setInterval(() => {
-            if (counter === 20) {
-                clearInterval(interval)
-                counter = 0;
-            } else {
-                const test = moment().format('L, h:mm:ss a');
-                console.log('moment', test)
-                foo = {'wave': counter, 'kills': 10+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
-                socket.emit('testing', foo)
-                counter++
-            }
-        }, 5000)
+        // let foo;
+        // let interval;
+        // let counter = 0;
+        // interval = setInterval(() => {
+        //     if (counter === 20) {
+        //         clearInterval(interval)
+        //         counter = 0;
+        //     } else {
+        //         const test = moment().format('L, h:mm:ss a');
+        //         console.log('moment', test)
+        //         foo = {'wave': counter, 'kills': 10+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
+        //         socket.emit('game-results', foo)
+        //         counter++
+        //     }
+        // }, 5000)
         
         // socket.emit('testing', foo)
 
     }
 
     loadInitialHighScores = async () => {
-        const url = `http://10.150.41.155:3000/highscores`;
+        const url = `http://192.168.86.205:3000/highscores`;
         const response = await fetch(url);
         const data = response.json();
         return data;
     }
 
     loadInitialRecentScores = async () => {
-        const url = `http://10.150.41.155:3000/recentscores`;
+        const url = `http://192.168.86.205:3000/recentscores`;
         const response = await fetch(url);
         const data = response.json();
         return data;
@@ -103,30 +146,108 @@ class Scores extends Component {
 
         return (
         <div>
-            <h2>Top 10 Scores</h2>
+            <StyledH1>TOP TEN SCORES</StyledH1>
             {(highscores !== false) ? 
-            <ul>
-            {highscores.map((data, index) => {
-                return (
-                <li key={`data${index}`}>
-                    USERID: {data.user_id} Wave: {data.wave} Kills: {data.kills}
-                </li>
-                )
-            })}
-            </ul>
+            <StyledDiv>
+                <StyledUl>
+                <StyledTitled>RANK</StyledTitled>
+                {highscores.map((data, index) => {
+                    return (
+                        <StyledLi key={`data${index}`}>
+                            {index+1}
+                        </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>USERID</StyledTitled>
+                {highscores.map((data, index) => {
+                    return (
+                        <StyledLi key={`data${index}`}>
+                            {data.user_id}
+                        </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>WAVE</StyledTitled>
+                {highscores.map((data, index) => {
+                    return (
+                        <StyledLi key={`data${index}`}>
+                            {data.wave}
+                        </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>KILLS</StyledTitled>
+                {highscores.map((data, index) => {
+                    return (
+                        <StyledLi key={`data${index}`}>
+                            {data.kills}
+                        </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>MODE</StyledTitled>
+                {highscores.map((data, index) => {
+                    return (
+                        <ModeLi key={`data${index}`}>
+                            {data.difficulty}
+                        </ModeLi>
+                    )
+                })}
+                </StyledUl>
+            </StyledDiv>
             : ''
             }
-            <h2>Recent Games</h2>
+
+
+            <StyledH1>Recent Games</StyledH1>
             {(recentscores !== false) ? 
-            <ul>
-            {recentscores.map((data, index) => {
-                return (
-                <li key={`data${index}`}>
-                    USERID: {data.user_id} Wave: {data.wave} Kills: {data.kills}
-                </li>
-                )
-            })}
-            </ul>
+            <StyledDiv>
+                <StyledUl>
+                <StyledTitled>USERID</StyledTitled>
+                {recentscores.map((data, index) => {
+                    return (
+                    <StyledLi key={`data${index}`}>
+                        {data.user_id}
+                    </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>WAVE</StyledTitled>
+                {recentscores.map((data, index) => {
+                    return (
+                    <StyledLi key={`data${index}`}>
+                        {data.wave}
+                    </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>KILLS</StyledTitled>
+                {recentscores.map((data, index) => {
+                    return (
+                    <StyledLi key={`data${index}`}>
+                        {data.kills}
+                    </StyledLi>
+                    )
+                })}
+                </StyledUl>
+                <StyledUl>
+                <StyledTitled>MODE</StyledTitled>
+                {recentscores.map((data, index) => {
+                    return (
+                    <ModeLi key={`data${index}`}>
+                        {data.difficulty}
+                    </ModeLi>
+                    )
+                })}
+                </StyledUl>
+            </StyledDiv>
             : ''
             }
         </div>

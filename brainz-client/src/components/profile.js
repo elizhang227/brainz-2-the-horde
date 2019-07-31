@@ -46,7 +46,7 @@ class Profile extends Component {
                 body: JSON.stringify(this.props.user)
             })
 
-            socket.emit('send-id', this.props.user.id);
+            //socket.emit('send-id', this.props.user.id);
             socket.disconnect();
 
             const data = await response.json();
