@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 class Scores extends Component {
     state = {
-        endpoint: 'http://192.168.86.205:3000',
+        endpoint: 'http://10.150.41.126:3000',
         response: false,
         initial: false
     }
