@@ -24,12 +24,12 @@
                 // Bullet Constructor
                 function Bullet(scene) {
                     Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
-                    this.speed = 0.5;
+                    this.speed = 2;
                     this.born = 0;
                     this.direction = 0;
                     this.xSpeed = 0;
                     this.ySpeed = 0;
-                    this.setSize(12, 12, true);
+                    this.setSize(2, 2, true);
                     this.setOrigin(0.5, 0.5);
                 },
 
@@ -103,10 +103,10 @@
             },
 
             create: function () {
-
                 // Set world bounds
-                this.physics.world.setBounds(0, 0, 800, 600);
+                this.physics.world.setBounds(0, 0, 1600, 1600);
                 const ourWorld = this.physics.world;
+                console.log(this.game)
                 let walkAnim = [],
                     attackAnim = [];
 
@@ -133,9 +133,9 @@
                 timedEvent = this.time.addEvent();
 
                 // Add background player, enemy, reticle, healthpoint sprites
-                let background = this.add.image(400, 300, 'background');
-                player = this.physics.add.sprite(400, 300, 'player_handgun');
-                reticle = this.physics.add.sprite(800, 700, 'target');
+                let background = this.add.image(800, 800, 'background')
+                player = this.physics.add.sprite(800, 800, 'player_handgun');
+                reticle = this.physics.add.sprite(0, 0, 'target');
 
                 // Add groups for enemies
                 enemies = this.physics.add.group({
@@ -152,13 +152,24 @@
 
                 // Creation of our enemy sprites
                 for (let i = 0; i < Math.round(enemyCount); i++) {
-                    const randomX = Math.floor((Math.random() * ourWorld.bounds.width) + 1);
-                    const randomY = Math.floor((Math.random() * ourWorld.bounds.height) + 1);
-                    enemies.create(randomX, randomY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(100, 100).setCollideWorldBounds(true);
+                    let randX = Phaser.Math.Between(0, ourWorld.bounds.width)
+                    let randY;
+
+                    if ((randX >= 0 && randX <= (ourWorld.bounds.width - this.game.config.width) / 2) || (randX >= ourWorld.bounds.width - (this.game.config.width / 2) && randX <= ourWorld.bounds.width)) {
+                        randY = Phaser.Math.Between(0, ourWorld.bounds.height)
+                    } else {
+                        randomTopBottom = [
+                            Phaser.Math.Between(0, (ourWorld.bounds.height - this.game.config.height) / 2),
+                            Phaser.Math.Between(ourWorld.bounds.height - (this.game.config.height / 2), ourWorld.bounds.height)
+                        ];
+                        randY = randomTopBottom[Phaser.Math.Between(0, 1)]
+                    }
+
+                    enemies.create(randX, randY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
                 }
 
                 // Set image/sprite properties
-                background.setOrigin(0.5, 0.5).setDisplaySize(800, 600);
+                background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1600);
                 player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
                 reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
 
@@ -177,12 +188,15 @@
                     });
                 });
 
+                this.cameras.main.startFollow(player);
+
                 //////////////////
                 // TEXT STYLING //
                 //////////////////
-                waveText = this.add.text(10, 10, '', { font: '16px Arial', fill: '#000000' });
-                killsText = this.add.text(300, 10, '', { font: '16px Arial', fill: '#000000' });
-                lifeText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#000000' });
+
+                waveText = this.add.text(10, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
+                killsText = this.add.text(300, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
+                lifeText = this.add.text(700, 10, '', { font: '16px Arial', fill: '#000000' }).setScrollFactor(0);
 
                 ////////////////////////////
                 // KEYBOARD FUNCTIONALITY //
@@ -240,14 +254,18 @@
 
                 // Move reticle 
                 this.input.on('pointermove', function (pointer) {
-                    reticle.x = pointer.position.x;
-                    reticle.y = pointer.position.y;
+                    reticle.x = pointer.worldX;
+                    reticle.y = pointer.worldY;
                 }, this);
             },
 
             update: function (time, delta) {
                 // Rotates player to face towards reticle
                 player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
+
+                // Reticle moves with player
+                reticle.body.velocity.x = player.body.velocity.x;
+                reticle.body.velocity.y = player.body.velocity.y;
 
                 enemies.getChildren().forEach(e => {
                     // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
