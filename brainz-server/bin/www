@@ -25,24 +25,15 @@ app.set('port', port);
 var server = http.createServer(app);
 const io = socketIo(server);
 
-const getHighScoresFromDatabase = async () => {
-  try {
-      const res = await ScoresModel.getHighScores();
-      return res;
-  } catch (err) {
-      return err.message
-  }
-}
-
 let interval;
-
 io.on('connection', async (socket) => {
   console.log('initial connection established');
 
-  let test;
   interval = setInterval(async () => {
-    test = await getHighScoresFromDatabase();
-    socket.emit('test', test);
+    highScores = await ScoresModel.getHighScores();
+    recentScores = await ScoresModel.getRecentScores();
+    socket.emit('highScores', highScores);
+    socket.emit('recentScores', recentScores);
   }, 5000)
 
   socket.on('disconnect', () => {
@@ -51,8 +42,15 @@ io.on('connection', async (socket) => {
     socket.disconnect();
   })
 
-})
+  // getting back data to be stored in database
+  // call ScoresModel.addScore() here
+  socket.on('game-results', async (data) => {
+    //console.log('data coming from front', data)
+    const { wave, kills, user_id, game_mode_id, timestamp } = data;
+    await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
+  })
 
+})
 
 
 /**

@@ -19,5 +19,6 @@ CREATE TABLE scores
     wave INT,
     kills INT,
     user_id INT REFERENCES users(id),
-    game_mode_id INT REFERENCES game_modes(id)
+    game_mode_id INT REFERENCES game_modes(id),
+    timestamp varchar
 );
