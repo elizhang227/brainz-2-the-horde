@@ -400,6 +400,11 @@ class Play extends Component {
     }
 
     initializeGame = () => {
+        enemyCount = 2;
+        kills = 0;
+        wave = 1;
+        life = 3;
+        run = false;
         this.setState({
             initialize: true,
             game: {

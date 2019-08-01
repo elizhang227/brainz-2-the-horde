@@ -24,12 +24,12 @@ class App extends Component {
   }
 
   changeLoginState = (user) => {
-    const { login, id, first_name, last_name, email } = user;
+    const { login, id, f_name, l_name, email } = user;
     this.setState({
       isLoggedIn: login,
       id,
-      first_name,
-      last_name,
+      f_name,
+      l_name,
       email
     })
   }
@@ -89,7 +89,7 @@ class App extends Component {
           <Route path="/register" exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/logout" exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/profile" exact render={(props) => <Profile {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
-          <Route path="/scores" component={Scores} />
+          <Route path="/scores" render={(props) => <Scores {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/play" component={Play} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

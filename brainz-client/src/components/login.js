@@ -38,8 +38,8 @@ class Login extends Component {
             const { login, errorCode } = data;
 
             if (!!login) {
-                const { id, first_name, last_name, email } = data;
-                this.props.changeLoginState({ login, id, first_name, last_name, email })
+                const { id, f_name, l_name, email } = data;
+                this.props.changeLoginState({ login, id, f_name, l_name, email })
             }
 
             this.setState({

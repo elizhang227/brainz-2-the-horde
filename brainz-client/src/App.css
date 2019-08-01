@@ -585,7 +585,15 @@ button:hover,
   100%{   color: #dbdbdb;    }
 }
 
-
 #test canvas:hover {
   cursor: none;
+}
+
+#gameOverContainer{
+  text-align:center;
+}
+
+#gameOverContainer img {
+  width:40%;
+  border-radius:10px;
 }
