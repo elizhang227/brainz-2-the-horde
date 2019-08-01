@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, StyledUl, ModeLi } from '../styled-components/scoresPageStyles';
-//const moment = require('moment');
+const moment = require('moment');
 
+// open network preferences and grab ip and change it to yours
 const ip = '10.150.41.155'
 
 class Scores extends Component {
@@ -10,7 +11,37 @@ class Scores extends Component {
         endpoint: `${ip}:3000`,
         highscores: false,
         recentscores: false,
-        onLoad: false
+        onLoad: false,
+        holder: [{'wave': 0}]
+    }
+
+    componentDidUpdate = async () => {
+        //console.log('component did update')
+        const recent1 = document.getElementsByClassName('recent1');
+        const recent2 = document.getElementsByClassName('recent2');
+        const recent3 = document.getElementsByClassName('recent3');
+
+        if (this.state.holder[0].wave === TypeError) {
+            console.log('holder state is undefined')
+        }   else if (this.state.holder[0].wave !== this.state.recentscores[0].wave &&
+            this.state.holder[0].kills !== this.state.recentscores[0].kills &&
+            this.state.holder[0].user_id !== this.state.recentscores[0].user_id &&
+            this.state.holder[0].f_name !== this.state.recentscores[0].f_name
+            ) {
+                for (let i=0; i<3; i++) {
+                    recent1[i].classList.add('blinking');
+                    recent2[i].classList.add('blinking');
+                    recent3[i].classList.add('blinking');
+                }
+                setTimeout(() => {
+                    //console.log('timeout worked');
+                    for (let i=0; i<3; i++) {
+                        recent1[i].classList.remove('blinking');
+                        recent2[i].classList.remove('blinking');
+                        recent3[i].classList.remove('blinking');
+                    }
+                }, 1000);
+            } 
     }
 
     componentDidMount = async() => {
@@ -33,18 +64,30 @@ class Scores extends Component {
                     socket.disconnect();
                 }
             }
-            console.log('this is data', data)
+
+            //console.log('this is data', data)
             if (data.length > this.state.highscores.length) {
                 this.setState({
                     highscores: data,
                 })
-                console.log('changed, put changing animation here')
+                //console.log('changed, put changing animation here')
             } else {
-                console.log('still the same, do nothing')
+                //console.log('still the same, do nothing')
             }
         })
 
         socket.on('recentScores', data => {
+            if (data[0].wave === this.state.recentscores[0].wave) {
+                console.log('data is same', data)
+                console.log(this.state.recentscores)
+                this.setState({ holder: data })
+            } else {
+                console.log('data is different');
+                //console.log(data);
+                //console.log(this.state.recentscores); 
+                this.setState({ holder: data })
+            }
+
             if (this.state.onLoad === false) {
                 this.setState({ recentscores: data })
                 this.componentWillUnmount = () => {
@@ -54,44 +97,50 @@ class Scores extends Component {
                     //clearInterval(interval)
                 }
             }
-            console.log('this is data', data)
+
+            //console.log('this is data', data)
             if (data.length > this.state.recentscores.length) {
+                if (data === this.state.recentscores) {
+                    console.log('data is same')
+                } else (
+                    console.log('data is different')
+                )
                 this.setState({
                     recentscores: data,
                 })
                 //console.log('changed')
             } else {
                 //console.log('still the same')
+                // if (data[0] === this.state.recentscores[0]) {
+                //     console.log('data is same', data)
+                //     console.log(this.state.recentscores)
+                // } else (
+                //     console.log('data is different')
+                // )
             }
         })
 
         // sending back data to be stored in database
         // writing loop to test if leaderboards update correctly
-        // let foo;
-        // let interval;
-        // let counter = 0;
-        // interval = setInterval(() => {
-        //     if (counter === 20) {
-        //         clearInterval(interval)
-        //         counter = 0;
-        //     } else {
-        //         const test = moment().format('L, h:mm:ss a');
-        //         console.log('moment', test)
-        //         foo = {'wave': counter, 'kills': 10+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
-        //         socket.emit('game-results', foo)
-        //         counter++
-        //     }
-        // }, 5000)
+        let foo;
+        let interval;
+        let counter = 0;
+        interval = setInterval(() => {
+            if (counter === 5) {
+                clearInterval(interval)
+                counter = 0;
+            } else {
+                const test = moment().format('L, h:mm:ss a');
+                const number = Math.floor(Math.random() * 10)
+                console.log('moment', test)
+                foo = {'wave': number, 'kills': number+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
+                socket.emit('game-results', foo)
+                counter++
+            }
+        }, 5000)
         
         // socket.emit('testing', foo)
 
-    }
-
-    getElement() {
-        const element = document.getElementById('test');
-        element.classList.add('blinking');
-        console.log('this is element', element)
-        return element;
     }
 
     loadInitialHighScores = async () => {
@@ -140,7 +189,7 @@ class Scores extends Component {
                     if (index < 3) {
                         return (
                             <Top3Li key={`data${index}`}>
-                                {data.f_name}
+                                {data.f_name.substring(0,3)}
                             </Top3Li>
                         )
                     } else {
@@ -200,7 +249,7 @@ class Scores extends Component {
                 <StyledTitled>NAME</StyledTitled>
                 {recentscores.map((data, index) => {
                     return (
-                    <StyledLi id='test' key={`data${index}`} onChange={(e) => this.getElement(e)}>
+                    <StyledLi key={`data${index}`} className='recent1'>
                         {data.f_name.substring(0,3)}
                     </StyledLi>
                     )
@@ -210,7 +259,7 @@ class Scores extends Component {
                 <StyledTitled>WAVE</StyledTitled>
                 {recentscores.map((data, index) => {
                     return (
-                    <StyledLi key={`data${index}`}>
+                    <StyledLi key={`data${index}`} className='recent2'>
                         {data.wave}
                     </StyledLi>
                     )
@@ -220,7 +269,7 @@ class Scores extends Component {
                 <StyledTitled>KILLS</StyledTitled>
                 {recentscores.map((data, index) => {
                     return (
-                    <StyledLi key={`data${index}`}>
+                    <StyledLi key={`data${index}`} className='recent3'>
                         {data.kills}
                     </StyledLi>
                     )
