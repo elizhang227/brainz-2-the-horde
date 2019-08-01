@@ -255,7 +255,7 @@ button:hover,
 }
 
 .First {
-  height: 95vh;
+  height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,7 +281,7 @@ button:hover,
 } */
 .homePage {
   width: 15rem;
-  margin-top: -5rem;
+  margin-top: -6rem;
   position: absolute;
 }
 
@@ -291,6 +291,22 @@ button:hover,
   margin-bottom: -10rem;
 }
 
+.instructions-link{
+  z-index: 100;
+  position: absolute;
+  bottom: 2px;
+}
+
+.instructions-link img{
+  width: 8rem;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.instructions-link img:hover {
+  transition: width 0.5s;
+  width: 10rem;
+}
 .start img:hover {
   transition: width 0.5s;
   width: 35%;
@@ -302,6 +318,82 @@ button:hover,
   padding: 5px;
   transition: width 0.5s;
 }
+
+.Second{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+.instructions{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0px;
+    /* border-style: solid;
+    color: black; */
+}
+
+.instruction-card{
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.instruction-card-title{
+    background-color: #E12D1D;
+    padding: .2rem;
+    border-top-right-radius: 10px;
+}
+
+.instruction-card-title h4{
+    color: #fff;
+    font-size: 2rem;
+    margin: 1rem;
+}
+
+.instruction-card-image{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+}
+
+.instruction-card-image img{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+
+.instruction-card-gif{
+    display: flex;
+    justify-content: center;
+
+}
+.instruction-card-gif img{
+    width: 100%;
+}
+.instruction-card-description {
+    background-color: #444444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.instruction-card-description p{
+    padding-left: .8rem;
+    padding-right: .8rem;
+    font-size: 1rem;
+    margin: 0;
+    
+}
+
 
 @media screen and (max-width: 380px) {
   .card tr {
@@ -327,29 +419,7 @@ button:hover,
   }
 }
 
-.instructions {
-  margin-top: 12.4rem;
-  z-index: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  position: absolute;
-}
 
-.instructions img:hover {
-  transition: width 0.5s;
-  width: 35%;
-}
-
-.instructions img {
-  width: 30%;
-  height: 30%;
-  min-width: 25%;
-  padding: 5px;
-  border-radius: 10px;
-  transition: width 0.5s;
-}
 
 .table th,
 .table td {
@@ -387,15 +457,7 @@ button:hover,
     transition: width 0.5s;
     width: 10rem;
   }
-  .instructions img:hover {
-    transition: width 0.5s;
-    width: 10rem;
-  }
 
-  .instructions img {
-    width: 8rem;
-    margin-top: 12rem;
-  }
   .quotes {
     font-size: 2rem;
   }
@@ -405,30 +467,105 @@ button:hover,
   .homePage {
     width: 40rem;
   }
-  .instructions img:hover {
-    /* background-color: rgba(233, 153, 4, 0.753); */
-    transition: width 0.5s;
-    width: 12rem;
-  }
-  .instructions img {
-    width: 10rem;
-    margin-top: 20rem;
-  }
+
   .start img:hover {
     /* background-color: rgba(233, 153, 4, 0.753); */
     transition: width 0.5s;
-    width: 12rem;
+    width: 10rem;
   }
   .start img {
-    width: 10rem;
+    width: 8rem;
     text-align: center;
   }
   .start {
-    margin-bottom: -30rem;
+    margin-bottom: -25rem;
   }
   .quotes {
     font-size: 2rem;
+    
   }
+  .instruction-card{
+    max-width: 75%;
+  }
+  .instruction-card-image {
+
+      width: 50%;
+      overflow: hidden;
+  }
+  .instruction-card-image img{
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+  }
+  .instructions{
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .instruction-card-gifs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .instruction-card{
+    margin-top: 4rem;
+  }
+
+  .instruction-card-gif{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    
+    width: 50%;
+
+  }
+
+  .instruction-card-title{
+    display: flex;
+    justify-content: center;
+  }
+
+  .instruction-card-gif img{
+    width: 100%;
+  }
+
+  .card-gif{
+    width: 20rem;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+
+  }
+  .aim img{
+    width: 12rem;
+  }
+
+    .card-gif-container{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+  .card-description-text{
+      padding: 1rem;
+    }
+  
+  .arrow i{
+    color: #E12D1D;
+    font-size: 2rem;
+    transform: rotate(90deg);
+    z-index: 2;
+    margin-top: -.7rem;
+  }
+  .arrow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+  }
+
 }
 
 @font-face {
@@ -446,4 +583,9 @@ button:hover,
   75%{    color: #dbdbdb;  }
   90%{    color: #dbdbdb;  }
   100%{   color: #dbdbdb;    }
+}
+
+
+#test canvas:hover {
+  cursor: none;
 }

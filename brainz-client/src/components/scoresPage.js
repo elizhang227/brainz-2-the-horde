@@ -44,11 +44,11 @@ class Scores extends Component {
             } 
     }
 
-    componentDidMount = async() => {
+    componentDidMount = async () => {
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
-        this.setState({ 
+        this.setState({
             highscores: initialScores,
             recentscores: recentScores
         });
@@ -159,7 +159,7 @@ class Scores extends Component {
 
     render() {
         const { highscores, recentscores } = this.state;
-
+        console.log(this.props)
         return (
         <div>
             <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
