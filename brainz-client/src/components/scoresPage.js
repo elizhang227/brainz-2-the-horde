@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, StyledUl, ModeLi } from '../styled-components/scoresPageStyles';
 //const moment = require('moment');
 
-const ip = '10.150.41.155'
+const ip = '10.150.41.113'
 
 class Scores extends Component {
     state = {
@@ -13,11 +13,11 @@ class Scores extends Component {
         onLoad: false
     }
 
-    componentDidMount = async() => {
+    componentDidMount = async () => {
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
-        this.setState({ 
+        this.setState({
             highscores: initialScores,
             recentscores: recentScores
         });
@@ -82,7 +82,7 @@ class Scores extends Component {
         //         counter++
         //     }
         // }, 5000)
-        
+
         // socket.emit('testing', foo)
 
     }
@@ -110,136 +110,136 @@ class Scores extends Component {
 
     render() {
         const { highscores, recentscores } = this.state;
-
+        console.log(this.props)
         return (
-        <div>
-            <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
-            {(highscores !== false) ? 
-            <StyledDiv>
-                <StyledUl>
-                <StyledTitled>RANK</StyledTitled>
-                {highscores.map((data, index) => {
-                    if (index < 3) {
-                        return (
-                            <Top3Li key={`data${index}`}>
-                                {index+1}
-                            </Top3Li>
-                        )
-                    } else {
-                        return (
-                            <StyledLi key={`data${index}`}>
-                                {index+1}
-                            </StyledLi>
-                        )
-                    }
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>NAME</StyledTitled>
-                {highscores.map((data, index) => {
-                    if (index < 3) {
-                        return (
-                            <Top3Li key={`data${index}`}>
-                                {data.f_name}
-                            </Top3Li>
-                        )
-                    } else {
-                        return (
-                            <StyledLi key={`data${index}`}>
-                                {data.f_name.substring(0,3)}
-                            </StyledLi>
-                        )
-                    }
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>WAVE</StyledTitled>
-                {highscores.map((data, index) => {
-                    if (index < 3) {
-                        return (
-                            <Top3Li key={`data${index}`}>
-                                {data.wave}
-                            </Top3Li>
-                        )
-                    } else {
-                        return (
-                            <StyledLi key={`data${index}`}>
-                                {data.wave}
-                            </StyledLi>
-                        )
-                    }
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>KILLS</StyledTitled>
-                {highscores.map((data, index) => {
-                    if (index < 3) {
-                        return (
-                            <Top3Li key={`data${index}`}>
-                                {data.kills}
-                            </Top3Li>
-                        )
-                    } else {
-                        return (
-                            <StyledLi key={`data${index}`}>
-                                {data.kills}
-                            </StyledLi>
-                        )
-                    }
-                })}
-                </StyledUl>
-            </StyledDiv>
-            : ''
-            }
+            <div>
+                <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
+                {(highscores !== false) ?
+                    <StyledDiv>
+                        <StyledUl>
+                            <StyledTitled>RANK</StyledTitled>
+                            {highscores.map((data, index) => {
+                                if (index < 3) {
+                                    return (
+                                        <Top3Li key={`data${index}`}>
+                                            {index + 1}
+                                        </Top3Li>
+                                    )
+                                } else {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            {index + 1}
+                                        </StyledLi>
+                                    )
+                                }
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>NAME</StyledTitled>
+                            {highscores.map((data, index) => {
+                                if (index < 3) {
+                                    return (
+                                        <Top3Li key={`data${index}`}>
+                                            {data.f_name}
+                                        </Top3Li>
+                                    )
+                                } else {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            {data.f_name.substring(0, 3)}
+                                        </StyledLi>
+                                    )
+                                }
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>WAVE</StyledTitled>
+                            {highscores.map((data, index) => {
+                                if (index < 3) {
+                                    return (
+                                        <Top3Li key={`data${index}`}>
+                                            {data.wave}
+                                        </Top3Li>
+                                    )
+                                } else {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            {data.wave}
+                                        </StyledLi>
+                                    )
+                                }
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>KILLS</StyledTitled>
+                            {highscores.map((data, index) => {
+                                if (index < 3) {
+                                    return (
+                                        <Top3Li key={`data${index}`}>
+                                            {data.kills}
+                                        </Top3Li>
+                                    )
+                                } else {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            {data.kills}
+                                        </StyledLi>
+                                    )
+                                }
+                            })}
+                        </StyledUl>
+                    </StyledDiv>
+                    : ''
+                }
 
 
-            <RecentScoresH1 className='scoresHeader'>Recent Games</RecentScoresH1>
-            {(recentscores !== false) ? 
-            <StyledDiv>
-                <StyledUl>
-                <StyledTitled>NAME</StyledTitled>
-                {recentscores.map((data, index) => {
-                    return (
-                    <StyledLi id='test' key={`data${index}`} onChange={(e) => this.getElement(e)}>
-                        {data.f_name.substring(0,3)}
-                    </StyledLi>
-                    )
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>WAVE</StyledTitled>
-                {recentscores.map((data, index) => {
-                    return (
-                    <StyledLi key={`data${index}`}>
-                        {data.wave}
-                    </StyledLi>
-                    )
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>KILLS</StyledTitled>
-                {recentscores.map((data, index) => {
-                    return (
-                    <StyledLi key={`data${index}`}>
-                        {data.kills}
-                    </StyledLi>
-                    )
-                })}
-                </StyledUl>
-                <StyledUl>
-                <StyledTitled>MODE</StyledTitled>
-                {recentscores.map((data, index) => {
-                    return (
-                    <ModeLi key={`data${index}`}>
-                        {data.difficulty}
-                    </ModeLi>
-                    )
-                })}
-                </StyledUl>
-            </StyledDiv>
-            : ''
-            }
-        </div>
+                <RecentScoresH1 className='scoresHeader'>Recent Games</RecentScoresH1>
+                {(recentscores !== false) ?
+                    <StyledDiv>
+                        <StyledUl>
+                            <StyledTitled>NAME</StyledTitled>
+                            {recentscores.map((data, index) => {
+                                return (
+                                    <StyledLi id='test' key={`data${index}`} onChange={(e) => this.getElement(e)}>
+                                        {data.f_name.substring(0, 3)}
+                                    </StyledLi>
+                                )
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>WAVE</StyledTitled>
+                            {recentscores.map((data, index) => {
+                                return (
+                                    <StyledLi key={`data${index}`}>
+                                        {data.wave}
+                                    </StyledLi>
+                                )
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>KILLS</StyledTitled>
+                            {recentscores.map((data, index) => {
+                                return (
+                                    <StyledLi key={`data${index}`}>
+                                        {data.kills}
+                                    </StyledLi>
+                                )
+                            })}
+                        </StyledUl>
+                        <StyledUl>
+                            <StyledTitled>MODE</StyledTitled>
+                            {recentscores.map((data, index) => {
+                                return (
+                                    <ModeLi key={`data${index}`}>
+                                        {data.difficulty}
+                                    </ModeLi>
+                                )
+                            })}
+                        </StyledUl>
+                    </StyledDiv>
+                    : ''
+                }
+            </div>
         );
     }
 }
