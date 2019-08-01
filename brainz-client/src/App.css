@@ -574,15 +574,15 @@ button:hover,
 }
 
 .blinking{
-  animation:blinkingText 5s infinite;
+  animation:blinkingText 1s infinite;
 }
 @keyframes blinkingText{
-  0%{     color: #FBAE18; }
-  49%{    color: #FBAE18; }
-  50%{    color: #FBAE18; }
-  89%{    color: #FBAE18;  }
-  90%{    color:transparent;  }
-  100%{   color: #FBAE18;    }
+  0%{     color: transparent;  }
+  49%{    color: #dbdbdb; }
+  50%{    color: #dbdbdb; }
+  75%{    color: #dbdbdb;  }
+  90%{    color: #dbdbdb;  }
+  100%{   color: #dbdbdb;    }
 }
 
 
