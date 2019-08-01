@@ -18,15 +18,6 @@
     <div id='test'></div>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.18.1/dist/phaser.min.js"></script>
     <script>
-        const worldWidth = 1600;
-        const worldHeight = 1600;
-        const gameWidth = 800;
-        const gameHeight = 600;
-        let enemyCount = 2;
-        let kills = 0;
-        let wave = 1;
-        let life = 3;
-        let run = false;
 
         let Bullet = new Phaser.Class({
             Extends: Phaser.GameObjects.Image,
@@ -99,6 +90,7 @@
 
             preload: function () {
                 // Load in images and sprites
+                console.log(this.scene)
                 this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png', { frameWidth: 66, frameHeight: 60 });
                 for (let i = 0; i <= 16; i++) {
                     if (i <= 8) {
@@ -162,6 +154,8 @@
                     classType: Bullet,
                     runChildUpdate: true
                 });
+                console.log(playerBullets)
+
 
                 // Set player and camera in the center in of the screen.
                 player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);

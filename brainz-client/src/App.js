@@ -9,7 +9,7 @@ import LandingPage from "./components/landingPage";
 import Login from "./components/login";
 import Register from "./components/register";
 import Logout from "./components/logout";
-import GameMode from "./components/gameMode";
+import Play from "./components/play";
 import Profile from "./components/profile";
 
 import "./App.css";
@@ -90,7 +90,7 @@ class App extends Component {
           <Route path="/logout" exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/profile" exact render={(props) => <Profile {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/scores" component={Scores} />
-          <Route path="/play" component={GameMode} />
+          <Route path="/play" component={Play} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </Router>
