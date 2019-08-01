@@ -447,3 +447,8 @@ button:hover,
   90%{    color:transparent;  }
   100%{   color: #FBAE18;    }
 }
+
+
+#test canvas:hover {
+  cursor: none;
+}
