@@ -29,6 +29,14 @@ let interval;
 io.on('connection', async (socket) => {
   console.log('initial connection established');
 
+  // getting back data to be stored in database
+  // call ScoresModel.addScore() here
+  socket.on('game-results', async (data) => {
+    //console.log('data coming from front', data)
+    const { wave, kills, user_id, game_mode_id, timestamp } = data;
+    await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
+  })
+
   interval = setInterval(async () => {
     highScores = await ScoresModel.getHighScores();
     recentScores = await ScoresModel.getRecentScores();
@@ -40,14 +48,6 @@ io.on('connection', async (socket) => {
     console.log('user disconnected');
     clearInterval(interval);
     socket.disconnect();
-  })
-
-  // getting back data to be stored in database
-  // call ScoresModel.addScore() here
-  socket.on('game-results', async (data) => {
-    //console.log('data coming from front', data)
-    const { wave, kills, user_id, game_mode_id, timestamp } = data;
-    await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
   })
 
 })
