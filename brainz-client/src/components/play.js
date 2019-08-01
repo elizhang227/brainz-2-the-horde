@@ -426,15 +426,12 @@ class Play extends Component {
     }
 
     render() {
-        const { initialize, game, redirect } = this.state
+        const { initialize, game, redirect } = this.state;
         return (
-            <div>
-                {!!redirect ?
-                    <Redirect to={{ pathname: '/scores', score: this.state.score }} />
-                    :
-                    <IonPhaser game={game} initialize={initialize} />
-                }
-            </div>
+            !!redirect ?
+                <Redirect to={{ pathname: '/scores', score: this.state.score }} />
+                :
+                <IonPhaser game={game} initialize={initialize} />
         )
     }
 }
