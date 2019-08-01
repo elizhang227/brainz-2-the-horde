@@ -11,7 +11,7 @@ const gameHeight = 600;
 let enemyCount = 2;
 let kills = 0;
 let wave = 1;
-let life = 1231231231231231231231231231231231231;
+let life = 3;
 let run = false;
 
 var Bullet = new Phaser.Class({
@@ -266,7 +266,6 @@ class Play extends Component {
                         this.reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
 
                         // Set sprite letiables
-                        this.player.health = 399999999999999999999999999;
                         this.player.body.immovable = true;
                         this.enemies.getChildren().forEach(e => {
                             e.attack = false;
@@ -404,7 +403,7 @@ class Play extends Component {
         enemyCount = 2;
         kills = 0;
         wave = 1;
-        life = 312312312312312313123;
+        life = 3;
         run = false;
         this.setState({
             initialize: true,
