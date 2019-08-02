@@ -21,13 +21,16 @@ class Scores extends Component {
         const recent2 = document.getElementsByClassName('recent2');
         const recent3 = document.getElementsByClassName('recent3');
 
-        if (this.state.holder[0].wave === TypeError) {
+        console.log(this.state.holder)
+
+        if (this.state.holder[0].wave === false) {
             console.log('holder state is undefined')
         }   else if (this.state.holder[0].wave !== this.state.recentscores[0].wave &&
             this.state.holder[0].kills !== this.state.recentscores[0].kills &&
             this.state.holder[0].user_id !== this.state.recentscores[0].user_id &&
             this.state.holder[0].f_name !== this.state.recentscores[0].f_name
             ) {
+                //console.log('else if working')
                 for (let i=0; i<3; i++) {
                     recent1[i].classList.add('blinking');
                     recent2[i].classList.add('blinking');
@@ -77,7 +80,7 @@ class Scores extends Component {
         })
 
         socket.on('recentScores', data => {
-            if (data[0].wave === this.state.recentscores[0].wave) {
+            if (data[0].timestamp === this.state.recentscores[0].timestamp) {
                 console.log('data is same', data)
                 console.log(this.state.recentscores)
                 this.setState({ holder: data })
@@ -102,9 +105,9 @@ class Scores extends Component {
             if (data.length > this.state.recentscores.length) {
                 if (data === this.state.recentscores) {
                     console.log('data is same')
-                } else (
+                } else {
                     console.log('data is different')
-                )
+                }
                 this.setState({
                     recentscores: data,
                 })
@@ -132,7 +135,7 @@ class Scores extends Component {
             } else {
                 const test = moment().format('L, h:mm:ss a');
                 const number = Math.floor(Math.random() * 10)
-                console.log('moment', test)
+                //console.log('moment', test)
                 foo = {'wave': number, 'kills': number+counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test}
                 socket.emit('game-results', foo)
                 counter++
@@ -159,7 +162,7 @@ class Scores extends Component {
 
     render() {
         const { highscores, recentscores } = this.state;
-        console.log(this.props)
+        //console.log(this.props)
         return (
         <div>
             <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
