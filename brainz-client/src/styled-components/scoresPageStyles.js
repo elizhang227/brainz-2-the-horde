@@ -55,3 +55,11 @@ export const StyledTitled = styled.p`
     color: #48ff10;
     display: flex;
 `;
+
+export const TimeTitled = styled.p`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    margin-bottom: 8px;
+    color: #48ff10;
+    display: flex;
+    justify-content: center;
+`;
