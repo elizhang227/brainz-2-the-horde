@@ -16,7 +16,7 @@ moment.updateLocale('en', {
         future: "in %s",
         past:   "%s ago",
         s: function (number, withoutSuffix, key, isFuture){
-            return '00:' + (number<10 ? '0':'') + number + ' min';
+            return (number<10 ? '0':'') + number + ' sec';
         },
         m:  "01 min",
         mm: function (number, withoutSuffix, key, isFuture){
