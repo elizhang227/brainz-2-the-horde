@@ -25,10 +25,10 @@ class Scores{
     static async getRecentScores(){
         try{
             const response = await db.any(`
-            SELECT wave, kills, user_id, f_name
+            SELECT wave, kills, user_id, timestamp, f_name
             FROM scores, users
             WHERE users.id = user_id
-            ORDER BY timestamp DESC
+            ORDER BY scores.id DESC
             limit 3`);
             return response;
         } catch(err) {
