@@ -585,7 +585,44 @@ button:hover,
   100%{   color: #dbdbdb;    }
 }
 
-
 #test canvas:hover {
   cursor: none;
+}
+
+#gameOverContainer{
+  text-align:center;
+}
+
+#gameOverContainer img {
+  width:40%;
+  border-radius:10px;
+}
+
+.arcade{
+  width:1000px;
+  height:auto;
+  display: inline-block;
+  position:relative;
+  text-align:center;
+}
+
+.arcadeImg{
+  width:100%;
+  z-index:1;
+}
+
+.arcade #phaserGame {
+  
+}
+
+#phaserGame{
+  overflow: hidden;
+  display:inline-block;
+  position:absolute;
+  bottom:250px;
+  left:100px;
+}
+
+#phaserGame canvas{
+  border-radius:20px;
 }

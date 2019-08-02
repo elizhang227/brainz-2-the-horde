@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
+import MainContainer from '../sharedComponents/mainContainer';
 
 const worldWidth = 1600;
 const worldHeight = 1600;
@@ -265,7 +266,6 @@ class Play extends Component {
                         this.reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
 
                         // Set sprite letiables
-                        this.player.health = 3;
                         this.player.body.immovable = true;
                         this.enemies.getChildren().forEach(e => {
                             e.attack = false;
@@ -400,6 +400,11 @@ class Play extends Component {
     }
 
     initializeGame = () => {
+        enemyCount = 2;
+        kills = 0;
+        wave = 1;
+        life = 3;
+        run = false;
         this.setState({
             initialize: true,
             game: {
@@ -428,10 +433,16 @@ class Play extends Component {
     render() {
         const { initialize, game, redirect } = this.state;
         return (
-            !!redirect ?
-                <Redirect to={{ pathname: '/scores', score: this.state.score }} />
-                :
-                <IonPhaser game={game} initialize={initialize} />
+            <MainContainer style={{ overflow: 'hidden', padding: 0, margin: '20px auto 0' }}>
+                {!!redirect ?
+                    <Redirect to={{ pathname: '/scores', score: this.state.score }} />
+                    :
+                    <div className="arcade">
+                        <img className="arcadeImg" src="https://i.pinimg.com/originals/21/4f/fe/214ffea513725401b85ad3b9966829ce.png" alt="arcade" />
+                        <IonPhaser id="phaserGame" game={game} initialize={initialize} />
+                    </div>
+                }
+            </MainContainer>
         )
     }
 }

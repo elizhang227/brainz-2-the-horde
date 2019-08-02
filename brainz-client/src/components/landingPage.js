@@ -21,18 +21,18 @@ class LandingPage extends Component {
                 <section id="first" className="First">
                     <img className="homePage" src={HomePageMain} alt="" />
                     <Link className="start" to="/games" ><img src={StartGif} alt="Start Gif" /></Link>
-                    <a className='instructions-link' href ="#second" ><img src={instructions}/></a>
+                    <a className='instructions-link' href="#second" ><img src={instructions} alt="instructions" /></a>
                 </section>
-                
+
                 <ScrollableAnchor id="second">
-                    <section  className ="Second">
+                    <section className="Second">
                         <h2>How To Survive</h2>
                         <div className="instructions">
                             <div className="instruction-card">
-                                
+
                                 <div className="instruction-card-gifs">
                                     <div className="instruction-card-image">
-                                        <img  src={AimGif}/>
+                                        <img src={AimGif} alt="Aim Gif" />
                                     </div>
                                     <div className="instruction-card-gif">
                                         <div className="instruction-card-title">
@@ -43,17 +43,17 @@ class LandingPage extends Component {
                                         </div>
                                         <div className="card-gif-container">
                                             <div className="card-gif">
-                                                <img src={keyPress} />
+                                                <img src={keyPress} alt="Key Press" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="instruction-card">
-                                
+
                                 <div className="instruction-card-gifs">
                                     <div className="instruction-card-image">
-                                        <img  src={AimGif}/>
+                                        <img src={AimGif} alt="Aim Gif" />
                                     </div>
                                     <div className="instruction-card-gif">
                                         <div className="instruction-card-title">
@@ -64,17 +64,17 @@ class LandingPage extends Component {
                                         </div>
                                         <div className="card-gif-container">
                                             <div className="card-gif aim">
-                                                <img src={aim} />
+                                                <img src={aim} alt="Aim" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="instruction-card">
-                                
+
                                 <div className="instruction-card-gifs">
                                     <div className="instruction-card-image">
-                                        <img  src={AimGif}/>
+                                        <img src={AimGif} alt="Aim Gif" />
                                     </div>
                                     <div className="instruction-card-gif">
                                         <div className="instruction-card-title">
@@ -85,7 +85,7 @@ class LandingPage extends Component {
                                         </div>
                                         <div className="card-gif-container">
                                             <div className="card-gif aim">
-                                                <img src={shoot} />
+                                                <img src={shoot} alt="Shoot Gif" />
                                             </div>
                                         </div>
                                     </div>
@@ -93,10 +93,10 @@ class LandingPage extends Component {
                             </div>
                         </div>
                     </section>
-                </ScrollableAnchor> 
+                </ScrollableAnchor>
             </div>
         )
     }
 }
-                    
+
 export default LandingPage;
