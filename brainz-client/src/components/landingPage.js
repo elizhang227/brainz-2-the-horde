@@ -29,8 +29,7 @@ class LandingPage extends Component {
                         <h2>How To Survive</h2>
                         <div className="instructions">
                             <div className="instruction-card">
-
-                                <div className="instruction-card-gifs">
+                                <div className="instruction-card-gifs" data-aos="fade-up">
                                     <div className="instruction-card-image">
                                         <img src={AimGif} alt="Aim Gif" />
                                     </div>
@@ -72,7 +71,7 @@ class LandingPage extends Component {
                             </div>
                             <div className="instruction-card">
 
-                                <div className="instruction-card-gifs">
+                                <div className="instruction-card-gifs" >
                                     <div className="instruction-card-image">
                                         <img src={AimGif} alt="Aim Gif" />
                                     </div>

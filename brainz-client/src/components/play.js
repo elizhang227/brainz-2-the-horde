@@ -83,7 +83,7 @@ class Play extends Component {
                     gravity: {
                         y: 0
                     },
-                    debug: false
+                    debug: true
                 }
             },
             scene: {
@@ -187,8 +187,8 @@ class Play extends Component {
                     this.load.spritesheet('player', 'assets/brainz_player/player-walking.png', { frameWidth: 120, frameHeight: 120 });
                     this.load.spritesheet('player_handgun', './assets/sprites/player_handgun.png', { frameWidth: 66, frameHeight: 60 });
                     this.load.spritesheet('zombie', 'assets/brainz_zombie/zombie-walking.png', { frameWidth: 120, frameHeight: 120 });
-                    this.load.spritesheet('zombie-attack', 'assets/brainz_zombie/zombie-attack.png', { frameWidth: 250, frameHeight: 175 });
-                    this.load.spritesheet('zombie-dying', 'assets/brainz_zombie/zombie-dying.png', { frameWidth: 250, frameHeight: 175 });
+                    this.load.spritesheet('zombie-attack', 'assets/brainz_zombie/zombie-attack2.png', { frameWidth: 120, frameHeight: 120 });
+                    this.load.spritesheet('zombie-dying', 'assets/brainz_zombie/zombie-dying.png', { frameWidth: 175, frameHeight: 175 });
                     this.load.image('bullet', './assets/brainz_player/bullet.png');
                     this.load.image('target', './assets/red_crosshair.png');
                     this.load.image('muzzlePop', 'assets/brainz_player/flash.png');
@@ -216,7 +216,7 @@ class Play extends Component {
                     this.anims.create({
                         key: 'zattack',
                         frames: this.anims.generateFrameNumbers('zombie-attack'),
-                        frameRate: 20
+                        frameRate: 13
                     });
 
                     this.anims.create({
@@ -292,7 +292,6 @@ class Play extends Component {
                             e.attack = false;
                             e.health = 1;
                             e.invincibleTimer = 0;
-                            e.anims.play('zwalk', true);
                             this.physics.add.collider(e, this.player, this.gotCaught, null, this);
                             e.anims.play('zwalk', true);
                             e.on('animationcomplete', () => { // if an animation ends play the idle animation
