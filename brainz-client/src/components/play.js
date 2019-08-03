@@ -8,6 +8,7 @@ const worldWidth = 1600;
 const worldHeight = 1600;
 const gameWidth = 800;
 const gameHeight = 600;
+const zombieSize = 50;
 let enemyCount = 2;
 let kills = 0;
 let wave = 1;
@@ -82,7 +83,7 @@ class Play extends Component {
                     gravity: {
                         y: 0
                     },
-                    debug: true
+                    debug: false
                 }
             },
             scene: {
@@ -97,6 +98,7 @@ class Play extends Component {
                     waveText: '',
                     killText: '',
                     lifeText: '',
+                    enemiesLeftText: '',
                     enemyHitCallback: function (enemyHit, bulletHit) {
                         // Reduce health of enemy
                         if (bulletHit.active === true && enemyHit.active === true) {
@@ -105,7 +107,23 @@ class Play extends Component {
                             // Kill enemy if health <= 0
                             if (enemyHit.health <= 0) {
                                 kills++;
+
+                                // get enemyhit settings before we destroy it.
+                                let deathSettings = { x: enemyHit.x, y: enemyHit.y, rotation: enemyHit.rotation };
+
                                 enemyHit.destroy();
+
+                                // Create a sprite so that our bullets don't keep adding kills
+                                let death = bulletHit.scene.add.sprite(deathSettings.x, deathSettings.y, 'zombie').setDisplaySize(zombieSize, zombieSize).setOrigin(0.5, 0.5);
+
+                                // Change the sprite direction in the direction of the enemy hit
+                                death.rotation = deathSettings.rotation;
+
+                                // Play the dying animation and once it's finished we remove the sprite.
+                                death.anims.play('zdying', true);
+                                death.on('animationcomplete', () => {
+                                    death.destroy();
+                                });
                             }
 
                             // Destroy bullet
@@ -166,15 +184,14 @@ class Play extends Component {
                 },
                 preload: function () {
                     // Load in images and sprites
+                    this.load.spritesheet('player', 'assets/brainz_player/player-walking.png', { frameWidth: 120, frameHeight: 120 });
                     this.load.spritesheet('player_handgun', './assets/sprites/player_handgun.png', { frameWidth: 66, frameHeight: 60 });
-                    for (let i = 0; i <= 16; i++) {
-                        if (i <= 8) {
-                            this.load.image(`zombieAttack${i}`, `./assets/animations/zombie/skeleton-attack_${i}.png`);
-                        }
-                        this.load.image(`zombie${i}`, `./assets/animations/zombie/skeleton-move_${i}.png`);
-                    }
-                    this.load.image('bullet', './assets/bullet.png');
+                    this.load.spritesheet('zombie', 'assets/brainz_zombie/zombie-walking.png', { frameWidth: 120, frameHeight: 120 });
+                    this.load.spritesheet('zombie-attack', 'assets/brainz_zombie/zombie-attack.png', { frameWidth: 250, frameHeight: 175 });
+                    this.load.spritesheet('zombie-dying', 'assets/brainz_zombie/zombie-dying.png', { frameWidth: 250, frameHeight: 175 });
+                    this.load.image('bullet', './assets/brainz_player/bullet.png');
                     this.load.image('target', './assets/red_crosshair.png');
+                    this.load.image('muzzlePop', 'assets/brainz_player/flash.png');
                     this.load.image('background', './assets/grass.png');
                     this.load.bitmapFont('arcadeTextSmall', './assets/fonts/emu-small/font.png', './assets/fonts/emu-small/font.xml');
                     this.load.bitmapFont('arcadeTextLarge', './assets/fonts/emu-large/font.png', './assets/fonts/emu-large/font.xml');
@@ -184,32 +201,36 @@ class Play extends Component {
                     this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
                     const ourWorld = this.physics.world;
 
-                    let walkAnim = [],
-                        attackAnim = [];
+                    this.anims.create({
+                        key: 'pwalk',
+                        frames: this.anims.generateFrameNumbers('player'),
+                        frameRate: 20
+                    });
 
-                    for (let i = 0; i <= 16; i++) {
-                        if (i <= 8) {
-                            attackAnim.push({ key: `zombieAttack${i}` });
-                        }
-                        walkAnim.push({ key: `zombie${i}` });
-                    }
 
                     this.anims.create({
-                        key: 'walk',
-                        frames: walkAnim,
-                        frameRate: 40,
+                        key: 'zwalk',
+                        frames: this.anims.generateFrameNumbers('zombie'),
+                        frameRate: 20
                     });
 
                     this.anims.create({
-                        key: 'attack',
-                        frames: attackAnim,
-                        frameRate: 12,
+                        key: 'zattack',
+                        frames: this.anims.generateFrameNumbers('zombie-attack'),
+                        frameRate: 20
+                    });
+
+                    this.anims.create({
+                        key: 'zdying',
+                        frames: this.anims.generateFrameNumbers('zombie-dying'),
+                        frameRate: 40,
+                        repeat: 0
                     });
 
                     // Add background player, enemy, reticle, healthpoint sprites
                     this.add.tileSprite(worldWidth / 2, worldHeight / 2, worldWidth, worldHeight, 'background');
 
-                    this.player = this.physics.add.sprite(worldWidth / 2, worldHeight / 2, 'player_handgun');
+                    this.player = this.physics.add.sprite(worldWidth / 2, worldHeight / 2, 'player');
                     this.reticle = this.physics.add.sprite(0, 0, 'target');
 
                     // Add groups for enemies
@@ -226,7 +247,7 @@ class Play extends Component {
                     });
 
                     // Set player and camera in the center in of the screen.
-                    this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(true).setDrag(800, 800);
+                    this.player.setOrigin(0.5, 0.5).setDisplaySize(zombieSize, zombieSize).setCollideWorldBounds(true).setDrag(800, 800);
                     this.cameras.main.startFollow(this.player);
 
                     //////////////////
@@ -237,6 +258,7 @@ class Play extends Component {
                     this.waveText = this.add.bitmapText(10, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
                     this.killsText = this.add.bitmapText(300, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
                     this.lifeText = this.add.bitmapText(700, 10, 'arcadeTextSmall', '', 12).setScrollFactor(0);
+                    this.enemiesLeftText = this.add.bitmapText(400, 500, 'arcadeTextSmall', '', 12).setScrollFactor(0);
 
                     this.time.delayedCall(1000, () => {
                         // Remove Wave Text
@@ -259,7 +281,7 @@ class Play extends Component {
                                 randY = randomTopBottom[Phaser.Math.Between(0, 1)]
                             }
 
-                            this.enemies.create(randX, randY, 'zombie0').setOrigin(0.5, 0.5).setDisplaySize(30, 30).setCollideWorldBounds(true);
+                            this.enemies.create(randX, randY, 'zombie').setOrigin(0.5, 0.5).setDisplaySize(zombieSize, zombieSize).setCollideWorldBounds(true);
                         }
 
                         // Set Reticle properties
@@ -271,11 +293,11 @@ class Play extends Component {
                             e.attack = false;
                             e.health = 1;
                             e.invincibleTimer = 0;
-                            e.anims.play('walk', true);
+                            e.anims.play('zwalk', true);
                             this.physics.add.collider(e, this.player, this.gotCaught, null, this);
-                            e.anims.play('walk', true);
+                            e.anims.play('zwalk', true);
                             e.on('animationcomplete', () => { // if an animation ends play the idle animation
-                                e.anims.play('walk');
+                                e.anims.play('zwalk');
                             });
                         });
 
@@ -333,6 +355,11 @@ class Play extends Component {
                                 let bullet = this.playerBullets.get().setActive(true).setVisible(true);
 
                                 bullet.fire(this.player, this.reticle);
+                                bullet.setOrigin(0.5, 1.15)
+
+                                let bulletPop = bullet.scene.add.sprite(bullet.x, bullet.y, 'muzzlePop').setDisplaySize(zombieSize, zombieSize).setOrigin(-0.3, 0.47);
+                                bulletPop.rotation = bullet.rotation;
+                                setTimeout(() => { bulletPop.destroy() }, 25)
                                 this.physics.add.overlap(this.enemies.getChildren(), bullet, this.enemyHitCallback);
                             }
                         }, this);
@@ -349,14 +376,24 @@ class Play extends Component {
 
                 update: function (time, delta) {
 
+                    // Play animation if we're moving
+                    if (Math.floor(this.player.body.velocity.x) > 0 || Math.floor(this.player.body.velocity.y) > 0) {
+                        this.player.anims.play('pwalk', true);
+                    }
+
                     // Display Texts
                     this.waveText.setText(`Wave: ${wave}`);
                     this.killsText.setText(`Kills: ${kills}`);
                     this.lifeText.setText(`Life: ${life}`);
+                    this.enemiesLeftText.setText(`enemies Left: ${this.enemies.getChildren().length}`);
+
+                    this.killsText.x = (this.game.canvas.width / 2) - (this.killsText.width / 2);
+                    this.lifeText.x = (this.game.canvas.width - 10) - (this.lifeText.width);
+                    this.enemiesLeftText.x = (this.game.canvas.width / 2) - (this.enemiesLeftText.width / 2);
+                    this.enemiesLeftText.y = (this.game.canvas.height - 10) - (this.enemiesLeftText.height);
 
                     if (!!run) {
                         // Rotates player to face towards reticle
-
                         this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
                         // Reticle moves with player
@@ -367,7 +404,7 @@ class Play extends Component {
                             // Rotates enemy to face towards player, adds a damage collier, moves enemy towards player
                             e.rotation = Phaser.Math.Angle.Between(e.x, e.y, this.player.x, this.player.y)
                             if (e.attack) {
-                                e.anims.play('attack', true);
+                                e.anims.play('zattack', true);
                                 e.attack = false;
                             }
                             this.physics.moveToObject(e, this.player);
@@ -403,7 +440,7 @@ class Play extends Component {
         enemyCount = 2;
         kills = 0;
         wave = 1;
-        life = 3;
+        life = 399999999999;
         run = false;
         this.setState({
             initialize: true,

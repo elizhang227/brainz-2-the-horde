@@ -9,26 +9,26 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '10.150.41.155';
+const ip = '192.168.1.216';
 
 moment.updateLocale('en', {
-    relativeTime : {
+    relativeTime: {
         future: "in %s",
-        past:   "%s ago",
-        s: function (number, withoutSuffix, key, isFuture){
-            return (number<10 ? '0':'') + number + ' sec';
+        past: "%s ago",
+        s: function (number, withoutSuffix, key, isFuture) {
+            return (number < 10 ? '0' : '') + number + ' sec';
         },
-        m:  "01 min",
-        mm: function (number, withoutSuffix, key, isFuture){
-            return (number<10 ? '0':'') + number + ' min';
+        m: "01 min",
+        mm: function (number, withoutSuffix, key, isFuture) {
+            return (number < 10 ? '0' : '') + number + ' min';
         },
-        h:  "01 hrs",
+        h: "01 hrs",
         hh: "0%d hrs",
-        d:  "01 day",
+        d: "01 day",
         dd: "0%d day",
-        M:  "01 mon",
+        M: "01 mon",
         MM: "0%d mon",
-        y:  "1 yrs",
+        y: "1 yrs",
         yy: "%d yrs"
     }
 });
@@ -58,19 +58,19 @@ class Scores extends Component {
         //     this.state.holder[0].user_id !== this.state.recentscores[0].user_id &&
         //     this.state.holder[0].f_name !== this.state.recentscores[0].f_name
         // ) {
-            // for (let i = 0; i < 3; i++) {
-            //     recent1[i].classList.add('blinking');
-            //     recent2[i].classList.add('blinking');
-            //     recent3[i].classList.add('blinking');
-            // }
-            // setTimeout(() => {
-            //     //console.log('timeout worked');
-            //     for (let i = 0; i < 3; i++) {
-            //         recent1[i].classList.remove('blinking');
-            //         recent2[i].classList.remove('blinking');
-            //         recent3[i].classList.remove('blinking');
-            //     }
-            // }, 1000);
+        // for (let i = 0; i < 3; i++) {
+        //     recent1[i].classList.add('blinking');
+        //     recent2[i].classList.add('blinking');
+        //     recent3[i].classList.add('blinking');
+        // }
+        // setTimeout(() => {
+        //     //console.log('timeout worked');
+        //     for (let i = 0; i < 3; i++) {
+        //         recent1[i].classList.remove('blinking');
+        //         recent2[i].classList.remove('blinking');
+        //         recent3[i].classList.remove('blinking');
+        //     }
+        // }, 1000);
         //}
     }
 
