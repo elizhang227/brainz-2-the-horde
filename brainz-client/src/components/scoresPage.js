@@ -244,6 +244,7 @@ class Scores extends Component {
                                 <StyledUl>
                                     <StyledTitled>RANK</StyledTitled>
                                     {highscores.map((data, index) => {
+
                                         if (index < 3) {
                                             return (
                                                 <Top3Li key={`data${index}`}>
@@ -265,13 +266,13 @@ class Scores extends Component {
                                         if (index < 3) {
                                             return (
                                                 <Top3Li key={`data${index}`}>
-                                                    {data.f_name.substring(0, 3)}
+                                                    {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
                                                 <StyledLi key={`data${index}`}>
-                                                    {data.f_name.substring(0, 3)}
+                                                    {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </StyledLi>
                                             )
                                         }
@@ -327,7 +328,7 @@ class Scores extends Component {
                                     {recentscores.map((data, index) => {
                                         return (
                                             <StyledLi key={`data${index}`} className='recent1'>
-                                                {data.f_name.substring(0, 3)}
+                                                {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                             </StyledLi>
                                         )
                                     })}
