@@ -207,7 +207,6 @@ class Play extends Component {
                         frameRate: 20
                     });
 
-
                     this.anims.create({
                         key: 'zwalk',
                         frames: this.anims.generateFrameNumbers('zombie'),
@@ -356,7 +355,6 @@ class Play extends Component {
 
                                 bullet.fire(this.player, this.reticle);
                                 bullet.setOrigin(0.5, 1.15)
-
                                 let bulletPop = bullet.scene.add.sprite(bullet.x, bullet.y, 'muzzlePop').setDisplaySize(zombieSize, zombieSize).setOrigin(-0.3, 0.47);
                                 bulletPop.rotation = bullet.rotation;
                                 setTimeout(() => { bulletPop.destroy() }, 25)
@@ -377,7 +375,7 @@ class Play extends Component {
                 update: function (time, delta) {
 
                     // Play animation if we're moving
-                    if (Math.floor(this.player.body.velocity.x) > 0 || Math.floor(this.player.body.velocity.y) > 0) {
+                    if (Math.floor(this.player.body.acceleration.x) !== 0 || Math.floor(this.player.body.acceleration.y) !== 0) {
                         this.player.anims.play('pwalk', true);
                     }
 
