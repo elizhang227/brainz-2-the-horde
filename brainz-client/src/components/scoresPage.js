@@ -42,42 +42,37 @@ class Scores extends Component {
         onLoad: false,
         holder: [{ 'wave': 0 }],
         rank: [],
-        ranking: ''
+        ranking: '',
+        isFetching: false
     }
 
-    componentDidUpdate = async () => {
-        //console.log('component did update')
-        const recent1 = document.getElementsByClassName('recent1');
-        const recent2 = document.getElementsByClassName('recent2');
-        const recent3 = document.getElementsByClassName('recent3');
+    // componentDidUpdate = async () => {
+    //     //console.log('component did update')
+    //     const recent1 = document.getElementsByClassName('recent1');
+    //     const recent2 = document.getElementsByClassName('recent2');
+    //     const recent3 = document.getElementsByClassName('recent3');
 
-        //console.log(this.state.holder)
+    //     //console.log(this.state.holder)
 
-        // if (this.state.holder[0].wave === false) {
-        //     console.log('holder state is undefined')
-        // }   else if (this.state.holder[0].wave !== this.state.recentscores[0].wave &&
-        //     this.state.holder[0].kills !== this.state.recentscores[0].kills &&
-        //     this.state.holder[0].user_id !== this.state.recentscores[0].user_id &&
-        //     this.state.holder[0].f_name !== this.state.recentscores[0].f_name
-        // ) {
-            // for (let i = 0; i < 3; i++) {
-            //     recent1[i].classList.add('blinking');
-            //     recent2[i].classList.add('blinking');
-            //     recent3[i].classList.add('blinking');
-            // }
-            // setTimeout(() => {
-            //     //console.log('timeout worked');
-            //     for (let i = 0; i < 3; i++) {
-            //         recent1[i].classList.remove('blinking');
-            //         recent2[i].classList.remove('blinking');
-            //         recent3[i].classList.remove('blinking');
-            //     }
-            // }, 1000);
-        //}
-    }
+    //     if (!!this.state.isFetching) {
+    //     for (let i = 0; i < 3; i++) {
+    //         recent1[i].classList.add('blinking');
+    //         recent2[i].classList.add('blinking');
+    //         recent3[i].classList.add('blinking');
+    //     }
+    //     setTimeout(() => {
+    //         //console.log('timeout worked');
+    //         for (let i = 0; i < 3; i++) {
+    //             recent1[i].classList.remove('blinking');
+    //             recent2[i].classList.remove('blinking');
+    //             recent3[i].classList.remove('blinking');
+    //         }
+    //     }, 1000);
+    // }
+    // }
 
     componentDidMount = async () => {
-
+        console.log('component did mount');
         
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
@@ -88,16 +83,18 @@ class Scores extends Component {
         });
 
         const { endpoint } = this.state;
-        const socket = io(endpoint, {reconnection: false});
+        const socket = io(endpoint, {transports: ['websocket'], upgrade: false});
 
         socket.on('highScores', data => {
             if (this.state.onLoad === false) {
                 this.setState({ highscores: data })
-                this.componentWillUnmount = () => {
-                    // console.log('this is test to see if it works')
-                    socket.disconnect();
-                }
+                // this.componentWillUnmount = () => {
+                //     // console.log('this is test to see if it works')
+                //     socket.disconnect();
+                // }
             }
+
+            //socket.disconnect();
 
             //console.log('this is data', data)
             if (data.length > this.state.highscores.length) {
@@ -112,24 +109,29 @@ class Scores extends Component {
 
         socket.on('recentScores', data => {
             // for blink on update
-            if (data[0].timestamp === this.state.recentscores[0].timestamp) {
-                //console.log('data is same', data)
-                //console.log(this.state.recentscores)
-                this.setState({ holder: data })
-            } else {
-                //console.log('data is different');
-                //console.log(data);
-                //console.log(this.state.recentscores); 
-                this.setState({ holder: data })
-            }
+            // if (data[0].timestamp === this.state.recentscores[0].timestamp) {
+            //     //console.log('data is same', data)
+            //     //console.log(this.state.recentscores)
+            //     this.setState({ holder: data })
+            // } else {
+            //     //console.log('data is different');
+            //     //console.log(data);
+            //     //console.log(this.state.recentscores); 
+            //     this.setState({ holder: data })
+            // }
 
             if (this.state.onLoad === false) {
-                this.setState({ recentscores: data })
+                this.setState({ 
+                    recentscores: data,
+                    isFetching: true
+                })
                 this.componentWillUnmount = () => {
                     // console.log('this is test to see if it works')
                     socket.disconnect();
                 }
             }
+
+            //socket.disconnect();
 
             //console.log('this is data', data)
             if (data.length > this.state.recentscores.length) {
@@ -158,6 +160,11 @@ class Scores extends Component {
         } else {
             console.log('defined');
             this.generateSendData();
+        }
+
+        this.componentWillUnmount = () => {
+            // console.log('this is test to see if it works')
+            socket.disconnect();
         }
     }
 
@@ -227,13 +234,15 @@ class Scores extends Component {
     }
 
     render() {
-        const { highscores, recentscores, ranking } = this.state;
+        const { highscores, recentscores, ranking, isFetching } = this.state;
         const hasScore = this.props.location.hasOwnProperty('score');
         const { user } = this.props;
         console.log('rank data', ranking)
 
         return (
             <MainContainer>
+                {/* {!isFetching ? <div>Loading..</div> : 
+                <MainContainer> */}
                 {!!hasScore ?
                     <div id="gameOverContainer" className="animated fadeIn">
                         <img src={GameOverImg} alt="Game Over" />
@@ -379,6 +388,8 @@ class Scores extends Component {
                             : ''
                     }
                 </div>
+                {/* </MainContainer>
+                } */}
             </MainContainer >
         );
     }
