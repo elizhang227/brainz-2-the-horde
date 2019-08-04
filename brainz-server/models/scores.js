@@ -7,33 +7,74 @@ class Scores{
         this.user_id = user_id;
     }
 
+    static async getRank() {
+        try {
+            const response = await db.any(`
+            SELECT scores.id, wave, kills, user_id, timestamp, f_name 
+            FROM scores, users
+            WHERE users.id = user_id
+            ORDER BY kills DESC`)
+            //console.log(response)
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
+
     static async getHighScores(){
         try{
             const response = await db.any(`
-            SELECT wave, kills, user_id 
-            FROM scores 
-            ORDER BY wave DESC`)
-            console.log(response)
+            SELECT wave, kills, user_id, f_name 
+            FROM scores, users
+            WHERE users.id = user_id
+            ORDER BY wave DESC
+            LIMIT 10`)
+            //console.log(response)
             return response;
         } catch(err) {
             return err.message;
         }
     }
 
-    async checkKillCount(){
+    static async getRecentScores(){
         try{
-            const response = await db.one(
-                `
-                    SELECT kill_count FROM kills
-                    WHERE user_id = $1
-                `, [this.user_id]
-            );
+            const response = await db.any(`
+            SELECT wave, kills, user_id, timestamp, f_name
+            FROM scores, users
+            WHERE users.id = user_id
+            ORDER BY scores.id DESC
+            limit 3`);
             return response;
         } catch(err) {
             return err.message;
         }
     }
 
+    static async addScore(wave, kills, user_id, game_mode_id, timestamp){
+        try {
+            const response = await db.one(`
+            INSERT INTO scores
+                (wave, kills, user_id, game_mode_id, timestamp)
+            VALUES
+                (${wave}, ${kills}, ${user_id}, ${game_mode_id}, '${timestamp}')
+            `);
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
+
+    static async getMyScores(id) {
+        try {
+            const response = await db.any(`
+            SELECT wave, kills
+            FROM scores
+            WHERE user_id = ${id}`);
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
 }
 
 module.exports = Scores;

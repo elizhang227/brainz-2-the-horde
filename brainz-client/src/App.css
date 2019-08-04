@@ -211,7 +211,6 @@ input[type="radio"][value="apocalypse"]:checked {
 }
 
 .scoresHeader {
-  margin: 20px 0 10px;
   text-align: center;
   text-shadow: 0 4px 0 rgba(100, 100, 100, 1), 0 8px 3px rgba(0, 0, 0, 0.7);
 }
@@ -256,7 +255,7 @@ button:hover,
 }
 
 .First {
-  height: 95vh;
+  height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -282,7 +281,7 @@ button:hover,
 } */
 .homePage {
   width: 15rem;
-  margin-top: -5rem;
+  margin-top: -6rem;
   position: absolute;
 }
 
@@ -292,6 +291,22 @@ button:hover,
   margin-bottom: -10rem;
 }
 
+.instructions-link{
+  z-index: 100;
+  position: absolute;
+  bottom: 2px;
+}
+
+.instructions-link img{
+  width: 8rem;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.instructions-link img:hover {
+  transition: width 0.5s;
+  width: 10rem;
+}
 .start img:hover {
   transition: width 0.5s;
   width: 35%;
@@ -303,6 +318,115 @@ button:hover,
   padding: 5px;
   transition: width 0.5s;
 }
+
+.Second{
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.instructions{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 0px;
+  /* border-style: solid;
+  color: black; */
+}
+
+.instruction-card{
+  display:flex;
+}
+
+.instruction-card-title{
+  background-color: #E12D1D;
+  padding: 0.3rem;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  text-align:center;
+}
+
+.instruction-card-title h4{
+  color: #fff;
+  font-size: 1rem;
+  font-weight:bold;
+  margin: 0.2rem 0.2rem 0;
+  display:block;
+}
+
+.instruction-card-title p {
+  margin-top:-10px;
+  display:inline-block;
+  margin-bottom:5px;
+}
+
+.instruction-card-stacking{
+  display:flex;
+  align-items:flex-start;
+}
+
+.instruction-card-image-back-stack{
+  width:70%;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.instruction-card-image-back-stack img{
+  width: 100%;
+  border-radius:5px;
+}
+
+.instruction-card-image-stacked{
+  margin-left:-20%;
+  margin-top:10%;
+  width:70%;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.instruction-card-image-stacked img, .instruction-card-image-stacked video{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius:5px;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.videoContainer{
+  width:100%;
+}
+
+.instruction-card-gif{
+  display: flex;
+  justify-content: center;
+  margin-left:30px;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  padding-bottom:10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.instruction-card-gif img{
+    width: 100%;
+}
+
+.instruction-card-description {
+    background-color: #444444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.instruction-card-description p{
+    padding-left: .8rem;
+    padding-right: .8rem;
+    font-size: 1rem;
+    margin: 0;
+    
+}
+
 
 @media screen and (max-width: 380px) {
   .card tr {
@@ -328,29 +452,7 @@ button:hover,
   }
 }
 
-.instructions {
-  margin-top: 12.4rem;
-  z-index: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  position: absolute;
-}
 
-.instructions img:hover {
-  transition: width 0.5s;
-  width: 35%;
-}
-
-.instructions img {
-  width: 30%;
-  height: 30%;
-  min-width: 25%;
-  padding: 5px;
-  border-radius: 10px;
-  transition: width 0.5s;
-}
 
 .table th,
 .table td {
@@ -388,15 +490,7 @@ button:hover,
     transition: width 0.5s;
     width: 10rem;
   }
-  .instructions img:hover {
-    transition: width 0.5s;
-    width: 10rem;
-  }
 
-  .instructions img {
-    width: 8rem;
-    margin-top: 12rem;
-  }
   .quotes {
     font-size: 2rem;
   }
@@ -406,28 +500,168 @@ button:hover,
   .homePage {
     width: 40rem;
   }
-  .instructions img:hover {
-    /* background-color: rgba(233, 153, 4, 0.753); */
-    transition: width 0.5s;
-    width: 12rem;
-  }
-  .instructions img {
-    width: 10rem;
-    margin-top: 20rem;
-  }
+
   .start img:hover {
     /* background-color: rgba(233, 153, 4, 0.753); */
     transition: width 0.5s;
-    width: 12rem;
+    width: 10rem;
   }
   .start img {
-    width: 10rem;
+    width: 8rem;
     text-align: center;
   }
   .start {
-    margin-bottom: -30rem;
+    margin-bottom: -25rem;
   }
   .quotes {
     font-size: 2rem;
+    
   }
+  
+  .instruction-card{
+    max-width: 75%;
+  }
+  .instruction-card-image {
+
+      width: 50%;
+      overflow: hidden;
+  }
+  .instruction-card-image img{
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+  }
+  .instructions{
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .instruction-card-gifs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .instruction-card{
+    margin-top: 4rem;
+  }
+
+  .instruction-card-gif{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    
+    width: 50%;
+  }
+
+  .instruction-card-title{
+    text-align:center;
+  }
+  .instruction-card-gif img{
+    width: 50%;
+  }
+
+  .card-gif{
+    width: 20rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .aim img{
+    width: 12rem;
+  }
+
+  .card-gif-container{
+    text-align:center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-gif-container ul{
+    list-style-type:none;
+  }
+
+  .card-description-text{
+    padding: 1rem;
+  }
+  
+  .arrow i{
+    color: #E12D1D;
+    font-size: 2rem;
+    transform: rotate(90deg);
+    z-index: 2;
+    margin-top: -.7rem;
+  }
+  .arrow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+  }
+
+}
+
+@font-face {
+  font-family: 'MyWebFont';
+  src: url('./Emulogic-zrEw.ttf');
+}
+
+.blinking{
+  animation:blinkingText 1s infinite;
+}
+
+@keyframes blinkingText{
+  0%{     color: transparent;  }
+  49%{    color: #dbdbdb; }
+  50%{    color: #dbdbdb; }
+  75%{    color: #dbdbdb;  }
+  90%{    color: #dbdbdb;  }
+  100%{   color: #dbdbdb;    }
+}
+
+#test canvas:hover {
+  cursor: none;
+}
+
+#gameOverContainer{
+  text-align:center;
+}
+
+#gameOverContainer img {
+  width:40%;
+  border-radius:10px;
+}
+
+.arcade{
+  width:1000px;
+  height:auto;
+  display: inline-block;
+  position:relative;
+  text-align:center;
+}
+
+.arcadeImg{
+  width:100%;
+  z-index:1;
+}
+
+.arcade #phaserGame {
+  
+}
+
+#phaserGame{
+  overflow: hidden;
+  display:inline-block;
+  position:absolute;
+  bottom:250px;
+  left:100px;
+}
+
+#phaserGame canvas{
+  border-radius:20px;
+}
+
+#phaserGame canvas:hover{
+  cursor: none;
 }
