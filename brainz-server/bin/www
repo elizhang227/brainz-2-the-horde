@@ -26,8 +26,10 @@ var server = http.createServer(app);
 const io = socketIo(server);
 
 let interval;
+let connectedSockets = [];
 io.on('connection', async (socket) => {
   console.log('initial connection established');
+  connectedSockets.push(socket);
 
   // getting back data to be stored in database
   // call ScoresModel.addScore() here
@@ -46,10 +48,17 @@ io.on('connection', async (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
-    clearInterval(interval);
     socket.disconnect();
+    clearInterval(interval);
+    console.log('interval', interval);
   })
 
+  console.log('sockets array', connectedSockets.length)
+
+})
+
+io.on('game-results', async (data) => {
+  console.log('this is separate socket', data)
 })
 
 

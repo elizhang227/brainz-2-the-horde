@@ -23,5 +23,10 @@ router.get('/my-scores/:id', async (req, res, next) => {
   res.json(myScores).status(200);
 })
 
+router.get('/rank', async (req, res, next) => {
+  const rank = await ScoresModel.getRank();
+  res.json(rank).status(200);
+})
+
 
 module.exports = router;
