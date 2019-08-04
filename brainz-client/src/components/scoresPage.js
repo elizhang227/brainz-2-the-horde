@@ -12,23 +12,23 @@ const moment = require('moment');
 const ip = '192.168.86.221';
 
 moment.updateLocale('en', {
-    relativeTime : {
+    relativeTime: {
         future: "in %s",
-        past:   "%s ago",
-        s: function (number, withoutSuffix, key, isFuture){
-            return (number<10 ? '0':'') + number + ' sec';
+        past: "%s ago",
+        s: function (number, withoutSuffix, key, isFuture) {
+            return (number < 10 ? '0' : '') + number + ' sec';
         },
-        m:  "01 min",
-        mm: function (number, withoutSuffix, key, isFuture){
-            return (number<10 ? '0':'') + number + ' min';
+        m: "01 min",
+        mm: function (number, withoutSuffix, key, isFuture) {
+            return (number < 10 ? '0' : '') + number + ' min';
         },
-        h:  "01 hrs",
+        h: "01 hrs",
         hh: "0%d hrs",
-        d:  "01 day",
+        d: "01 day",
         dd: "0%d day",
-        M:  "01 mon",
+        M: "01 mon",
         MM: "0%d mon",
-        y:  "1 yrs",
+        y: "1 yrs",
         yy: "%d yrs"
     }
 });
@@ -265,6 +265,7 @@ class Scores extends Component {
                                 <StyledUl>
                                     <StyledTitled>RANK</StyledTitled>
                                     {highscores.map((data, index) => {
+
                                         if (index < 3) {
                                             return (
                                                 <Top3Li key={`data${index}`}>
@@ -286,13 +287,13 @@ class Scores extends Component {
                                         if (index < 3) {
                                             return (
                                                 <Top3Li key={`data${index}`}>
-                                                    {data.f_name.substring(0, 3)}
+                                                    {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
                                                 <StyledLi key={`data${index}`}>
-                                                    {data.f_name.substring(0, 3)}
+                                                    {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </StyledLi>
                                             )
                                         }
@@ -348,7 +349,7 @@ class Scores extends Component {
                                     {recentscores.map((data, index) => {
                                         return (
                                             <StyledLi key={`data${index}`} className='recent1'>
-                                                {data.f_name.substring(0, 3)}
+                                                {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                             </StyledLi>
                                         )
                                     })}
