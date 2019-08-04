@@ -93,6 +93,14 @@ class App extends Component {
           <Route path="/play" component={Play} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
+        <footer className="text-muted bg-light p-5">
+          <div className="container">
+            <div className="float-right">
+              <a href="#">Back to top</a>
+            </div>
+            <div>Album example is © Bootstrap, but please download and customize it for yourself!</div>
+          </div>
+        </footer>
       </Router>
     )
   }

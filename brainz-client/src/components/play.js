@@ -83,7 +83,7 @@ class Play extends Component {
                     gravity: {
                         y: 0
                     },
-                    debug: true
+                    debug: false
                 }
             },
             scene: {
@@ -437,7 +437,7 @@ class Play extends Component {
         enemyCount = 2;
         kills = 0;
         wave = 1;
-        life = 399999999999;
+        life = 3;
         run = false;
         this.setState({
             initialize: true,
