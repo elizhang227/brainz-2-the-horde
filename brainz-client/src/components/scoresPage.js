@@ -9,7 +9,7 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '10.150.41.155';
+const ip = '192.168.86.221';
 
 moment.updateLocale('en', {
     relativeTime : {
@@ -40,7 +40,9 @@ class Scores extends Component {
         highscores: false,
         recentscores: false,
         onLoad: false,
-        holder: [{ 'wave': 0 }]
+        holder: [{ 'wave': 0 }],
+        rank: [],
+        ranking: ''
     }
 
     componentDidUpdate = async () => {
@@ -75,9 +77,9 @@ class Scores extends Component {
     }
 
     componentDidMount = async () => {
-        // Load the scores initially before the setInterval is called in socket'
-        this.generateSendData();
 
+        
+        // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
         this.setState({
@@ -86,7 +88,7 @@ class Scores extends Component {
         });
 
         const { endpoint } = this.state;
-        const socket = io(endpoint);
+        const socket = io(endpoint, {reconnection: false});
 
         socket.on('highScores', data => {
             if (this.state.onLoad === false) {
@@ -109,6 +111,7 @@ class Scores extends Component {
         })
 
         socket.on('recentScores', data => {
+            // for blink on update
             if (data[0].timestamp === this.state.recentscores[0].timestamp) {
                 //console.log('data is same', data)
                 //console.log(this.state.recentscores)
@@ -125,8 +128,6 @@ class Scores extends Component {
                 this.componentWillUnmount = () => {
                     // console.log('this is test to see if it works')
                     socket.disconnect();
-                    // clears the interval set below
-                    //clearInterval(interval)
                 }
             }
 
@@ -152,55 +153,56 @@ class Scores extends Component {
             }
         })
 
-        // sending back data to be stored in database
-        // writing loop to test if leaderboards update correctly
-        // let foo;
-        // let interval;
-        // let counter = 0;
-        // interval = setInterval(() => {
-        //     if (counter === 5) {
-        //         clearInterval(interval)
-        //         counter = 0;
-        //     } else {
-        //         const test = moment().format('L, h:mm:ss a');
-        //         const number = Math.floor(Math.random() * 10)
-        //         // console.log('moment', test)
-        //         foo = { 'wave': number, 'kills': number + counter, 'user_id': 3, 'game_mode_id': 1, 'timestamp': test }
-        //         socket.emit('game-results', foo)
-        //         counter++
-        //     }
-        // }, 5000)
-
-        // socket.emit('testing', foo)
-
+        if (this.props.location.score === undefined) {
+            console.log('not defined')
+        } else {
+            console.log('defined');
+            this.generateSendData();
+        }
     }
 
-    generateSendData = () => {
+    generateSendData = async () => {
         const { score } = this.props.location;
-        console.log('this is score', score)
+        //console.log('this is score', score)
 
         const { endpoint } = this.state;
         const socket = io(endpoint);
 
         const hasScore = this.props.location.hasOwnProperty('score');
+        let data;
+        let time = moment().format('L, hh:mm:ss a');
         if (!!hasScore) {
             if (!!this.props.user.isLoggedIn) {
                 console.log('inner if working');
-                const data = { 'wave': score.wave, 'kills': score.kills, 'user_id': this.props.user.id, 'game_mode_id': 1, 'timestamp': moment().format('L, hh:mm:ss a') };
+                data = { 'wave': score.wave, 'kills': score.kills, 'user_id': this.props.user.id, 'game_mode_id': 1, 'timestamp': time };
                 //console.log('data to send', data)
                 socket.emit('game-results', data)
                 //this.setState({ sendData: { wave: score.wave, kills: score.kills, user_id: this.props.user.id, game_mode_id: 1, timestamp: moment().format('L, h:mm:ss a') } });
             } else {
                 //this.setState({ sendData: { wave: score.wave, kills: score.kills, user_id: 1, game_mode_id: 1, timestamp: moment().format('L, h:mm:ss a') } });
                 console.log('inner else working');
-                const data = { 'wave': score.wave, 'kills': score.kills, 'user_id': 1, 'game_mode_id': 1, 'timestamp': moment().format('L, hh:mm:ss a') };
+                const data = { 'wave': score.wave, 'kills': score.kills, 'user_id': 1, 'game_mode_id': 1, 'timestamp': time };
                 console.log('data to send', data);
                 socket.emit('game-results', data)
             }
         } else {
             console.log('no property score')
         }
-        console.log('this is scores from game', this.state.sendData)
+
+        //Set timeout so loadrank runs after the score has been updated in the database
+        setTimeout(async () => {
+            const rank = await this.loadRank();
+            this.setState({ rank: rank });
+    
+            for (let i=0; i < this.state.rank.length; i++) {
+                if (this.state.rank[i].timestamp === time) {
+                    console.log('bingo this is the one', i)
+                    this.setState({ ranking: i })
+                }
+            }
+        }, 2000)
+
+
     }
 
     loadInitialHighScores = async () => {
@@ -217,10 +219,18 @@ class Scores extends Component {
         return data;
     }
 
+    loadRank = async () => {
+        const url = `http://${ip}:3000/rank`;
+        const response = await fetch(url);
+        const data = response.json();
+        return data;
+    }
+
     render() {
-        const { highscores, recentscores } = this.state;
+        const { highscores, recentscores, ranking } = this.state;
         const hasScore = this.props.location.hasOwnProperty('score');
         const { user } = this.props;
+        console.log('rank data', ranking)
 
         return (
             <MainContainer>
@@ -231,6 +241,8 @@ class Scores extends Component {
                             {!!user.isLoggedIn ? `Well done ${user.f_name}` : "You're an Anonymous Zombie!"}
                             <br />
                             You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills
+                            <br />
+                            You Are Rank #{ranking} On The Leaderboards!
                         </p>
                     </div>
                     : ''}
@@ -355,7 +367,6 @@ class Scores extends Component {
                                 <StyledUl>
                                     <TimeTitled>ELAPSED</TimeTitled>
                                     {recentscores.map((data, index) => {
-                                        console.log(data.timestamp)
                                         const test = moment(`${data.timestamp}`, `L, hh:mm:ss a`).fromNow();
                                         return (
                                             <ModeLi key={`data${index}`}>
