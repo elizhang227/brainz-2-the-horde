@@ -25,45 +25,53 @@ app.set('port', port);
 var server = http.createServer(app);
 const io = socketIo(server);
 
-// let interval;
 let connectedSockets = [];
 io.on('connection', async (socket) => {
-  console.log('initial connection established');
-  console.log('initial socket id', socket.id);
-  //console.log('list', io.sockets.connected)
+  //console.log('initial connection established');
+  //console.log('initial socket id', socket.id);
   connectedSockets.push(socket);
 
   // getting back data to be stored in database
   // call ScoresModel.addScore() here
   socket.on('game-results', async (data) => {
-    console.log('data coming from front', data)
+    //console.log('data coming from front', data)
     const { wave, kills, user_id, game_mode_id, timestamp } = data;
     await ScoresModel.addScore(wave, kills, user_id, game_mode_id, timestamp)
   })
 
   let interval;
+  // Setting initial values of scores to compare to the data coming in on every interval call
+  let recentScoresHolder = await ScoresModel.getRecentScores();
+  let highScoresHolder = await ScoresModel.getHighScores();
+
   interval = setInterval(async () => {
     highScores = await ScoresModel.getHighScores();
     recentScores = await ScoresModel.getRecentScores();
-    socket.emit('highScores', highScores);
-    socket.emit('recentScores', recentScores);
+
+    if (highScoresHolder[0].timestamp !== highScores[0].timestamp) {
+      //console.log('not the same')
+      socket.emit('highScores', highScores);
+      highScoresHolder = highScores;
+    }
+  
+    if (recentScoresHolder[0].timestamp !== recentScores[0].timestamp) {
+      //console.log('not the same')
+      socket.emit('recentScores', recentScores);
+      recentScoresHolder = recentScores;
+    } 
+
   }, 5000)
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
-    console.log('socket id', socket.id);
-    //socket.removeAllListeners();
+    //console.log('user disconnected');
+    //console.log('disconnected socket id', socket.id);
     connectedSockets.forEach((x) => {
-      console.log('for each loop', x.disconnected)
+      //console.log('for each loop', x.disconnected)
       x.disconnect(true);
       clearInterval(interval);
     })
-    //socket.disconnect();
-    // clearInterval(interval);
-    //console.log('interval', interval);
   })
-
-  console.log('sockets array', connectedSockets.length)
+  //console.log('sockets array', connectedSockets.length)
 
 })
 

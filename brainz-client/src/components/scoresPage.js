@@ -9,7 +9,7 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '192.168.1.216';
+const ip = '10.150.41.155';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -35,45 +35,46 @@ moment.updateLocale('en', {
 
 class Scores extends Component {
     state = {
-        sendData: {},
         endpoint: `${ip}:3000`,
         highscores: false,
         recentscores: false,
-        onLoad: false,
-        holder: [{ 'wave': 0 }],
         rank: [],
         ranking: '',
         isFetching: false
     }
 
-    // componentDidUpdate = async () => {
-    //     //console.log('component did update')
-    //     const recent1 = document.getElementsByClassName('recent1');
-    //     const recent2 = document.getElementsByClassName('recent2');
-    //     const recent3 = document.getElementsByClassName('recent3');
-
-    //     //console.log(this.state.holder)
-
-    //     if (!!this.state.isFetching) {
-    //     for (let i = 0; i < 3; i++) {
-    //         recent1[i].classList.add('blinking');
-    //         recent2[i].classList.add('blinking');
-    //         recent3[i].classList.add('blinking');
-    //     }
-    //     setTimeout(() => {
-    //         //console.log('timeout worked');
-    //         for (let i = 0; i < 3; i++) {
-    //             recent1[i].classList.remove('blinking');
-    //             recent2[i].classList.remove('blinking');
-    //             recent3[i].classList.remove('blinking');
-    //         }
-    //     }, 1000);
-    // }
-    // }
+    componentDidUpdate = async () => {
+        //console.log('component did update')
+        const recent1 = document.getElementsByClassName('recent1');
+        const recent2 = document.getElementsByClassName('recent2');
+        const recent3 = document.getElementsByClassName('recent3');
+        const recent4 = document.getElementsByClassName('recent4');
+        
+        if (!!this.state.isFetching) {
+            let timeout;
+            for (let i = 0; i < 3; i++) {
+                recent1[i].classList.add('blinking');
+                recent2[i].classList.add('blinking');
+                recent3[i].classList.add('blinking');
+                recent4[i].classList.add('blinking');
+            }
+            timeout = setTimeout(() => {
+                //console.log('setting timeout')
+                for (let i = 0; i < 3; i++) {
+                    if (recent1[0] !== undefined) {
+                        //console.log('defined')
+                        recent1[i].classList.remove('blinking');
+                        recent2[i].classList.remove('blinking');
+                        recent3[i].classList.remove('blinking');
+                        recent4[i].classList.remove('blinking');
+                    }
+                }
+            }, 1000);
+        }
+    }
 
     componentDidMount = async () => {
         console.log('component did mount');
-
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
@@ -86,21 +87,12 @@ class Scores extends Component {
         const socket = io(endpoint, { transports: ['websocket'], upgrade: false });
 
         socket.on('highScores', data => {
-            if (this.state.onLoad === false) {
-                this.setState({ highscores: data })
-                // this.componentWillUnmount = () => {
-                //     // console.log('this is test to see if it works')
-                //     socket.disconnect();
-                // }
-            }
+            // Setting initial scores
+            this.setState({ highscores: data })
 
-            //socket.disconnect();
-
-            //console.log('this is data', data)
+            // For initial when there are less than 10 entries for top scores
             if (data.length > this.state.highscores.length) {
-                this.setState({
-                    highscores: data,
-                })
+                this.setState({ highscores: data })
                 //console.log('changed, put changing animation here')
             } else {
                 //console.log('still the same, do nothing')
@@ -108,70 +100,34 @@ class Scores extends Component {
         })
 
         socket.on('recentScores', data => {
-            // for blink on update
-            // if (data[0].timestamp === this.state.recentscores[0].timestamp) {
-            //     //console.log('data is same', data)
-            //     //console.log(this.state.recentscores)
-            //     this.setState({ holder: data })
-            // } else {
-            //     //console.log('data is different');
-            //     //console.log(data);
-            //     //console.log(this.state.recentscores); 
-            //     this.setState({ holder: data })
-            // }
+            this.setState({ 
+                recentscores: data,
+                isFetching: true
+            })
 
-            if (this.state.onLoad === false) {
-                this.setState({
-                    recentscores: data,
-                    isFetching: true
-                })
-                this.componentWillUnmount = () => {
-                    // console.log('this is test to see if it works')
-                    socket.disconnect();
-                }
+            this.componentWillUnmount = () => {
+                //console.log('this is test to see if it works')
+                socket.disconnect();
+                this.setState({ isFetching: false });
             }
 
-            //socket.disconnect();
-
-            //console.log('this is data', data)
+            // For initial when there are less than 3 entries for recent scores
             if (data.length > this.state.recentscores.length) {
-                if (data === this.state.recentscores) {
-                    console.log('data is same')
-                } else {
-                    console.log('data is different')
-                }
-                this.setState({
-                    recentscores: data,
-                })
-                //console.log('changed')
-            } else {
-                //console.log('still the same')
-                // if (data[0] === this.state.recentscores[0]) {
-                //     console.log('data is same', data)
-                //     console.log(this.state.recentscores)
-                // } else (
-                //     console.log('data is different')
-                // )
+                this.setState({ recentscores: data })
             }
+
         })
 
-        if (this.props.location.score === undefined) {
-            console.log('not defined')
-        } else {
-            console.log('defined');
+        // If score is available, run generateSendData
+        if (this.props.location.score !== undefined) {
+            //console.log('not defined')
             this.generateSendData();
-        }
+        } 
 
-        this.componentWillUnmount = () => {
-            // console.log('this is test to see if it works')
-            socket.disconnect();
-        }
     }
 
     generateSendData = async () => {
         const { score } = this.props.location;
-        //console.log('this is score', score)
-
         const { endpoint } = this.state;
         const socket = io(endpoint);
 
@@ -180,16 +136,14 @@ class Scores extends Component {
         let time = moment().format('L, hh:mm:ss a');
         if (!!hasScore) {
             if (!!this.props.user.isLoggedIn) {
-                console.log('inner if working');
+                //console.log('inner if working');
                 data = { 'wave': score.wave, 'kills': score.kills, 'user_id': this.props.user.id, 'game_mode_id': 1, 'timestamp': time };
                 //console.log('data to send', data)
                 socket.emit('game-results', data)
-                //this.setState({ sendData: { wave: score.wave, kills: score.kills, user_id: this.props.user.id, game_mode_id: 1, timestamp: moment().format('L, h:mm:ss a') } });
             } else {
-                //this.setState({ sendData: { wave: score.wave, kills: score.kills, user_id: 1, game_mode_id: 1, timestamp: moment().format('L, h:mm:ss a') } });
-                console.log('inner else working');
+                //console.log('inner else working');
                 const data = { 'wave': score.wave, 'kills': score.kills, 'user_id': 1, 'game_mode_id': 1, 'timestamp': time };
-                console.log('data to send', data);
+                //console.log('data to send', data);
                 socket.emit('game-results', data)
             }
         } else {
@@ -203,7 +157,7 @@ class Scores extends Component {
 
             for (let i = 0; i < this.state.rank.length; i++) {
                 if (this.state.rank[i].timestamp === time) {
-                    console.log('bingo this is the one', i)
+                    //console.log('bingo this is the one', i)
                     this.setState({ ranking: i })
                 }
             }
@@ -237,12 +191,10 @@ class Scores extends Component {
         const { highscores, recentscores, ranking, isFetching } = this.state;
         const hasScore = this.props.location.hasOwnProperty('score');
         const { user } = this.props;
-        console.log('rank data', ranking)
+        //console.log('rank data', ranking)
 
         return (
             <MainContainer>
-                {/* {!isFetching ? <div>Loading..</div> : 
-                <MainContainer> */}
                 {!!hasScore ?
                     <div id="gameOverContainer" className="animated fadeIn">
                         <img src={GameOverImg} alt="Game Over" />
@@ -268,13 +220,13 @@ class Scores extends Component {
 
                                         if (index < 3) {
                                             return (
-                                                <Top3Li key={`data${index}`}>
+                                                <Top3Li key={`data${index}`} className='recent1'>
                                                     {index + 1}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
-                                                <StyledLi key={`data${index}`}>
+                                                <StyledLi key={`data${index}`} className='recent1'>
                                                     {index + 1}
                                                 </StyledLi>
                                             )
@@ -286,13 +238,13 @@ class Scores extends Component {
                                     {highscores.map((data, index) => {
                                         if (index < 3) {
                                             return (
-                                                <Top3Li key={`data${index}`}>
+                                                <Top3Li key={`data${index}`} className='recent2'>
                                                     {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
-                                                <StyledLi key={`data${index}`}>
+                                                <StyledLi key={`data${index}`} className='recent2'>
                                                     {data.user_id === 1 ? "ZMB" : data.f_name.substring(0, 3)}
                                                 </StyledLi>
                                             )
@@ -304,13 +256,13 @@ class Scores extends Component {
                                     {highscores.map((data, index) => {
                                         if (index < 3) {
                                             return (
-                                                <Top3Li key={`data${index}`}>
+                                                <Top3Li key={`data${index}`} className='recent3'>
                                                     {data.wave}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
-                                                <StyledLi key={`data${index}`}>
+                                                <StyledLi key={`data${index}`} className='recent3'>
                                                     {data.wave}
                                                 </StyledLi>
                                             )
@@ -322,13 +274,13 @@ class Scores extends Component {
                                     {highscores.map((data, index) => {
                                         if (index < 3) {
                                             return (
-                                                <Top3Li key={`data${index}`}>
+                                                <Top3Li key={`data${index}`} className='recent4'>
                                                     {data.kills}
                                                 </Top3Li>
                                             )
                                         } else {
                                             return (
-                                                <StyledLi key={`data${index}`}>
+                                                <StyledLi key={`data${index}`} className='recent4'>
                                                     {data.kills}
                                                 </StyledLi>
                                             )
@@ -379,7 +331,7 @@ class Scores extends Component {
                                     {recentscores.map((data, index) => {
                                         const test = moment(`${data.timestamp}`, `L, hh:mm:ss a`).fromNow();
                                         return (
-                                            <ModeLi key={`data${index}`}>
+                                            <ModeLi key={`data${index}`} className='recent4'>
                                                 {test}
                                             </ModeLi>
                                         )
@@ -389,8 +341,6 @@ class Scores extends Component {
                             : ''
                     }
                 </div>
-                {/* </MainContainer>
-                } */}
             </MainContainer >
         );
     }
