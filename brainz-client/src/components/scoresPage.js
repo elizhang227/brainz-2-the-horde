@@ -43,7 +43,7 @@ class Scores extends Component {
         holder: [{ 'wave': 0 }],
         rank: [],
         ranking: '',
-        isFetching: false
+        //isFetching: false
     }
 
     // componentDidUpdate = async () => {
