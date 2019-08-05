@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, ModeLi } from '../styled-components/scoresPageStyles';
+import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, TimeLi, PlayAgain, GameStats } from '../styled-components/scoresPageStyles';
 
-import GameOverImg from '../images/gameover.gif';
+import GameOverImg from '../images/gameover-once.gif';
 import MainContainer from '../sharedComponents/mainContainer';
 import "../Animate.css";
 
@@ -49,16 +49,17 @@ class Scores extends Component {
         const recent2 = document.getElementsByClassName('recent2');
         const recent3 = document.getElementsByClassName('recent3');
         const recent4 = document.getElementsByClassName('recent4');
-
+        const top3 = document.getElementsByClassName('top3');
+        
         if (!!this.state.isFetching) {
-            let timeout;
             for (let i = 0; i < 3; i++) {
                 recent1[i].classList.add('blinking');
                 recent2[i].classList.add('blinking');
                 recent3[i].classList.add('blinking');
                 recent4[i].classList.add('blinking');
+                top3[i].classList.add('top3-blinking');
             }
-            timeout = setTimeout(() => {
+            let timeout = setTimeout(() => {
                 //console.log('setting timeout')
                 for (let i = 0; i < 3; i++) {
                     if (recent1[0] !== undefined) {
@@ -67,6 +68,7 @@ class Scores extends Component {
                         recent2[i].classList.remove('blinking');
                         recent3[i].classList.remove('blinking');
                         recent4[i].classList.remove('blinking');
+                        top3[i].classList.remove('top3-blinking');
                     }
                 }
             }, 1000);
@@ -75,6 +77,7 @@ class Scores extends Component {
 
     componentDidMount = async () => {
         console.log('component did mount');
+
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
@@ -88,7 +91,14 @@ class Scores extends Component {
 
         socket.on('highScores', data => {
             // Setting initial scores
+            //console.log('data', data)
             this.setState({ highscores: data })
+
+            this.componentWillUnmount = () => {
+                //console.log('this is test to see if it works')
+                socket.disconnect();
+                //this.setState({ isFetching: false });
+            }
 
             // For initial when there are less than 10 entries for top scores
             if (data.length > this.state.highscores.length) {
@@ -191,22 +201,23 @@ class Scores extends Component {
         //console.log('rank data', ranking)
 
         return (
-            <MainContainer>
+            <MainContainer className={`${!!hasScore ? "gameOver" : ''}`}>
                 {!!hasScore ?
                     <div id="gameOverContainer" className="animated fadeIn">
                         <img src={GameOverImg} alt="Game Over" />
-                        <p>
+                        <GameStats>
                             {!!user.isLoggedIn ? `Well done ${user.f_name}` : "You're an Anonymous Zombie!"}
                             <br />
                             {/* You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills */}
                             <br />
-                            You Are Rank #{ranking} On The Leaderboards!
-                        </p>
+                            You Are Rank #{ranking + 1} On The Leaderboards!
+                        </GameStats>
+                        <a href='/play'><PlayAgain>Retry</PlayAgain></a>
                     </div>
                     : ''}
 
                 <div className={`${!!hasScore ? "animated fadeInUp delay-1s" : ''}`} >
-                    <TopScoresH1 className='scoresHeader '>TOP TEN SCORES</TopScoresH1>
+                    <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
 
                     {
                         (highscores !== false) ?
@@ -217,7 +228,7 @@ class Scores extends Component {
 
                                         if (index < 3) {
                                             return (
-                                                <Top3Li key={`data${index}`} className='recent1'>
+                                                <Top3Li key={`data${index}`} className='top3'>
                                                     {index + 1}
                                                 </Top3Li>
                                             )
@@ -328,9 +339,9 @@ class Scores extends Component {
                                     {recentscores.map((data, index) => {
                                         const test = moment(`${data.timestamp}`, `L, hh:mm:ss a`).fromNow();
                                         return (
-                                            <ModeLi key={`data${index}`} className='recent4'>
+                                            <TimeLi key={`data${index}`} className='recent4'>
                                                 {test}
-                                            </ModeLi>
+                                            </TimeLi>
                                         )
                                     })}
                                 </StyledUl>

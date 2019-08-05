@@ -215,6 +215,12 @@ input[type="radio"][value="apocalypse"]:checked {
   text-shadow: 0 4px 0 rgba(100, 100, 100, 1), 0 8px 3px rgba(0, 0, 0, 0.7);
 }
 
+.scoresHeaderv2 {
+  text-align: center;
+  text-shadow: 0 4px 0 rgba(100, 100, 100, 1), 0 8px 3px rgba(0, 0, 0, 0.7);
+  padding-top: 2rem;
+}
+
 .score-info {
   flex-grow: 1;
   margin: 1%;
@@ -777,6 +783,19 @@ button:hover,
   100%{   color: #dbdbdb;    }
 }
 
+.top3-blinking{
+  animation:blinkingText 1s infinite;
+}
+
+@keyframes blinkingText{
+  0%{     color: transparent;  }
+  49%{    color: #e86666; }
+  50%{    color: #e86666; }
+  75%{    color: #e86666;  }
+  90%{    color: #e86666;  }
+  100%{   color: #e86666;  }
+}
+
 #test canvas:hover {
   cursor: none;
 }
@@ -846,4 +865,8 @@ body {
 
 .footerInfo {
   text-align: center;
+}
+
+.gameOver {
+  padding-top: 0;
 }

@@ -24,10 +24,10 @@ class Scores{
     static async getHighScores(){
         try{
             const response = await db.any(`
-            SELECT wave, kills, user_id, f_name 
+            SELECT wave, kills, user_id, timestamp, f_name 
             FROM scores, users
             WHERE users.id = user_id
-            ORDER BY wave DESC
+            ORDER BY kills DESC
             LIMIT 10`)
             //console.log(response)
             return response;
