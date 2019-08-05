@@ -31,7 +31,7 @@ class LandingPage extends Component {
 
                 <ScrollableAnchor id="second">
                     <section className="Second">
-                        <h2>How To Survive</h2>
+                        <h2 className="scoresHeader">How To Survive</h2>
                         <div className="instructions">
 
                             <div className="instruction-card" data-aos="fade-right"

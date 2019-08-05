@@ -93,7 +93,7 @@ class App extends Component {
           <Route path="/play" component={Play} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
-        <footer className="text-muted bg-light p-5">
+        <footer className="footer mt-auto text-muted bg-light">
           <div className="container">
             <div className="float-right">
               <a href="#">Back to top</a>
