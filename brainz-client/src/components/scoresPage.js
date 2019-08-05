@@ -9,7 +9,7 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '192.168.86.221';
+const ip = '192.168.1.216';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -73,7 +73,7 @@ class Scores extends Component {
 
     componentDidMount = async () => {
         console.log('component did mount');
-        
+
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
         const recentScores = await this.loadInitialRecentScores();
@@ -83,7 +83,7 @@ class Scores extends Component {
         });
 
         const { endpoint } = this.state;
-        const socket = io(endpoint, {transports: ['websocket'], upgrade: false});
+        const socket = io(endpoint, { transports: ['websocket'], upgrade: false });
 
         socket.on('highScores', data => {
             if (this.state.onLoad === false) {
@@ -121,7 +121,7 @@ class Scores extends Component {
             // }
 
             if (this.state.onLoad === false) {
-                this.setState({ 
+                this.setState({
                     recentscores: data,
                     isFetching: true
                 })
@@ -200,8 +200,8 @@ class Scores extends Component {
         setTimeout(async () => {
             const rank = await this.loadRank();
             this.setState({ rank: rank });
-    
-            for (let i=0; i < this.state.rank.length; i++) {
+
+            for (let i = 0; i < this.state.rank.length; i++) {
                 if (this.state.rank[i].timestamp === time) {
                     console.log('bingo this is the one', i)
                     this.setState({ ranking: i })

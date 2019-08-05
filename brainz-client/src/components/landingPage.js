@@ -90,7 +90,7 @@ class LandingPage extends Component {
                                         </video>
                                     </div>
                                 </div>
-                                <div className="instruction-card-gif">
+                                <div className="instruction-card-gif info-left">
                                     <div className="instruction-card-title">
                                         <h4>AIMING</h4>
                                         <p>AIM FOR THE HEAD</p>
