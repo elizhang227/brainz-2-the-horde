@@ -9,7 +9,7 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '10.150.41.155';
+const ip = '10.150.40.86';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -110,7 +110,7 @@ class Scores extends Component {
         })
 
         socket.on('recentScores', data => {
-            this.setState({ 
+            this.setState({
                 recentscores: data,
                 isFetching: true
             })
@@ -132,12 +132,6 @@ class Scores extends Component {
         if (this.props.location.score !== undefined) {
             //console.log('not defined')
             this.generateSendData();
-        } 
-
-        this.componentWillUnmount = () => {
-            console.log('fukin unmounted');
-            socket.disconnect();
-            this.setState({ isFetching: false });
         }
     }
 
@@ -177,8 +171,6 @@ class Scores extends Component {
                 }
             }
         }, 2000)
-
-
     }
 
     loadInitialHighScores = async () => {
