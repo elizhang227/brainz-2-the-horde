@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import ScrollableAnchor from 'react-scrollable-anchor'
 
-import HomePageMain from "../images/home-page.png";
+import HomePageMain from "../images/homepage.gif";
 import StartGif from "../images/start.gif"
 import AimGif from "../images/aiming.gif"
 import keyPress from "../images/wasd-fixed.gif"
