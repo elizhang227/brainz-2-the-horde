@@ -84,7 +84,7 @@ class Scores extends Component {
         });
 
         const { endpoint } = this.state;
-        const socket = io(endpoint, {transports: ['websocket'], upgrade: false});
+        const socket = io(endpoint, { transports: ['websocket'], upgrade: false });
 
         socket.on('highScores', data => {
             // Setting initial scores
@@ -154,8 +154,8 @@ class Scores extends Component {
         setTimeout(async () => {
             const rank = await this.loadRank();
             this.setState({ rank: rank });
-    
-            for (let i=0; i < this.state.rank.length; i++) {
+
+            for (let i = 0; i < this.state.rank.length; i++) {
                 if (this.state.rank[i].timestamp === time) {
                     //console.log('bingo this is the one', i)
                     this.setState({ ranking: i })

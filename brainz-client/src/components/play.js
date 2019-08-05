@@ -467,7 +467,7 @@ class Play extends Component {
     render() {
         const { initialize, game, redirect } = this.state;
         return (
-            <MainContainer style={{ overflow: 'hidden', padding: 0, margin: '20px auto 0' }}>
+            <MainContainer style={{ overflow: 'hidden', padding: 0, marginLeft: 'auto', marginRight: 'auto' }}>
                 {!!redirect ?
                     <Redirect to={{ pathname: '/scores', score: this.state.score }} />
                     :
