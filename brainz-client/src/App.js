@@ -98,7 +98,7 @@ class App extends Component {
             <div className="float-right">
               <a href="#">Back to top</a>
             </div>
-            <div>Album example is © Bootstrap, but please download and customize it for yourself!</div>
+            <div><b>Created By:</b> Pierson Scarborough, Eli Zhang, and RJ Salamanca</div>
           </div>
         </footer>
       </Router>

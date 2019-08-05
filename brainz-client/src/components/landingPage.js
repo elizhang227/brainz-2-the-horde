@@ -73,6 +73,9 @@ class LandingPage extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="bg-light m-3" style={{ height: '2px', width: '100%' }} />
+
                             <div className="instruction-card info-left" data-aos="fade-left"
                                 data-aos-offset="500"
                                 data-aos-duration="500">
@@ -106,7 +109,7 @@ class LandingPage extends Component {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="bg-light m-3" style={{ height: '2px', width: '100%' }} />
                             <div className="instruction-card" data-aos="fade-right"
                                 data-aos-offset="500"
                                 data-aos-duration="500">
