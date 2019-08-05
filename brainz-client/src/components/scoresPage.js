@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, ModeLi } from '../styled-components/scoresPageStyles';
 
-import GameOverImg from '../images/gameOver.png';
+import GameOverImg from '../images/gameover.gif';
 import MainContainer from '../sharedComponents/mainContainer';
 import "../Animate.css";
 
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '10.150.41.155';
+const ip = '10.150.40.86';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -49,7 +49,7 @@ class Scores extends Component {
         const recent2 = document.getElementsByClassName('recent2');
         const recent3 = document.getElementsByClassName('recent3');
         const recent4 = document.getElementsByClassName('recent4');
-        
+
         if (!!this.state.isFetching) {
             let timeout;
             for (let i = 0; i < 3; i++) {
@@ -100,7 +100,7 @@ class Scores extends Component {
         })
 
         socket.on('recentScores', data => {
-            this.setState({ 
+            this.setState({
                 recentscores: data,
                 isFetching: true
             })
@@ -122,8 +122,7 @@ class Scores extends Component {
         if (this.props.location.score !== undefined) {
             //console.log('not defined')
             this.generateSendData();
-        } 
-
+        }
     }
 
     generateSendData = async () => {
@@ -162,8 +161,6 @@ class Scores extends Component {
                 }
             }
         }, 2000)
-
-
     }
 
     loadInitialHighScores = async () => {
@@ -201,7 +198,7 @@ class Scores extends Component {
                         <p>
                             {!!user.isLoggedIn ? `Well done ${user.f_name}` : "You're an Anonymous Zombie!"}
                             <br />
-                            You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills
+                            {/* You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills */}
                             <br />
                             You Are Rank #{ranking} On The Leaderboards!
                         </p>
