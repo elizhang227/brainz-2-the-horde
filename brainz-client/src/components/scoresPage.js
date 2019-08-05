@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, TimeLi } from '../styled-components/scoresPageStyles';
+import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, TimeLi, PlayAgain, GameStats } from '../styled-components/scoresPageStyles';
 
-import GameOverImg from '../images/gameOver.png';
+import GameOverImg from '../images/gameover.gif';
 import MainContainer from '../sharedComponents/mainContainer';
+import MainContainerv2 from '../sharedComponents/mainContainer';
 import "../Animate.css";
 
 const moment = require('moment');
@@ -52,15 +53,14 @@ class Scores extends Component {
         const top3 = document.getElementsByClassName('top3');
         
         if (!!this.state.isFetching) {
-            let timeout;
             for (let i = 0; i < 3; i++) {
                 recent1[i].classList.add('blinking');
                 recent2[i].classList.add('blinking');
                 recent3[i].classList.add('blinking');
                 recent4[i].classList.add('blinking');
-                top3[i].classList.add('blinking');
+                top3[i].classList.add('top3-blinking');
             }
-            timeout = setTimeout(() => {
+            let timeout = setTimeout(() => {
                 //console.log('setting timeout')
                 for (let i = 0; i < 3; i++) {
                     if (recent1[0] !== undefined) {
@@ -69,7 +69,7 @@ class Scores extends Component {
                         recent2[i].classList.remove('blinking');
                         recent3[i].classList.remove('blinking');
                         recent4[i].classList.remove('blinking');
-                        top3[i].classList.remove('blinking');
+                        top3[i].classList.remove('top3-blinking');
                     }
                 }
             }, 1000);
@@ -210,22 +210,23 @@ class Scores extends Component {
         //console.log('rank data', ranking)
 
         return (
-            <MainContainer>
+            <MainContainer className={`${!!hasScore ? "gameOver" : ''}`}>
                 {!!hasScore ?
                     <div id="gameOverContainer" className="animated fadeIn">
                         <img src={GameOverImg} alt="Game Over" />
-                        <p>
+                        <GameStats>
                             {!!user.isLoggedIn ? `Well done ${user.f_name}` : "You're an Anonymous Zombie!"}
                             <br />
                             You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills
                             <br />
                             You Are Rank #{ranking + 1} On The Leaderboards!
-                        </p>
+                        </GameStats>
+                        <a href='/play'><PlayAgain>Retry</PlayAgain></a>
                     </div>
                     : ''}
 
                 <div className={`${!!hasScore ? "animated fadeInUp delay-1s" : ''}`} >
-                    <TopScoresH1 className='scoresHeader '>TOP TEN SCORES</TopScoresH1>
+                    <TopScoresH1 className='scoresHeader'>TOP TEN SCORES</TopScoresH1>
 
                     {
                         (highscores !== false) ?

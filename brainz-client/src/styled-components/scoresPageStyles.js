@@ -63,3 +63,16 @@ export const TimeTitled = styled.p`
     display: flex;
     justify-content: center;
 `;
+
+export const PlayAgain = styled.button`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    border-radius: 5px;
+    background-color: #E74C3C;
+    border-color: #E74C3C;
+    color: #fff;
+`;
+
+export const GameStats = styled.p`
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    font-size: 10px;
+`;
