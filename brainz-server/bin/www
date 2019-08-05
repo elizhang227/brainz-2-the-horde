@@ -27,8 +27,8 @@ const io = socketIo(server);
 
 let connectedSockets = [];
 io.on('connection', async (socket) => {
-  //console.log('initial connection established');
-  //console.log('initial socket id', socket.id);
+  console.log('initial connection established');
+  console.log('initial socket id', socket.id);
   connectedSockets.push(socket);
 
   // getting back data to be stored in database
@@ -48,10 +48,16 @@ io.on('connection', async (socket) => {
     highScores = await ScoresModel.getHighScores();
     recentScores = await ScoresModel.getRecentScores();
 
-    if (highScoresHolder[0].timestamp !== highScores[0].timestamp) {
-      //console.log('not the same')
-      socket.emit('highScores', highScores);
-      highScoresHolder = highScores;
+    // if (highScoresHolder[0].timestamp !== highScores[0].timestamp) {
+    //   //console.log('not the same')
+    //   socket.emit('highScores', highScores);
+    //   highScoresHolder = highScores;
+    // }
+    for (let i=0; i<highScores.length; i++) {
+      if (highScoresHolder[i].timestamp !== highScores[i].timestamp) {
+        socket.emit('highScores', highScores);
+        highScoresHolder = highScores;
+      }
     }
   
     if (recentScoresHolder[0].timestamp !== recentScores[0].timestamp) {
@@ -63,8 +69,8 @@ io.on('connection', async (socket) => {
   }, 5000)
 
   socket.on('disconnect', () => {
-    //console.log('user disconnected');
-    //console.log('disconnected socket id', socket.id);
+    console.log('user disconnected');
+    console.log('disconnected socket id', socket.id);
     connectedSockets.forEach((x) => {
       //console.log('for each loop', x.disconnected)
       x.disconnect(true);
