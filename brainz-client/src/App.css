@@ -245,6 +245,13 @@ button:hover,
   cursor: url(./images/zombie-cursor-sized.png), auto;
 }
 
+.navbar{
+  position:absolute;
+  top:0;
+  width:100%;
+  z-index:10000;
+}
+
 .loginSignUpContainer {
   max-width: 30rem;
   margin: 0 auto;
@@ -265,15 +272,19 @@ button:hover,
   background-size: cover;
   width: 100%;
   height: 100vh;
+  position:relative;
 }
 
-/* .Second {
+.Second {
   width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
 }
+
+.Second .scoresHeader{
+  font-family: 'myWebFont';
+  color: #F9AE18;
+  margin-bottom:20px;
+}
+/*
 #card{
   margin:5rem;
   max-width: 50%;
@@ -328,16 +339,23 @@ button:hover,
 }
 
 .instructions{
+  overflow:hidden;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: 0px;
+  margin-bottom:125px;
   /* border-style: solid;
   color: black; */
 }
 
 .instruction-card{
   display:flex;
+  margin-bottom:20px;
+}
+
+.instruction-card.info-left{
+  flex-direction:row-reverse;
 }
 
 .instruction-card-title{
@@ -364,12 +382,13 @@ button:hover,
 
 .instruction-card-stacking{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
+  justify-content:center;
 }
 
 .instruction-card-image-back-stack{
-  width:70%;
-  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  width:90%;
+  border-radius:10px;
 }
 
 .instruction-card-image-back-stack img{
@@ -380,13 +399,14 @@ button:hover,
 .instruction-card-image-stacked{
   margin-left:-20%;
   margin-top:10%;
-  width:70%;
-  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  width:90%;
+  /* box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41); */
 }
 
 .instruction-card-image-stacked img, .instruction-card-image-stacked video{
   width: 100%;
   height: 100%;
+  max-height:350px;
   overflow: hidden;
   border-radius:5px;
   box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
@@ -394,12 +414,17 @@ button:hover,
 
 .videoContainer{
   width:100%;
+  border-radius:10px;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  background-color:black;
+  max-width:330px;
+
 }
 
 .instruction-card-gif{
   display: flex;
   justify-content: center;
-  margin-left:30px;
+  margin:0px 30px;
   box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
   padding-bottom:10px;
   border-bottom-right-radius: 5px;
@@ -407,7 +432,7 @@ button:hover,
 }
 
 .instruction-card-gif img{
-    width: 100%;
+    width: 70%;
 }
 
 .instruction-card-description {
@@ -496,10 +521,28 @@ button:hover,
   }
 }
 
-@media screen and (min-width: 821px) {
-  .homePage {
-    width: 40rem;
+@media screen and (max-width: 425px) {
+  .instruction-card-image-back-stack{
+    display:none;
   }
+  .instruction-card-image-stacked{
+    margin:0;
+    width:70%;
+  }
+  .footer.mt-auto{
+    display:flex;
+    height:120px;
+  }
+  .footer .container{
+    margin: auto 0;
+  }
+}
+
+/* MIDDLE BREAK */
+@media screen and (max-width: 820px) {
+  /* .homePage {
+    width: 40rem;
+  } */
 
   .start img:hover {
     /* background-color: rgba(233, 153, 4, 0.753); */
@@ -519,7 +562,13 @@ button:hover,
   }
   
   .instruction-card{
-    max-width: 75%;
+    margin-top:0px;
+    flex-direction: column;
+    max-width: 70%;
+    min-width:300px;
+  }
+  .instruction-card.info-left{
+    flex-direction: column;
   }
   .instruction-card-image {
 
@@ -534,7 +583,115 @@ button:hover,
   .instructions{
     display: flex;
     justify-content: center;
+    overflow:hidden;
+    text-align: center;
+  }
+
+  .instruction-card-gifs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .instruction-card-gif{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin:20px auto 0;
+    width: 70%;
+  }
+
+  .instruction-card-title{
+    text-align:center;
+  }
+
+  .card-gif{
+    margin: 10px auto 0;
+    width:80%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-gif img{
+    max-width:125px;
+  }
+
+  .aim img{
+    width: 12rem;
+  }
+
+  .card-gif-container{
+    text-align:center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-gif-container ul{
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .card-description-text{
+    padding: 1rem;
+  }
+  
+  .arrow i{
+    color: #E12D1D;
+    font-size: 2rem;
+    transform: rotate(90deg);
+    z-index: 2;
+    margin-top: -.7rem;
+  }
+  .arrow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+  }
+}
+
+@media screen and (min-width: 821px) {
+  /* .homePage {
+    width: 40rem;
+  } */
+
+  .start img:hover {
+    /* background-color: rgba(233, 153, 4, 0.753); */
+    transition: width 0.5s;
+    width: 10rem;
+  }
+  .start img {
+    width: 8rem;
+    text-align: center;
+  }
+  .start {
+    margin-bottom: -25rem;
+  }
+  .quotes {
+    font-size: 2rem;
     
+  }
+  
+  .instruction-card{
+    width:100%;
+    max-width:1200px;
+  }
+
+  .instruction-card-image {
+
+      width: 50%;
+      overflow: hidden;
+  }
+  .instruction-card-image img{
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+  }
+  .instructions{
+    display: flex;
+    justify-content: center;
+    overflow:hidden;
   }
 
   .instruction-card-gifs{
@@ -599,7 +756,6 @@ button:hover,
     justify-content: center;
 
   }
-
 }
 
 @font-face {
@@ -664,4 +820,27 @@ button:hover,
 
 #phaserGame canvas:hover{
   cursor: none;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px; /* Margin bottom by footer height */
+}
+.footer {
+  padding:15px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+}
+
+.footerInfo {
+  text-align: center;
 }
