@@ -5,9 +5,13 @@ import AOS from 'aos';
 
 import Move1 from "../videos/move1.mp4";
 import Move2 from "../videos/move2.mp4";
+import Aim1 from "../videos/aim1.mp4";
+import Aim2 from "../videos/aim2.mp4";
+import Shoot1 from "../videos/shoot1.mp4";
+import Shoot2 from "../videos/shoot2.mp4";
+
 import HomePageMain from "../images/home-page.png";
 import StartGif from "../images/start.gif"
-import AimGif from "../images/aiming.gif"
 import keyPress from "../images/wasd-fixed.gif"
 import aim from "../images/computer-mouse.gif"
 import shoot from "../images/mouse-click.gif"
@@ -82,13 +86,13 @@ class LandingPage extends Component {
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
                                         <video className="videoContainer" autoPlay loop>
-                                            <source className="gameSelectionVideo" src={Move1} type="video/mp4" />
+                                            <source className="gameSelectionVideo" src={Aim1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
                                     <div className="instruction-card-image-stacked">
                                         <video className="videoContainer" autoPlay loop>
-                                            <source className="gameSelectionVideo" src={Move2} type="video/mp4" />
+                                            <source className="gameSelectionVideo" src={Aim2} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
@@ -116,13 +120,13 @@ class LandingPage extends Component {
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
                                         <video className="videoContainer" autoPlay loop>
-                                            <source className="gameSelectionVideo" src={Move1} type="video/mp4" />
+                                            <source className="gameSelectionVideo" src={Shoot1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
                                     <div className="instruction-card-image-stacked">
                                         <video className="videoContainer" autoPlay loop>
-                                            <source className="gameSelectionVideo" src={Move2} type="video/mp4" />
+                                            <source className="gameSelectionVideo" src={Shoot2} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
