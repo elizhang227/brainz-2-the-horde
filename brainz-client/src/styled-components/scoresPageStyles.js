@@ -32,7 +32,7 @@ export const StyledLi = styled.li`
     justify-content: center;
 `;
 
-export const ModeLi = styled.li`
+export const TimeLi = styled.li`
     font-family: 'MyWebFont', Fallback, sans-serif;
     list-style-type: none;
     color: #dbdbdb;
