@@ -198,6 +198,7 @@ class Play extends Component {
                     this.load.bitmapFont('arcadeTextSmall', './assets/fonts/emu-small/font.png', './assets/fonts/emu-small/font.xml');
                     this.load.bitmapFont('arcadeTextLarge', './assets/fonts/emu-large/font.png', './assets/fonts/emu-large/font.xml');
                 },
+
                 create: function () {
                     // Set world bounds
                     this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
@@ -463,7 +464,7 @@ class Play extends Component {
         enemyCount = 2;
         kills = 0;
         wave = 1;
-        life = 31238961239812631289312;
+        life = 3;
         run = false;
         this.setState({
             initialize: true,
