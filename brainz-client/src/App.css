@@ -328,6 +328,7 @@ button:hover,
 }
 
 .instructions{
+  overflow:hidden;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -338,6 +339,10 @@ button:hover,
 
 .instruction-card{
   display:flex;
+}
+
+.instruction-card.info-left{
+  flex-direction:row-reverse;
 }
 
 .instruction-card-title{
@@ -364,11 +369,12 @@ button:hover,
 
 .instruction-card-stacking{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
+  justify-content:center;
 }
 
 .instruction-card-image-back-stack{
-  width:70%;
+  width:90%;
   box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
 }
 
@@ -380,7 +386,7 @@ button:hover,
 .instruction-card-image-stacked{
   margin-left:-20%;
   margin-top:10%;
-  width:70%;
+  width:90%;
   box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
 }
 
@@ -399,7 +405,7 @@ button:hover,
 .instruction-card-gif{
   display: flex;
   justify-content: center;
-  margin-left:30px;
+  margin:0px 30px;
   box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
   padding-bottom:10px;
   border-bottom-right-radius: 5px;
@@ -497,9 +503,9 @@ button:hover,
 }
 
 @media screen and (min-width: 821px) {
-  .homePage {
+  /* .homePage {
     width: 40rem;
-  }
+  } */
 
   .start img:hover {
     /* background-color: rgba(233, 153, 4, 0.753); */
@@ -519,7 +525,7 @@ button:hover,
   }
   
   .instruction-card{
-    max-width: 75%;
+    max-width: 100%;
   }
   .instruction-card-image {
 
@@ -534,7 +540,7 @@ button:hover,
   .instructions{
     display: flex;
     justify-content: center;
-    
+    overflow:hidden;
   }
 
   .instruction-card-gifs{
@@ -599,7 +605,6 @@ button:hover,
     justify-content: center;
 
   }
-
 }
 
 @font-face {

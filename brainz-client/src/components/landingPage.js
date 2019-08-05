@@ -73,7 +73,7 @@ class LandingPage extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="instruction-card" data-aos="fade-left"
+                            <div className="instruction-card info-left" data-aos="fade-left"
                                 data-aos-offset="500"
                                 data-aos-duration="500">
                                 <div className="instruction-card-stacking">
@@ -90,7 +90,7 @@ class LandingPage extends Component {
                                         </video>
                                     </div>
                                 </div>
-                                <div className="instruction-card-gif info-left">
+                                <div className="instruction-card-gif">
                                     <div className="instruction-card-title">
                                         <h4>AIMING</h4>
                                         <p>AIM FOR THE HEAD</p>
