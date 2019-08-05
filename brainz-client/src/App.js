@@ -9,7 +9,7 @@ import LandingPage from "./components/landingPage";
 import Login from "./components/login";
 import Register from "./components/register";
 import Logout from "./components/logout";
-import GameMode from "./components/gameMode";
+import Play from "./components/play";
 import Profile from "./components/profile";
 
 import "./App.css";
@@ -24,12 +24,12 @@ class App extends Component {
   }
 
   changeLoginState = (user) => {
-    const { login, id, first_name, last_name, email } = user;
+    const { login, id, f_name, l_name, email } = user;
     this.setState({
       isLoggedIn: login,
       id,
-      first_name,
-      last_name,
+      f_name,
+      l_name,
       email
     })
   }
@@ -89,10 +89,18 @@ class App extends Component {
           <Route path="/register" exact render={(props) => <Register {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/logout" exact render={(props) => <Logout {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
           <Route path="/profile" exact render={(props) => <Profile {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
-          <Route path="/scores" component={Scores} />
-          <Route path="/play" component={GameMode} />
+          <Route path="/scores" render={(props) => <Scores {...props} user={this.state} changeLoginState={this.changeLoginState} />} />
+          <Route path="/play" component={Play} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
+        <footer className="text-muted bg-light p-5">
+          <div className="container">
+            <div className="float-right">
+              <a href="#">Back to top</a>
+            </div>
+            <div>Album example is © Bootstrap, but please download and customize it for yourself!</div>
+          </div>
+        </footer>
       </Router>
     )
   }

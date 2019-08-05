@@ -6,7 +6,7 @@ import MainContainer from "../sharedComponents/mainContainer"
 import "../App.css";
 import { StyledLi, StyledH1, StyledH4 } from '../styled-components/profilePageStyles';
 
-const ip = '10.150.41.155';
+const ip = '192.168.1.216';
 
 class Profile extends Component {
     state = {
@@ -17,7 +17,7 @@ class Profile extends Component {
 
     async componentDidMount() {
         const myScores = await this.loadMyScores();
-        this.setState({ 
+        this.setState({
             myScores: myScores
         });
         if (!!this.props.user.isLoggedIn) {
@@ -34,7 +34,7 @@ class Profile extends Component {
 
     getProfile = async () => {
         const url = `http://${ip}:3000/users/`;
-        
+
         const { endpoint } = this.state;
         const socket = io(endpoint);
 

@@ -7,6 +7,20 @@ class Scores{
         this.user_id = user_id;
     }
 
+    static async getRank() {
+        try {
+            const response = await db.any(`
+            SELECT scores.id, wave, kills, user_id, timestamp, f_name 
+            FROM scores, users
+            WHERE users.id = user_id
+            ORDER BY kills DESC`)
+            //console.log(response)
+            return response;
+        } catch(err) {
+            return err.message;
+        }
+    }
+
     static async getHighScores(){
         try{
             const response = await db.any(`
@@ -25,10 +39,10 @@ class Scores{
     static async getRecentScores(){
         try{
             const response = await db.any(`
-            SELECT wave, kills, user_id, f_name
+            SELECT wave, kills, user_id, timestamp, f_name
             FROM scores, users
             WHERE users.id = user_id
-            ORDER BY timestamp DESC
+            ORDER BY scores.id DESC
             limit 3`);
             return response;
         } catch(err) {

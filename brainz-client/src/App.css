@@ -320,63 +320,96 @@ button:hover,
 }
 
 .Second{
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 2rem;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .instructions{
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin: 0px;
-    /* border-style: solid;
-    color: black; */
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 0px;
+  /* border-style: solid;
+  color: black; */
 }
 
 .instruction-card{
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  display:flex;
 }
 
 .instruction-card-title{
-    background-color: #E12D1D;
-    padding: .2rem;
-    border-top-right-radius: 10px;
+  background-color: #E12D1D;
+  padding: 0.3rem;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  text-align:center;
 }
 
 .instruction-card-title h4{
-    color: #fff;
-    font-size: 2rem;
-    margin: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight:bold;
+  margin: 0.2rem 0.2rem 0;
+  display:block;
 }
 
-.instruction-card-image{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; 
+.instruction-card-title p {
+  margin-top:-10px;
+  display:inline-block;
+  margin-bottom:5px;
 }
 
-.instruction-card-image img{
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+.instruction-card-stacking{
+  display:flex;
+  align-items:flex-start;
 }
 
+.instruction-card-image-back-stack{
+  width:70%;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.instruction-card-image-back-stack img{
+  width: 100%;
+  border-radius:5px;
+}
+
+.instruction-card-image-stacked{
+  margin-left:-20%;
+  margin-top:10%;
+  width:70%;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.instruction-card-image-stacked img, .instruction-card-image-stacked video{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius:5px;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+}
+
+.videoContainer{
+  width:100%;
+}
 
 .instruction-card-gif{
-    display: flex;
-    justify-content: center;
-
+  display: flex;
+  justify-content: center;
+  margin-left:30px;
+  box-shadow: 0px 0px 22px 3px rgba(0,0,0,0.41);
+  padding-bottom:10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
+
 .instruction-card-gif img{
     width: 100%;
 }
+
 .instruction-card-description {
     background-color: #444444;
     border-bottom-left-radius: 10px;
@@ -484,6 +517,7 @@ button:hover,
     font-size: 2rem;
     
   }
+  
   .instruction-card{
     max-width: 75%;
   }
@@ -519,38 +553,38 @@ button:hover,
     flex-direction: column;
     
     width: 50%;
-
   }
 
   .instruction-card-title{
-    display: flex;
-    justify-content: center;
+    text-align:center;
   }
-
   .instruction-card-gif img{
-    width: 100%;
+    width: 50%;
   }
 
   .card-gif{
     width: 20rem;
-    padding-top: 2rem;
     display: flex;
     justify-content: center;
-
   }
+
   .aim img{
     width: 12rem;
   }
 
-    .card-gif-container{
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+  .card-gif-container{
+    text-align:center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-gif-container ul{
+    list-style-type:none;
+  }
 
   .card-description-text{
-      padding: 1rem;
-    }
+    padding: 1rem;
+  }
   
   .arrow i{
     color: #E12D1D;
@@ -574,13 +608,60 @@ button:hover,
 }
 
 .blinking{
-  animation:blinkingText 5s infinite;
+  animation:blinkingText 1s infinite;
 }
+
 @keyframes blinkingText{
-  0%{     color: #FBAE18; }
-  49%{    color: #FBAE18; }
-  50%{    color: #FBAE18; }
-  89%{    color: #FBAE18;  }
-  90%{    color:transparent;  }
-  100%{   color: #FBAE18;    }
+  0%{     color: transparent;  }
+  49%{    color: #dbdbdb; }
+  50%{    color: #dbdbdb; }
+  75%{    color: #dbdbdb;  }
+  90%{    color: #dbdbdb;  }
+  100%{   color: #dbdbdb;    }
+}
+
+#test canvas:hover {
+  cursor: none;
+}
+
+#gameOverContainer{
+  text-align:center;
+}
+
+#gameOverContainer img {
+  width:40%;
+  border-radius:10px;
+}
+
+.arcade{
+  width:1000px;
+  height:auto;
+  display: inline-block;
+  position:relative;
+  text-align:center;
+}
+
+.arcadeImg{
+  width:100%;
+  z-index:1;
+}
+
+.arcade #phaserGame {
+  
+}
+
+#phaserGame{
+  overflow: hidden;
+  display:inline-block;
+  position:absolute;
+  bottom:250px;
+  left:100px;
+}
+
+#phaserGame canvas{
+  border-radius:20px;
+}
+
+#phaserGame canvas:hover{
+  cursor: none;
 }
