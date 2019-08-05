@@ -193,9 +193,12 @@ class Play extends Component {
                     this.load.image('target', './assets/red_crosshair.png');
                     this.load.image('muzzlePop', 'assets/brainz_player/flash.png');
                     this.load.image('background', './assets/grass.png');
+                    this.load.image('bush', './assets/bush.png');
+                    this.load.image('tree', './assets/tree.png');
                     this.load.bitmapFont('arcadeTextSmall', './assets/fonts/emu-small/font.png', './assets/fonts/emu-small/font.xml');
                     this.load.bitmapFont('arcadeTextLarge', './assets/fonts/emu-large/font.png', './assets/fonts/emu-large/font.xml');
                 },
+
                 create: function () {
                     // Set world bounds
                     this.physics.world.setBounds(0, 0, worldWidth, worldHeight);
@@ -227,6 +230,30 @@ class Play extends Component {
                     });
 
                     // Add background player, enemy, reticle, healthpoint sprites
+                    // this.add.tileSprite(0, 0, 96, 96, 'tree');
+
+                    // Grass Around
+                    this.add.tileSprite(worldWidth / 2, worldHeight / 2, worldWidth + 900, worldHeight + 900, 'background');
+                    this.add.tileSprite(worldWidth / 2, worldHeight / 2, worldWidth + 900, worldHeight + 900, 'bush');
+                    this.add.tileSprite(worldWidth, worldHeight, worldWidth * 3, worldHeight * 3, 'bush');
+
+                    // LEFT 
+                    this.add.tileSprite(0, worldHeight / 2, 23, worldHeight + 20, 'background');
+                    this.add.tileSprite(-50, worldHeight / 2, 96, worldHeight + 50, 'bush');
+
+                    // TOP
+                    this.add.tileSprite(worldWidth / 2, 0, worldWidth + 20, 23, 'background');
+                    this.add.tileSprite(worldHeight / 2, -50, worldHeight + 50, 96, 'bush');
+
+                    // BOTTOM
+                    this.add.tileSprite(worldWidth / 2, worldHeight, worldWidth + 20, 23, 'background');
+                    this.add.tileSprite(worldHeight / 2, worldWidth + 50, worldHeight + 50, 96, 'bush');
+
+                    // RIGHT
+                    this.add.tileSprite(worldWidth, worldHeight / 2, 23, worldHeight + 20, 'background');
+                    this.add.tileSprite(worldWidth + 50, worldHeight / 2, 96, worldHeight + 50, 'bush');
+
+                    // Main Container
                     this.add.tileSprite(worldWidth / 2, worldHeight / 2, worldWidth, worldHeight, 'background');
 
                     this.player = this.physics.add.sprite(worldWidth / 2, worldHeight / 2, 'player');
