@@ -208,7 +208,7 @@ class Scores extends Component {
                         <GameStats>
                             {!!user.isLoggedIn ? `Well done ${user.f_name}` : "You're an Anonymous Zombie!"}
                             <br />
-                            {/* You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills */}
+                            You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills
                             <br />
                             You Are Rank #{ranking + 1} On The Leaderboards!
                         </GameStats>

@@ -70,7 +70,7 @@ export const PlayAgain = styled.button`
     background-color: #E74C3C;
     border-color: #E74C3C;
     color: #fff;
-    box-shadow: 10px 2px 22px 3px rgba(0,0,0,1)
+    box-shadow: 10px 2px 22px 3px rgba(0,0,0,1);
     padding: 1.2rem 2rem;
 `;
 
