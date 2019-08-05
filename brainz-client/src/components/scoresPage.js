@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { TopScoresH1, Top3Li, RecentScoresH1, StyledDiv, StyledLi, StyledTitled, TimeTitled, StyledUl, TimeLi, PlayAgain, GameStats } from '../styled-components/scoresPageStyles';
 
-import GameOverImg from '../images/gameover.gif';
+import GameOverImg from '../images/gameover-once.gif';
 import MainContainer from '../sharedComponents/mainContainer';
-import MainContainerv2 from '../sharedComponents/mainContainer';
 import "../Animate.css";
 
 const moment = require('moment');
