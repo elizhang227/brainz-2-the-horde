@@ -289,7 +289,7 @@ button:hover,
 .Second .scoresHeader{
   font-family: 'myWebFont';
   color: #F9AE18;
-  margin-bottom:20px;
+  margin-bottom:80px;
 }
 /*
 #card{
@@ -367,7 +367,7 @@ button:hover,
 
 .instruction-card-title{
   background-color: #E12D1D;
-  padding: 0.3rem;
+  padding: 1rem;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   text-align:center;
@@ -375,7 +375,7 @@ button:hover,
 
 .instruction-card-title h4{
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight:bold;
   margin: 0.2rem 0.2rem 0;
   display:block;
@@ -458,6 +458,16 @@ button:hover,
     margin: 0;
     
 }
+
+.card-gif-container ul{
+  padding:0;
+}
+
+.list{
+  display: flex;
+  justify-content: center;
+}
+
 
 
 @media screen and (max-width: 380px) {
@@ -679,6 +689,9 @@ button:hover,
     font-size: 2rem;
     
   }
+  .homePage {
+    width: 40rem;
+  }
   
   .instruction-card{
     width:100%;
@@ -727,7 +740,7 @@ button:hover,
   }
 
   .card-gif{
-    width: 20rem;
+    width: 100%;
     display: flex;
     justify-content: center;
   }
@@ -737,9 +750,14 @@ button:hover,
   }
 
   .card-gif-container{
+    display: flex;
     text-align:center;
     width: 100%;
     justify-content: center;
+    flex-direction: column;
+  }
+  .card-gif-container p{
+    margin-top: 2rem;
   }
 
   .card-gif-container ul{
