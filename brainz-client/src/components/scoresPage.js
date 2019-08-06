@@ -50,7 +50,7 @@ class Scores extends Component {
         const recent3 = document.getElementsByClassName('recent3');
         const recent4 = document.getElementsByClassName('recent4');
         const top3 = document.getElementsByClassName('top3');
-        
+
         if (!!this.state.isFetching) {
             for (let i = 0; i < 3; i++) {
                 recent1[i].classList.add('blinking');
@@ -210,7 +210,7 @@ class Scores extends Component {
                             <br />
                             You Died On Wave {this.props.location.score.wave} With {this.props.location.score.kills} kills
                             <br />
-                            You Are Rank #{ranking + 1} On The Leaderboards!
+                            <span className="animated fadeInUp delay-3s">You Are Rank #{ranking + 1} On The Leaderboards!</span>
                         </GameStats>
                         <a href='/play'><PlayAgain>Retry</PlayAgain></a>
                     </div>
