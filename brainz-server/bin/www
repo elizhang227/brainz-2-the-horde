@@ -48,11 +48,6 @@ io.on('connection', async (socket) => {
     highScores = await ScoresModel.getHighScores();
     recentScores = await ScoresModel.getRecentScores();
 
-    // if (highScoresHolder[0].timestamp !== highScores[0].timestamp) {
-    //   //console.log('not the same')
-    //   socket.emit('highScores', highScores);
-    //   highScoresHolder = highScores;
-    // }
     for (let i=0; i<highScores.length; i++) {
       if (highScoresHolder[i].timestamp !== highScores[i].timestamp) {
         socket.emit('highScores', highScores);
