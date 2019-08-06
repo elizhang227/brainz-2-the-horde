@@ -828,7 +828,7 @@ button:hover,
 }
 
 .arcade{
-  width:1000px;
+  width:100%;
   height:auto;
   display: inline-block;
   position:relative;
@@ -848,8 +848,8 @@ button:hover,
   overflow: hidden;
   display:inline-block;
   position:absolute;
-  bottom:250px;
-  left:100px;
+  bottom:235px;
+  left:125px;
 }
 
 #phaserGame canvas{

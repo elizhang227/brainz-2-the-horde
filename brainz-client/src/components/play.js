@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import MainContainer from '../sharedComponents/mainContainer';
+import ArcadeImage from '../images/arcadev2.png';
 
 const worldWidth = 1600;
 const worldHeight = 1600;
@@ -494,12 +495,12 @@ class Play extends Component {
     render() {
         const { initialize, game, redirect } = this.state;
         return (
-            <MainContainer style={{ overflow: 'hidden', padding: 0, marginLeft: 'auto', marginRight: 'auto' }}>
+            <MainContainer style={{ maxWidth: '1050px', overflow: 'hidden', padding: 0, marginLeft: 'auto', marginRight: 'auto' }}>
                 {!!redirect ?
                     <Redirect to={{ pathname: '/scores', score: this.state.score }} />
                     :
                     <div className="arcade">
-                        <img className="arcadeImg" src="https://i.pinimg.com/originals/21/4f/fe/214ffea513725401b85ad3b9966829ce.png" alt="arcade" />
+                        <img className="arcadeImg" src={ArcadeImage} alt="arcade" />
                         <IonPhaser id="phaserGame" game={game} initialize={initialize} />
                     </div>
                 }

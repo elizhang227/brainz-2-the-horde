@@ -73,15 +73,19 @@ class Profile extends Component {
                     <MainContainer>
                         <StyledH4 className="quotes">{this.state.loginMessage}</StyledH4>
                         <StyledH1 className="scoresHeader">Your Scores</StyledH1>
-                        <ul>
-                            {myScores.map((data, index) => {
-                                return (
-                                    <StyledLi key={`data${index}`}>
-                                        Wave: {data.wave} Kills: {data.kills}
-                                    </StyledLi>
-                                )
-                            })}
-                        </ul>
+                        {myScores.length === 0 ?
+                            <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>You currently have no scores.</h4>
+                            :
+                            <ul>
+                                {myScores.map((data, index) => {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            Wave: {data.wave} Kills: {data.kills}
+                                        </StyledLi>
+                                    )
+                                })}
+                            </ul>
+                        }
                     </MainContainer>
                 )
             default:
