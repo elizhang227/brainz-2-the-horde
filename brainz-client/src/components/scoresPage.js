@@ -9,7 +9,7 @@ import "../Animate.css";
 const moment = require('moment');
 
 // open network preferences and grab ip and change it to yours
-const ip = '10.150.40.86';
+const ip = '10.150.10.91';
 
 moment.updateLocale('en', {
     relativeTime: {
