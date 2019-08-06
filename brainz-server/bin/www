@@ -27,8 +27,8 @@ const io = socketIo(server);
 
 let connectedSockets = [];
 io.on('connection', async (socket) => {
-  console.log('initial connection established');
-  console.log('initial socket id', socket.id);
+  //console.log('initial connection established');
+  //console.log('initial socket id', socket.id);
   connectedSockets.push(socket);
 
   // getting back data to be stored in database
@@ -69,8 +69,8 @@ io.on('connection', async (socket) => {
   }, 5000)
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
-    console.log('disconnected socket id', socket.id);
+    //console.log('user disconnected');
+    //console.log('disconnected socket id', socket.id);
     connectedSockets.forEach((x) => {
       //console.log('for each loop', x.disconnected)
       x.disconnect(true);
