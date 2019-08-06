@@ -70,7 +70,6 @@ export const PlayAgain = styled.button`
     background-color: #E74C3C;
     border-color: #E74C3C;
     color: #fff;
-    box-shadow: 10px 2px 22px 3px rgba(0,0,0,1);
     padding: 1.2rem 2rem;
 `;
 
@@ -78,4 +77,5 @@ export const GameStats = styled.p`
     font-family: 'MyWebFont', Fallback, sans-serif;
     font-size: 10px;
     padding-top: 20px;
+    margin-bottom: 2rem;
 `;

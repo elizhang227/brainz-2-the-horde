@@ -59,7 +59,7 @@ class Scores extends Component {
                 recent4[i].classList.add('blinking');
                 top3[i].classList.add('top3-blinking');
             }
-            let timeout = setTimeout(() => {
+            setTimeout(() => {
                 //console.log('setting timeout')
                 for (let i = 0; i < 3; i++) {
                     if (recent1[0] !== undefined) {
@@ -76,7 +76,7 @@ class Scores extends Component {
     }
 
     componentDidMount = async () => {
-        console.log('component did mount');
+        //console.log('component did mount');
 
         // Load the scores initially before the setInterval is called in socket
         const initialScores = await this.loadInitialHighScores();
@@ -156,7 +156,7 @@ class Scores extends Component {
                 socket.emit('game-results', data)
             }
         } else {
-            console.log('no property score')
+            //console.log('no property score')
         }
 
         //Set timeout so loadrank runs after the score has been updated in the database
@@ -195,7 +195,7 @@ class Scores extends Component {
     }
 
     render() {
-        const { highscores, recentscores, ranking, isFetching } = this.state;
+        const { highscores, recentscores, ranking } = this.state;
         const hasScore = this.props.location.hasOwnProperty('score');
         const { user } = this.props;
         //console.log('rank data', ranking)
