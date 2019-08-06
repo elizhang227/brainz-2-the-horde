@@ -96,7 +96,7 @@ class App extends Component {
         <footer className="footer mt-auto text-muted bg-light">
           <div className="container">
             <div className="float-right">
-              <a href="#">Back to top</a>
+              {/* <a href="#">Back to top</a> */}
             </div>
             <div><b>Created By:</b> Pierson Scarborough, Eli Zhang, and RJ Salamanca</div>
           </div>

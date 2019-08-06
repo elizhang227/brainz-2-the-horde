@@ -29,7 +29,7 @@ class LandingPage extends Component {
             <div>
                 <section id="first" className="First">
                     <img className="homePage" src={HomePageMain} alt="" />
-                    <Link className="start" to="/games" ><img src={StartGif} alt="Start Gif" /></Link>
+                    <Link className="start" to="/play" ><img src={StartGif} alt="Start Gif" /></Link>
                     <a className='instructions-link' href="#second" ><img src={instructions} alt="instructions" /></a>
                 </section>
 
@@ -43,13 +43,13 @@ class LandingPage extends Component {
                                 data-aos-duration="500">
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Move1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
                                     <div className="instruction-card-image-stacked">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Move2} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
@@ -86,7 +86,7 @@ class LandingPage extends Component {
                                 data-aos-duration="500">
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Aim1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
