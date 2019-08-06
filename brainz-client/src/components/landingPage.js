@@ -10,12 +10,12 @@ import Aim2 from "../videos/aim2.mp4";
 import Shoot1 from "../videos/shoot1.mp4";
 import Shoot2 from "../videos/shoot2.mp4";
 
-import HomePageMain from "../images/home-page.png";
+import HomePageMain from "../images/homepage.gif";
 import StartGif from "../images/start.gif"
 import keyPress from "../images/wasd-fixed.gif"
 import aim from "../images/computer-mouse.gif"
 import shoot from "../images/mouse-click.gif"
-import instructions from "../images/instructions.gif"
+import instructions from "../images/instructions.png"
 
 class LandingPage extends Component {
     state = {
@@ -29,7 +29,7 @@ class LandingPage extends Component {
             <div>
                 <section id="first" className="First">
                     <img className="homePage" src={HomePageMain} alt="" />
-                    <Link className="start" to="/games" ><img src={StartGif} alt="Start Gif" /></Link>
+                    <Link className="start" to="/play" ><img src={StartGif} alt="Start Gif" /></Link>
                     <a className='instructions-link' href="#second" ><img src={instructions} alt="instructions" /></a>
                 </section>
 
@@ -43,13 +43,13 @@ class LandingPage extends Component {
                                 data-aos-duration="500">
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Move1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
                                     <div className="instruction-card-image-stacked">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Move2} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
@@ -57,20 +57,21 @@ class LandingPage extends Component {
                                 </div>
                                 <div className="instruction-card-gif">
                                     <div className="instruction-card-title">
-                                        <h4>MOVING</h4>
-                                        <p>AVOID ZOMBIES</p>
+                                        <h4>AVOID ZOMBIES</h4>
                                     </div>
                                     <div className="arrow">
                                         <i className="fas fa-play"></i>
                                     </div>
                                     <div className="card-gif-container">
                                         <p>Use the W,A,S,D keys to move.</p>
-                                        <ul>
-                                            <li><b>W</b> - Move Up</li>
-                                            <li><b>A</b> - Move Left</li>
-                                            <li><b>S</b> - Move Down</li>
-                                            <li><b>D</b> - Move Right</li>
-                                        </ul>
+                                        <div className="list">
+                                            <ul>
+                                                <li><b>W</b> - Move Up</li>
+                                                <li><b>A</b> - Move Left</li>
+                                                <li><b>S</b> - Move Down</li>
+                                                <li><b>D</b> - Move Right</li>
+                                            </ul>
+                                        </div>
                                         <div className="card-gif">
                                             <img src={keyPress} alt="Key Press" />
                                         </div>
@@ -85,7 +86,7 @@ class LandingPage extends Component {
                                 data-aos-duration="500">
                                 <div className="instruction-card-stacking">
                                     <div className="instruction-card-image-back-stack">
-                                        <video className="videoContainer" autoPlay loop>
+                                        <video className="videoContainer" autoPlay loop muted>
                                             <source className="gameSelectionVideo" src={Aim1} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
@@ -99,8 +100,7 @@ class LandingPage extends Component {
                                 </div>
                                 <div className="instruction-card-gif">
                                     <div className="instruction-card-title">
-                                        <h4>AIMING</h4>
-                                        <p>AIM FOR THE HEAD</p>
+                                        <h4>AIM FOR THE HEAD</h4>
                                     </div>
                                     <div className="arrow">
                                         <i className="fas fa-play"></i>
@@ -133,8 +133,7 @@ class LandingPage extends Component {
                                 </div>
                                 <div className="instruction-card-gif">
                                     <div className="instruction-card-title">
-                                        <h4>SHOOTING</h4>
-                                        <p>GO IN FOR THE KILL</p>
+                                        <h4>GO FOR THE KILL</h4>
                                     </div>
                                     <div className="arrow">
                                         <i className="fas fa-play"></i>

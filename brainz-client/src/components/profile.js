@@ -6,7 +6,7 @@ import MainContainer from "../sharedComponents/mainContainer"
 import "../App.css";
 import { StyledLi, StyledH1, StyledH4 } from '../styled-components/profilePageStyles';
 
-const ip = '10.150.41.155';
+const ip = '10.150.40.86';
 
 class Profile extends Component {
     state = {
@@ -73,15 +73,19 @@ class Profile extends Component {
                     <MainContainer>
                         <StyledH4 className="quotes">{this.state.loginMessage}</StyledH4>
                         <StyledH1 className="scoresHeader">Your Scores</StyledH1>
-                        <ul>
-                            {myScores.map((data, index) => {
-                                return (
-                                    <StyledLi key={`data${index}`}>
-                                        Wave: {data.wave} Kills: {data.kills}
-                                    </StyledLi>
-                                )
-                            })}
-                        </ul>
+                        {myScores.length === 0 ?
+                            <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>You currently have no scores.</h4>
+                            :
+                            <ul>
+                                {myScores.map((data, index) => {
+                                    return (
+                                        <StyledLi key={`data${index}`}>
+                                            Wave: {data.wave} Kills: {data.kills}
+                                        </StyledLi>
+                                    )
+                                })}
+                            </ul>
+                        }
                     </MainContainer>
                 )
             default:
