@@ -6,7 +6,7 @@ import MainContainer from "../sharedComponents/mainContainer"
 import "../App.css";
 import { StyledLi, StyledH1, StyledH4 } from '../styled-components/profilePageStyles';
 
-const ip = '10.150.10.91';
+const ip = '10.150.11.29';
 
 class Profile extends Component {
     state = {
