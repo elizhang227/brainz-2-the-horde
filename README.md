@@ -2,7 +2,7 @@
 
 ### A Digital Crafts Project Created by Eli Zhang, RJ Salamanca and Pierson Scarborough
 
-**Click Here: [Brainz II - Website](http://ec2-3-19-73-90.us-east-2.compute.amazonaws.com//)**
+**Click Here: [Brainz II - Website](https://quirky-bose-bab949.netlify.com/)**
 
 
 ## Brainz II In Action
