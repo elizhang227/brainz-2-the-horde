@@ -11,6 +11,6 @@ VALUES
     ('hard');
 
 INSERT INTO scores
-    (wave, kills, user_id, game_mode_id)
+    (wave, kills, user_id, game_mode_id, timestamp)
 VALUES
-    (5, 69, 1, 1);
+    (5, 16, 1, 1, '08/04/2019, 05:03:49 pm');

@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-/models/conn.js
+# /models/conn.js
 
 # testing
 /coverage
