@@ -9,9 +9,9 @@ VALUES
     ('a', 'b', 'ab@ab.com', '$2a$10$TbyRTkXam8eTdLTN2.1on.HjbEZeSo6hXrtx08FXWUPp9gxlw7Tia');
 
 INSERT INTO scores
-    (wave, kills, user, timestamp)
+    (wave, kills, user_id, timestamp)
 VALUES
-    (16, 1, '08/04/2019, 05:03:49 pm'),
+    (6, 23, 1, '08/04/2019, 05:03:49 pm'),
     (2, 4, 2, '06/29/2019, 11:16:25 am'),
     (3, 7, 3, '06/29/2019, 11:17:25 am'),
     (4, 11, 4, '06/29/2019, 11:18:25 am'),

@@ -174,7 +174,8 @@ class Scores extends Component {
     }
 
     loadInitialHighScores = async () => {
-        const url = `http://${ip}:3000/highscores`;
+        // const url = `http://${ip}:3000/highscores`;
+        const url = `http://ec2-18-218-66-34.us-east-2.compute.amazonaws.com/highscores`;
         const response = await fetch(url);
         const data = response.json();
         return data;
