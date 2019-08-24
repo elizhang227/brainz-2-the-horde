@@ -2,7 +2,8 @@ const express = require('express'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     logger = require('morgan'),
-    cors = require('cors');
+    cors = require('cors'),
+    https = require('https');
 
 const indexRouter = require('./routes/index'),
     usersRouter = require('./routes/users');
@@ -42,6 +43,11 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.send('error');
 });
+
+https.createServer(options, function (req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+}).listen(443);
 
 
 module.exports = app;
