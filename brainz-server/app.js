@@ -3,6 +3,7 @@ const express = require('express'),
     cookieParser = require('cookie-parser'),
     logger = require('morgan'),
     cors = require('cors'),
+    fs = require('fs'),
     https = require('https');
 
 const indexRouter = require('./routes/index'),
@@ -44,11 +45,16 @@ app.use(function(err, req, res, next) {
     res.send('error');
 });
 
-https.createServer(options, function (req, res) {
-    res.writeHead(200);
-    res.end("hello world\n");
-}).listen(443);
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+.listen(3000, function () {
+    console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+})
 
+// ec2-18-218-66-34.us-east-2.compute.amazonaws.com
+// quirky-bose-bab949.netlify.com
 
 module.exports = app;
 
