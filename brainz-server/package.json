@@ -23,7 +23,7 @@
     "http": "0.0.0",
     "http-errors": "^1.6.3",
     "mocha": "^6.1.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "morgan": "~1.9.1",
     "pg-promise": "^8.7.2",
     "socket.io": "^2.2.0"
