@@ -22,7 +22,7 @@
     "helmet": "^3.18.0",
     "http": "0.0.0",
     "http-errors": "^1.6.3",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
     "pg-promise": "^8.7.2",
